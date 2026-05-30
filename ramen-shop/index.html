@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>麺処 田中 | 本格醤油ラーメン</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --red: #c0392b;
+      --dark: #1a1a1a;
+      --cream: #fdf6ec;
+      --brown: #8b5e3c;
+      --text: #333;
+    }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      color: var(--text);
+      background: var(--cream);
+    }
+
+    /* ナビ */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(26,26,26,0.95);
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 5%;
+      height: 60px;
+    }
+
+    nav .logo {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+    }
+
+    nav .logo span {
+      color: var(--red);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #fff; }
+
+    /* ヒーロー */
+    #hero {
+      height: 100vh;
+      background: linear-gradient(135deg, rgba(60,20,10,0.92) 0%, rgba(100,40,20,0.85) 50%, rgba(40,15,5,0.95) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+    }
+
+    #hero .tag {
+      background: var(--red);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      padding: 4px 14px;
+      border-radius: 2px;
+      margin-bottom: 1.2rem;
+    }
+
+    #hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      letter-spacing: 0.15em;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    #hero p {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 2rem;
+      letter-spacing: 0.05em;
+    }
+
+    #hero a {
+      background: var(--red);
+      color: #fff;
+      padding: 14px 36px;
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+
+    #hero a:hover { background: #a93226; }
+
+    /* セクション共通 */
+    section { padding: 80px 5%; }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title .en {
+      display: block;
+      color: var(--red);
+      font-size: 0.8rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title h2 {
+      font-size: 2rem;
+      letter-spacing: 0.15em;
+      color: var(--dark);
+    }
+
+    /* こだわり */
+    #about {
+      background: var(--dark);
+      color: #fff;
+    }
+
+    #about .section-title h2 { color: #fff; }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .feature {
+      text-align: center;
+      padding: 2rem;
+      border: 1px solid #333;
+      border-radius: 4px;
+    }
+
+    .feature .icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+      letter-spacing: 0.1em;
+    }
+
+    .feature p {
+      font-size: 0.9rem;
+      color: #aaa;
+      line-height: 1.7;
+    }
+
+    /* メニュー */
+    #menu { background: var(--cream); }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .menu-card {
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.13);
+    }
+
+    .menu-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .menu-img {
+      width: 100%;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+
+    .menu-img.shoyu {
+      background: linear-gradient(135deg, #8b5e3c 0%, #c0813f 40%, #6b3a2a 100%);
+    }
+
+    .menu-img.miso {
+      background: linear-gradient(135deg, #7a5c2e 0%, #b8832a 40%, #5c3d1e 100%);
+    }
+
+    .menu-img.charshu {
+      background: linear-gradient(135deg, #6b2d2d 0%, #a84040 40%, #3d1a1a 100%);
+    }
+
+    .menu-card-body {
+      padding: 1.2rem 1.4rem;
+    }
+
+    .menu-card-body h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.05em;
+    }
+
+    .menu-card-body p {
+      font-size: 0.85rem;
+      color: #777;
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+    }
+
+    .price {
+      color: var(--red);
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    /* 店舗情報 */
+    #info { background: #fff; }
+
+    .info-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    td {
+      padding: 12px 8px;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    td:first-child {
+      width: 100px;
+      color: var(--brown);
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .map-placeholder {
+      background: #e8e0d5;
+      border-radius: 6px;
+      height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--brown);
+      font-size: 0.9rem;
+      gap: 0.5rem;
+    }
+
+    .map-placeholder .pin { font-size: 2rem; }
+
+    /* フッター */
+    footer {
+      background: var(--dark);
+      color: #888;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+
+    footer strong { color: #fff; }
+
+    /* スムーズスクロール */
+    html { scroll-behavior: smooth; }
+
+    /* レスポンシブ */
+    @media (max-width: 640px) {
+      nav ul { display: none; }
+      .info-wrap { grid-template-columns: 1fr; }
+      #hero h1 { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">麺処 <span>田中</span></div>
+  <ul>
+    <li><a href="#about">こだわり</a></li>
+    <li><a href="#menu">メニュー</a></li>
+    <li><a href="#info">店舗情報</a></li>
+  </ul>
+</nav>
+
+<!-- ヒーロー -->
+<section id="hero">
+  <div class="tag">SINCE 1987 · 東京 荻窪</div>
+  <h1>一杯に、魂を。</h1>
+  <p>豚骨と昆布の合わせだし。35年守り続けた味。</p>
+  <a href="#menu">メニューを見る</a>
+</section>
+
+<!-- こだわり -->
+<section id="about">
+  <div class="section-title">
+    <span class="en">Our Story</span>
+    <h2>三つのこだわり</h2>
+  </div>
+  <div class="features">
+    <div class="feature">
+      <div class="icon">🍖</div>
+      <h3>18時間スープ</h3>
+      <p>国産豚骨を18時間以上炊き込んだ、濃厚かつ透明感のあるスープ。</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🌾</div>
+      <h3>自家製麺</h3>
+      <p>北海道産小麦を毎朝製麺。スープとの絶妙な絡みを追求しています。</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🥚</div>
+      <h3>特製チャーシュー</h3>
+      <p>低温調理で48時間仕込んだ、とろけるような食感の肩ロース。</p>
+    </div>
+  </div>
+</section>
+
+<!-- メニュー -->
+<section id="menu">
+  <div class="section-title">
+    <span class="en">Menu</span>
+    <h2>おすすめメニュー</h2>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-card">
+      <div class="menu-img shoyu">🍜</div>
+      <div class="menu-card-body">
+        <h3>特製醤油ラーメン</h3>
+        <p>創業以来変わらぬ看板メニュー。昆布と鶏の黄金比。</p>
+        <span class="price">¥950</span>
+      </div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-img miso">🍜</div>
+      <div class="menu-card-body">
+        <h3>信州味噌ラーメン</h3>
+        <p>長野産信州味噌とバターが香る、冬季限定の一杯。</p>
+        <span class="price">¥1,050</span>
+      </div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-img charshu">🍜</div>
+      <div class="menu-card-body">
+        <h3>特盛チャーシュー麺</h3>
+        <p>自慢のチャーシューを贅沢に5枚トッピング。</p>
+        <span class="price">¥1,350</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 店舗情報 -->
+<section id="info">
+  <div class="section-title">
+    <span class="en">Shop Info</span>
+    <h2>店舗情報</h2>
+  </div>
+  <div class="info-wrap">
+    <table>
+      <tr>
+        <td>住所</td>
+        <td>東京都杉並区荻窪5-○-○<br>荻窪駅 徒歩3分</td>
+      </tr>
+      <tr>
+        <td>電話</td>
+        <td>03-XXXX-XXXX</td>
+      </tr>
+      <tr>
+        <td>営業時間</td>
+        <td>11:00 〜 21:00<br><small style="color:#999">※スープ切れ次第終了</small></td>
+      </tr>
+      <tr>
+        <td>定休日</td>
+        <td>火曜日</td>
+      </tr>
+      <tr>
+        <td>席数</td>
+        <td>カウンター8席 / テーブル12席</td>
+      </tr>
+    </table>
+    <div class="map-placeholder">
+      <div class="pin">📍</div>
+      <div>ここに Google マップを埋め込めます</div>
+      <small>（実装時に iframe を差し替え）</small>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>麺処 田中</strong><br>
+  &copy; 2024 Tanaka Ramen. All rights reserved.
+</footer>
+
+</body>
+</html>
