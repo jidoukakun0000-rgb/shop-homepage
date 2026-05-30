@@ -9,7 +9,9 @@
   <meta property="og:description" content="昭和36年創業。名物ジャンボ餃子と手打ちラーメン。でかい・うまい・安い、吉井の町中華。">
   <meta property="og:type" content="restaurant">
   <meta name="format-detection" content="telephone=no">
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -23,13 +25,27 @@
       --text:   #2e1a08;
       --muted:  #6e5333;
     }
-    html { scroll-behavior: smooth; font-size: 17px; }
+    html { scroll-behavior: smooth; font-size: 18px; }
     body {
-      font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+      font-family: 'Noto Sans JP', sans-serif;
       color: var(--text);
       background: var(--cream);
       overflow-x: hidden;
-      line-height: 1.7;
+      line-height: 1.8;
+      letter-spacing: 0.03em;
+      font-weight: 500;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    /* 見出し・店名・キャッチは丸ゴシックで親しみを */
+    .nav-logo, .hero-name, .hero-copy, .section-title h2,
+    .feature-body h3, .menu-block-title, .story-year,
+    .service-card h3, .info-card h3, footer strong, .photo-name {
+      font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+    }
+    /* 数字（価格・電話）はくっきり見せる */
+    .menu-row-price, .hero-btn.tel, .story-year {
+      font-feature-settings: "palt";
     }
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
