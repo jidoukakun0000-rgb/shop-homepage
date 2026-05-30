@@ -464,10 +464,102 @@
       color: #555;
     }
 
+    /* ========= ハンバーガー ========= */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      background: none;
+      border: none;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* スマホドロワー */
+    .nav-drawer {
+      display: none;
+      position: fixed;
+      top: 58px; left: 0; right: 0;
+      background: rgba(20,20,20,0.98);
+      z-index: 199;
+      padding: 1rem 0;
+      border-bottom: 2px solid var(--red);
+    }
+
+    .nav-drawer.open { display: block; }
+
+    .nav-drawer a {
+      display: block;
+      color: #ddd;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 14px 6%;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid #2a2a2a;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-drawer a:hover { background: #2a2a2a; color: var(--gold); }
+
+    /* スマホ固定電話ボタン */
+    .tel-bar {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 300;
+      background: var(--red);
+    }
+
+    .tel-bar a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      padding: 16px;
+    }
+
     /* ========= レスポンシブ ========= */
     @media (max-width: 640px) {
       nav ul { display: none; }
+      .hamburger { display: flex; }
+      .tel-bar { display: block; }
+
+      /* ヒーロー */
+      #hero { padding-bottom: 80px; }
+      .hero-gyoza { font-size: 5rem; }
+
+      /* カード縦積み */
+      .feature-grid { grid-template-columns: 1fr; }
+
+      /* 店舗情報 */
       .info-grid { grid-template-columns: 1fr; }
+
+      /* セクション余白 */
+      section { padding: 60px 5%; }
+
+      /* フッター下に余白（tel-bar分） */
+      footer { padding-bottom: 72px; }
+
+      /* テーブルの文字 */
+      td { font-size: 0.88rem; }
     }
   </style>
 </head>
@@ -482,7 +574,23 @@
     <li><a href="#story">店主より</a></li>
     <li><a href="#info">アクセス</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="メニューを開く">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- スマホドロワー -->
+<div class="nav-drawer" id="drawer">
+  <a href="#feature" class="drawer-link">看板メニュー</a>
+  <a href="#menu" class="drawer-link">メニュー</a>
+  <a href="#story" class="drawer-link">店主より</a>
+  <a href="#info" class="drawer-link">アクセス</a>
+</div>
+
+<!-- スマホ固定電話ボタン -->
+<div class="tel-bar">
+  <a href="tel:0273877082">📞 027-387-7082　今すぐ電話する</a>
+</div>
 
 <!-- ヒーロー -->
 <section id="hero">
@@ -631,13 +739,27 @@
   // スクロールフェードイン
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-      }
+      if (e.isIntersecting) e.target.classList.add('visible');
     });
   }, { threshold: 0.15 });
-
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ハンバーガーメニュー
+  const hamburger = document.getElementById('hamburger');
+  const drawer    = document.getElementById('drawer');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    drawer.classList.toggle('open');
+  });
+
+  // ドロワーのリンクをタップしたら閉じる
+  document.querySelectorAll('.drawer-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      drawer.classList.remove('open');
+    });
+  });
 </script>
 
 </body>
