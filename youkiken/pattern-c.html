@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>案C「暖簾と提灯」- 陽気軒</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;800&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --vermilion: #c94a1e;
+      --ink:       #1a1208;
+      --paper:     #f7f0e2;
+      --warm:      #ede0c4;
+      --gold:      #c8820a;
+      --sage:      #8a7a5a;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans JP', sans-serif; color: var(--ink); background: var(--paper); overflow-x: hidden; }
+
+    /* ナビ */
+    nav {
+      position: fixed; top: 0; width: 100%;
+      background: var(--ink); z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 5%; height: 56px;
+    }
+    .nav-logo { color: var(--paper); font-family: 'Shippori Mincho', serif; font-size: 1.3rem; letter-spacing: 0.2em; }
+    nav ul { list-style: none; display: flex; gap: 1.8rem; }
+    nav a { color: rgba(247,240,226,0.7); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.05em; }
+    nav a:hover { color: var(--paper); }
+
+    /* ヒーロー */
+    #hero {
+      min-height: 100vh;
+      background: var(--ink);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; padding: 80px 5% 60px;
+      position: relative; overflow: hidden;
+    }
+    /* 和紙テクスチャ風 */
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,74,30,0.12) 0%, transparent 70%),
+        repeating-linear-gradient(45deg, transparent 0, transparent 8px, rgba(255,255,255,0.008) 8px, rgba(255,255,255,0.008) 9px);
+    }
+    .hero-mon {
+      position: relative;
+      width: 100px; height: 100px;
+      border: 2px solid rgba(247,240,226,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; margin-bottom: 1.5rem;
+      animation: rotateSlow 20s linear infinite;
+    }
+    @keyframes rotateSlow { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+    .hero-mon-inner { animation: rotateSlow 20s linear infinite reverse; }
+    .hero-since { position: relative; color: rgba(247,240,226,0.5); font-size: 0.75rem; letter-spacing: 0.35em; margin-bottom: 1.2rem; }
+    .hero-name {
+      position: relative;
+      font-family: 'Shippori Mincho', serif;
+      font-size: clamp(3.5rem, 12vw, 8rem);
+      color: var(--paper); line-height: 1;
+      letter-spacing: 0.25em;
+      margin-bottom: 0.6rem;
+    }
+    .hero-copy {
+      position: relative;
+      font-family: 'Shippori Mincho', serif;
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      color: rgba(247,240,226,0.8);
+      letter-spacing: 0.2em; margin-bottom: 2rem;
+    }
+    .hero-line {
+      position: relative;
+      width: 60px; height: 1px; background: var(--vermilion); margin: 0 auto 2rem;
+    }
+    .hero-badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .hero-badge {
+      color: rgba(247,240,226,0.65); font-size: 0.78rem; letter-spacing: 0.1em;
+      border-bottom: 1px solid rgba(247,240,226,0.25); padding-bottom: 3px;
+    }
+
+    /* 区切り線 */
+    .divider { height: 2px; background: linear-gradient(90deg, transparent, var(--vermilion), transparent); }
+
+    /* セクション */
+    section { padding: 80px 5%; }
+    .section-title { text-align: center; margin-bottom: 3rem; }
+    .section-title .en { display: block; color: var(--vermilion); font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .section-title h2 { font-family: 'Shippori Mincho', serif; font-size: clamp(1.8rem, 5vw, 2.5rem); letter-spacing: 0.25em; }
+
+    /* 三本柱 */
+    #feature { background: var(--paper); }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.5rem; max-width: 860px; margin: 0 auto; }
+    .feature-card {
+      background: #fff; border-top: 3px solid var(--vermilion);
+      padding: 1.8rem 1.4rem; text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    .feature-card .emoji { font-size: 2.8rem; margin-bottom: 0.8rem; display: block; }
+    .feature-card h3 { font-family: 'Shippori Mincho', serif; font-size: 1.15rem; color: var(--ink); margin-bottom: 0.5rem; letter-spacing: 0.1em; }
+    .feature-card p { font-size: 0.875rem; color: #666; line-height: 1.8; }
+    .feature-card .price { display: inline-block; margin-top: 0.7rem; color: var(--vermilion); font-family: 'Shippori Mincho', serif; font-size: 1rem; font-weight: 700; }
+
+    /* こだわり帯 */
+    .appeal-bar { background: var(--warm); padding: 40px 5%; text-align: center; }
+    .appeal-bar p { font-family: 'Shippori Mincho', serif; font-size: clamp(1rem, 3vw, 1.5rem); color: var(--ink); letter-spacing: 0.2em; line-height: 2.4; }
+
+    /* メニュー */
+    #menu { background: #fff; }
+    .menu-list { max-width: 680px; margin: 0 auto; }
+    .menu-cat-title { font-family: 'Shippori Mincho', serif; font-size: 1.05rem; color: var(--ink); border-bottom: 1px solid var(--vermilion); padding-bottom: 8px; margin-bottom: 1rem; letter-spacing: 0.2em; }
+    .menu-item { display: flex; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid #ede0c4; font-size: 0.95rem; }
+    .menu-item-name .tag { background: var(--vermilion); color: #fff; font-size: 0.65rem; padding: 1px 6px; border-radius: 2px; margin-left: 6px; }
+    .menu-item-price { color: var(--vermilion); font-family: 'Shippori Mincho', serif; font-weight: 700; }
+    .menu-cat { margin-bottom: 2.5rem; }
+
+    /* 店主より */
+    #story { background: var(--warm); }
+    .story-inner { max-width: 640px; margin: 0 auto; text-align: center; }
+    .story-year { font-family: 'Shippori Mincho', serif; font-size: 4.5rem; color: var(--ink); line-height: 1; }
+    .story-year small { display: block; font-size: 0.85rem; color: var(--sage); letter-spacing: 0.3em; margin-top: 6px; }
+    .story-divider { width: 40px; height: 2px; background: var(--vermilion); margin: 1.2rem auto; }
+    .story-text { font-family: 'Shippori Mincho', serif; font-size: 1rem; line-height: 2.4; color: #444; }
+    .zetsumeshi { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--vermilion); color: var(--vermilion); font-size: 0.82rem; padding: 8px 20px; margin-top: 1.6rem; letter-spacing: 0.08em; }
+
+    /* 店舗情報 */
+    #info { background: var(--paper); }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; max-width: 820px; margin: 0 auto; }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 14px 8px; border-bottom: 1px solid var(--warm); font-size: 0.92rem; line-height: 1.7; vertical-align: top; }
+    td:first-child { width: 85px; color: var(--sage); font-family: 'Shippori Mincho', serif; font-weight: 700; white-space: nowrap; letter-spacing: 0.05em; }
+    .map-box { background: var(--warm); border: 1px solid #d4c0a0; height: 260px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--sage); gap: 8px; font-size: 0.88rem; }
+
+    /* フッター */
+    footer { background: var(--ink); color: rgba(247,240,226,0.5); text-align: center; padding: 2.5rem 5%; font-size: 0.82rem; letter-spacing: 0.08em; }
+    footer strong { color: var(--paper); font-family: 'Shippori Mincho', serif; font-size: 1.2rem; display: block; margin-bottom: 8px; }
+
+    @media(max-width:640px){ nav ul{display:none} .info-grid{grid-template-columns:1fr} .feature-grid{grid-template-columns:1fr} }
+
+    .pattern-label { position:fixed; bottom:16px; right:16px; z-index:999; background:#000; color:#fff; font-size:0.75rem; padding:6px 14px; border-radius:20px; opacity:0.7; }
+  </style>
+</head>
+<body>
+
+<div class="pattern-label">案C「暖簾と提灯」</div>
+
+<nav>
+  <div class="nav-logo">陽気軒</div>
+  <ul>
+    <li><a href="#feature">看板メニュー</a></li>
+    <li><a href="#menu">メニュー</a></li>
+    <li><a href="#story">店主より</a></li>
+    <li><a href="#info">アクセス</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-mon"><span class="hero-mon-inner">🥟</span></div>
+  <div class="hero-since">SINCE 1961 · 群馬県高崎市吉井町</div>
+  <h1 class="hero-name">陽気軒</h1>
+  <div class="hero-line"></div>
+  <p class="hero-copy">昭和三十六年より、吉井の町に根ざした一軒</p>
+  <div class="hero-badges">
+    <span class="hero-badge">🏆 絶メシリスト掲載</span>
+    <span style="color:rgba(247,240,226,0.3)">|</span>
+    <span class="hero-badge">ジャンボ餃子 名物</span>
+    <span style="color:rgba(247,240,226,0.3)">|</span>
+    <span class="hero-badge">手打ち自家製麺</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="feature">
+  <div class="section-title"><span class="en">Signature</span><h2>看板三品</h2></div>
+  <div class="feature-grid">
+    <div class="feature-card"><span class="emoji">🥟</span><h3>ジャンボ餃子</h3><p>手のひらサイズの名物。肉汁がじゅわっと広がる一個の満足感。</p><span class="price">名物</span></div>
+    <div class="feature-card"><span class="emoji">🍜</span><h3>手打ちラーメン</h3><p>毎朝打つ自家製麺。ねぎラーメンは創業から変わらぬ定番の味。</p><span class="price">¥400〜</span></div>
+    <div class="feature-card"><span class="emoji">🍱</span><h3>中華定食</h3><p>ラーメン＋おかずがこの価格。地元のお客様に長く愛される一膳。</p><span class="price">良心価格</span></div>
+  </div>
+</section>
+
+<div class="appeal-bar">
+  <p>腹いっぱい食べてほしい。<br>ただそれだけを、六十年以上守り続けてまいりました。</p>
+</div>
+
+<section id="menu">
+  <div class="section-title"><span class="en">Menu</span><h2>お品書き</h2></div>
+  <div class="menu-list">
+    <div class="menu-cat">
+      <div class="menu-cat-title">拉麺</div>
+      <div class="menu-item"><span class="menu-item-name">葱拉麺 <span class="tag">人気</span></span><span class="menu-item-price">¥400</span></div>
+      <div class="menu-item"><span class="menu-item-name">叉焼麺</span><span class="menu-item-price">時価</span></div>
+      <div class="menu-item"><span class="menu-item-name">味噌拉麺</span><span class="menu-item-price">時価</span></div>
+    </div>
+    <div class="menu-cat">
+      <div class="menu-cat-title">餃子・一品</div>
+      <div class="menu-item"><span class="menu-item-name">自慢の大餃子 <span class="tag">名物</span></span><span class="menu-item-price">時価</span></div>
+      <div class="menu-item"><span class="menu-item-name">炒飯</span><span class="menu-item-price">時価</span></div>
+    </div>
+    <div class="menu-cat">
+      <div class="menu-cat-title">定食</div>
+      <div class="menu-item"><span class="menu-item-name">中華定食（拉麺＋小皿）</span><span class="menu-item-price">良心価格</span></div>
+    </div>
+    <p style="font-size:0.8rem;color:#aaa;text-align:center;margin-top:1rem">※価格・内容は変更になる場合がございます</p>
+  </div>
+</section>
+
+<section id="story">
+  <div class="section-title"><span class="en">Our Story</span><h2>店主より</h2></div>
+  <div class="story-inner">
+    <div class="story-year">一九六一<small>昭和三十六年 創業</small></div>
+    <div class="story-divider"></div>
+    <p class="story-text">
+      父が吉井の地で始めた陽気軒を、私が二代目として受け継いでいます。<br>
+      難しいことは何もしていません。<br>毎朝麺を打って、スープを仕込んで、でかい餃子を包む。<br>
+      それを六十年以上続けてきました。<br><br>
+      安くて、多くて、うまい。それだけを守り続けます。
+    </p>
+    <div class="zetsumeshi">🏆 高崎市「絶メシリスト」掲載店</div>
+  </div>
+</section>
+
+<section id="info">
+  <div class="section-title"><span class="en">Access</span><h2>店舗情報</h2></div>
+  <div class="info-grid">
+    <table>
+      <tr><td>住所</td><td>群馬県高崎市吉井町塩川37-4<br><small style="color:#aaa">上信電鉄 吉井駅 徒歩10分</small></td></tr>
+      <tr><td>電話</td><td>027-387-7082</td></tr>
+      <tr><td>営業時間</td><td>11:00 〜 20:00<br><small style="color:#aaa">LO 19:30</small></td></tr>
+      <tr><td>定休日</td><td>毎月15日・26日<br><small style="color:#aaa">※不定休あり</small></td></tr>
+    </table>
+    <div class="map-box"><div style="font-size:2rem">📍</div><div>群馬県高崎市吉井町塩川37-4</div><small>Googleマップ埋め込み予定</small></div>
+  </div>
+</section>
+
+<footer>
+  <strong>陽気軒</strong>
+  群馬県高崎市吉井町塩川37-4 ／ 027-387-7082<br>
+  <div style="margin-top:8px">&copy; 2024 陽気軒</div>
+</footer>
+
+</body>
+</html>

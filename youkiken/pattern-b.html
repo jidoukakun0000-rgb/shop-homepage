@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>案B「手書き黒板」- 陽気軒</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --board:  #2d4a3e;
+      --board2: #243d32;
+      --chalk:  #f5f0e8;
+      --red:    #e8352a;
+      --yellow: #f5c842;
+      --cream:  #fdf4e3;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans JP', sans-serif; color: #1a1a1a; background: var(--cream); overflow-x: hidden; }
+
+    /* ナビ */
+    nav {
+      position: fixed; top: 0; width: 100%;
+      background: var(--board2); z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 5%; height: 56px;
+    }
+    .nav-logo {
+      color: var(--chalk); font-family: 'Kaisei Decol', serif;
+      font-size: 1.3rem; letter-spacing: 0.12em;
+    }
+    nav ul { list-style: none; display: flex; gap: 1.8rem; }
+    nav a { color: rgba(245,240,232,0.75); text-decoration: none; font-size: 0.88rem; }
+    nav a:hover { color: var(--chalk); }
+
+    /* ヒーロー（黒板） */
+    #hero {
+      min-height: 100vh;
+      background: var(--board);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; padding: 80px 5% 60px;
+      position: relative; overflow: hidden;
+    }
+    /* 黒板の質感 */
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 28px,
+        rgba(255,255,255,0.015) 28px, rgba(255,255,255,0.015) 29px
+      );
+    }
+    .chalk-frame {
+      position: absolute; inset: 24px;
+      border: 3px solid rgba(245,240,232,0.2);
+      pointer-events: none;
+    }
+    .hero-since {
+      color: rgba(245,240,232,0.6); font-size: 0.78rem;
+      letter-spacing: 0.3em; margin-bottom: 1rem; position: relative;
+    }
+    .hero-emoji { font-size: 5rem; position: relative; margin-bottom: 0.5rem; }
+    .hero-name {
+      font-family: 'Kaisei Decol', serif;
+      font-size: clamp(3rem, 10vw, 6.5rem);
+      color: var(--chalk);
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+      margin-bottom: 0.5rem; position: relative;
+      letter-spacing: 0.2em;
+    }
+    .hero-copy {
+      font-family: 'Kaisei Decol', serif;
+      font-size: clamp(1.1rem, 3.5vw, 1.8rem);
+      color: var(--yellow); letter-spacing: 0.15em;
+      margin-bottom: 1.8rem; position: relative;
+    }
+    .chalk-badges {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      position: relative;
+    }
+    .chalk-badge {
+      border: 2px dashed rgba(245,240,232,0.5);
+      color: var(--chalk); padding: 6px 16px;
+      border-radius: 3px; font-size: 0.8rem; letter-spacing: 0.08em;
+    }
+
+    /* 黒板風セクション */
+    .board-section {
+      background: var(--board);
+      padding: 70px 5%;
+    }
+    .board-section .section-title h2 {
+      color: var(--chalk);
+    }
+
+    /* セクション */
+    section { padding: 70px 5%; }
+    .section-title { text-align: center; margin-bottom: 2.5rem; }
+    .section-title h2 {
+      font-family: 'Kaisei Decol', serif;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      color: var(--board); letter-spacing: 0.15em;
+    }
+    .section-title .sub { color: #888; font-size: 0.8rem; letter-spacing: 0.2em; margin-top: 4px; }
+
+    /* 三本柱 */
+    #feature { background: var(--cream); }
+    .feature-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 1.2rem; max-width: 860px; margin: 0 auto;
+    }
+    .feature-card {
+      background: var(--board); border-radius: 6px; padding: 1.8rem 1.4rem;
+      text-align: center; position: relative; overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 22px,
+        rgba(255,255,255,0.02) 22px, rgba(255,255,255,0.02) 23px
+      );
+    }
+    .feature-card:hover { transform: translateY(-3px); }
+    .feature-card .emoji { font-size: 2.8rem; margin-bottom: 0.8rem; display: block; position: relative; }
+    .feature-card h3 { font-family: 'Kaisei Decol', serif; font-size: 1.15rem; color: var(--chalk); margin-bottom: 0.5rem; position: relative; }
+    .feature-card p { font-size: 0.875rem; color: rgba(245,240,232,0.7); line-height: 1.7; position: relative; }
+    .feature-card .price { display: inline-block; margin-top: 0.7rem; background: var(--red); color: #fff; font-size: 0.8rem; padding: 3px 14px; border-radius: 2px; position: relative; }
+
+    /* 黒板メニュー */
+    #menu { background: var(--board); }
+    #menu .section-title h2 { color: var(--chalk); }
+    #menu .section-title .sub { color: rgba(245,240,232,0.5); }
+    .menu-list { max-width: 680px; margin: 0 auto; }
+    .menu-cat-title {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 1.05rem; color: var(--yellow);
+      border-bottom: 2px dashed rgba(245,240,232,0.3);
+      padding-bottom: 8px; margin-bottom: 1rem; letter-spacing: 0.15em;
+    }
+    .menu-item { display: flex; justify-content: space-between; padding: 10px 4px; border-bottom: 1px dashed rgba(245,240,232,0.15); font-size: 0.95rem; color: var(--chalk); }
+    .menu-item-name .tag { background: var(--red); color: #fff; font-size: 0.65rem; padding: 1px 6px; border-radius: 2px; margin-left: 6px; }
+    .menu-item-price { color: var(--yellow); font-weight: 700; }
+    .menu-cat { margin-bottom: 2.2rem; }
+
+    /* 店主 */
+    #story { background: var(--cream); }
+    .story-inner { max-width: 640px; margin: 0 auto; text-align: center; }
+    .story-year { font-family: 'Kaisei Decol', serif; font-size: 4rem; color: var(--board); }
+    .story-year small { display: block; font-size: 0.9rem; color: #666; letter-spacing: 0.2em; }
+    .story-text { font-size: 0.98rem; line-height: 2.1; color: #444; margin-top: 1.2rem; }
+    .zetsumeshi { display: inline-flex; align-items: center; gap: 8px; background: var(--board); color: var(--chalk); font-size: 0.82rem; padding: 8px 20px; border-radius: 3px; margin-top: 1.4rem; }
+
+    /* 店舗情報 */
+    #info { background: #f0ebe0; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; max-width: 820px; margin: 0 auto; }
+    #info .section-title h2 { color: var(--board); }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 12px 8px; border-bottom: 1px solid #d4c89a; font-size: 0.92rem; line-height: 1.7; vertical-align: top; }
+    td:first-child { width: 85px; color: var(--board); font-weight: 700; white-space: nowrap; }
+    .map-box { background: var(--board); border-radius: 6px; height: 260px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--chalk); gap: 8px; font-size: 0.88rem; }
+
+    /* フッター */
+    footer { background: var(--board2); color: rgba(245,240,232,0.6); text-align: center; padding: 2rem 5%; font-size: 0.82rem; }
+    footer strong { color: var(--chalk); font-family: 'Kaisei Decol', serif; font-size: 1.1rem; }
+
+    @media(max-width:640px){ nav ul{display:none} .info-grid{grid-template-columns:1fr} .feature-grid{grid-template-columns:1fr} }
+
+    .pattern-label { position:fixed; bottom:16px; right:16px; z-index:999; background:#000; color:#fff; font-size:0.75rem; padding:6px 14px; border-radius:20px; opacity:0.7; }
+  </style>
+</head>
+<body>
+
+<div class="pattern-label">案B「手書き黒板」</div>
+
+<nav>
+  <div class="nav-logo">陽気軒</div>
+  <ul>
+    <li><a href="#feature">看板メニュー</a></li>
+    <li><a href="#menu">メニュー</a></li>
+    <li><a href="#story">店主より</a></li>
+    <li><a href="#info">アクセス</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="chalk-frame"></div>
+  <div class="hero-since">SINCE 1961 · 群馬県高崎市吉井町</div>
+  <div class="hero-emoji">🥟</div>
+  <h1 class="hero-name">陽気軒</h1>
+  <p class="hero-copy">でかい。うまい。安い。</p>
+  <div class="chalk-badges">
+    <span class="chalk-badge">🏆 絶メシリスト掲載</span>
+    <span class="chalk-badge">昭和36年創業</span>
+    <span class="chalk-badge">ジャンボ餃子</span>
+  </div>
+</section>
+
+<section id="feature">
+  <div class="section-title"><h2>三本柱</h2><div class="sub">SIGNATURE MENU</div></div>
+  <div class="feature-grid">
+    <div class="feature-card"><span class="emoji">🥟</span><h3>ジャンボ餃子</h3><p>手のひらサイズの名物餃子。肉汁がじゅわっと広がる。</p><span class="price">名物</span></div>
+    <div class="feature-card"><span class="emoji">🍜</span><h3>手打ちラーメン</h3><p>毎朝打つ自家製麺。ねぎラーメンは創業からの定番。</p><span class="price">¥400〜</span></div>
+    <div class="feature-card"><span class="emoji">🍱</span><h3>中華定食</h3><p>ラーメン＋おかずが良心価格。地元のリピーター続出。</p><span class="price">良心価格</span></div>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="section-title"><h2>お品書き</h2><div class="sub">TODAY'S MENU</div></div>
+  <div class="menu-list">
+    <div class="menu-cat">
+      <div class="menu-cat-title">── ラーメン ──</div>
+      <div class="menu-item"><span class="menu-item-name">ねぎラーメン <span class="tag">人気</span></span><span class="menu-item-price">¥400</span></div>
+      <div class="menu-item"><span class="menu-item-name">チャーシューメン</span><span class="menu-item-price">時価</span></div>
+      <div class="menu-item"><span class="menu-item-name">味噌ラーメン</span><span class="menu-item-price">時価</span></div>
+    </div>
+    <div class="menu-cat">
+      <div class="menu-cat-title">── 餃子・一品 ──</div>
+      <div class="menu-item"><span class="menu-item-name">ジャンボ餃子 <span class="tag">名物</span></span><span class="menu-item-price">時価</span></div>
+      <div class="menu-item"><span class="menu-item-name">チャーハン</span><span class="menu-item-price">時価</span></div>
+    </div>
+    <div class="menu-cat">
+      <div class="menu-cat-title">── 定食 ──</div>
+      <div class="menu-item"><span class="menu-item-name">中華定食（ラーメン＋おかず）</span><span class="menu-item-price">良心価格</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="story">
+  <div class="section-title"><h2>店主より</h2><div class="sub">OUR STORY</div></div>
+  <div class="story-inner">
+    <div class="story-year">1961<small>昭和36年創業</small></div>
+    <p class="story-text">父が吉井の地で始めた陽気軒を、私が2代目として受け継いでいます。<br>毎朝麺を打って、スープを仕込んで、でかい餃子を包む。<br>それを60年以上続けてきました。<br><br>安くて、多くて、うまい。それだけを守り続けます。</p>
+    <div class="zetsumeshi">🏆 高崎市「絶メシリスト」掲載店</div>
+  </div>
+</section>
+
+<section id="info">
+  <div class="section-title"><h2>店舗情報</h2><div class="sub">ACCESS</div></div>
+  <div class="info-grid">
+    <table>
+      <tr><td>住所</td><td>群馬県高崎市吉井町塩川37-4<br><small>上信電鉄 吉井駅 徒歩10分</small></td></tr>
+      <tr><td>電話</td><td>027-387-7082</td></tr>
+      <tr><td>営業時間</td><td>11:00 〜 20:00<br><small>LO 19:30</small></td></tr>
+      <tr><td>定休日</td><td>毎月15日・26日<br><small>※不定休あり</small></td></tr>
+    </table>
+    <div class="map-box"><div style="font-size:2rem">📍</div><div>群馬県高崎市吉井町塩川37-4</div><small>Googleマップ埋め込み予定</small></div>
+  </div>
+</section>
+
+<footer>
+  <strong>陽気軒</strong><br>
+  <div style="margin-top:8px">群馬県高崎市吉井町塩川37-4 ／ 027-387-7082</div>
+  <div style="margin-top:6px">&copy; 2024 陽気軒</div>
+</footer>
+
+</body>
+</html>
