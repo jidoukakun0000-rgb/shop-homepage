@@ -38,8 +38,13 @@
   - SEO meta / OGP / prefers-reduced-motion 対応済み
 - 比較用デザイン: youkiken/pattern-a.html（昭和のれん）、pattern-b.html（手書き黒板）、pattern-c.html（暖簾と提灯）
 
+## 関連ドキュメント
+
+- Googleビジネスプロフィール対応（マップ表示・営業時間・オーナー確認）: GOOGLE_BUSINESS.md / issue #6
+
 ## 次にやること
 
+- [ ] Googleビジネスプロフィールのオーナー確認を申請（詳細は GOOGLE_BUSINESS.md）
 - [ ] 実際の料理写真を撮影/入手して .photo-note / .ph-note のプレースホルダーを差し替え（images/ に格納予定）
 - [ ] 地図ピンの位置が正確か確認（必要なら緯度経度で微調整）
 - [ ] メニューの「時価」を実価格に置き換え（店主に確認）
