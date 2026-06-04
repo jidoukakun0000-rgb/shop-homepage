@@ -219,13 +219,27 @@
     /* ========= メニュー ========= */
     #menu { background: var(--cream); padding: 70px 5%; }
     .menu-inner { max-width: 700px; margin: 0 auto; }
-    .menu-block { background: var(--warm); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.2rem; }
+    .menu-block { background: var(--warm); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.2rem; scroll-margin-top: calc(54px + var(--sticky-h, 96px) + 12px); }
     .menu-block-title { font-size: 1.15rem; font-weight: 800; color: var(--red); border-left: 4px solid var(--red); padding-left: 10px; margin-bottom: 1rem; letter-spacing: 0.06em; }
-    .menu-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed #ddc69e; font-size: 1.05rem; }
+    .menu-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 0; border-bottom: 1px dashed #ddc69e; font-size: 1.05rem; }
     .menu-row:last-child { border-bottom: none; }
-    .menu-row-name { display: flex; align-items: center; gap: 8px; }
-    .tag { background: var(--red); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
-    .menu-row-price { color: var(--red); font-weight: 800; font-size: 1.1rem; }
+    .menu-row-name { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 8px; flex: 1; min-width: 0; }
+    .tag { background: transparent; color: var(--red); border: 1.5px solid var(--red); font-size: 0.72rem; font-weight: 700; padding: 1px 8px; border-radius: 20px; }
+    .menu-row-price { color: var(--red); font-weight: 800; font-size: 1.1rem; min-width: 5em; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .menu-row-price.is-desc { color: var(--muted); font-weight: 600; font-size: 0.95rem; min-width: 0; text-align: left; }
+    /* タブ切替（平日 / 土日祝）＋ カテゴリナビ */
+    .menu-sticky { position: sticky; top: 54px; z-index: 100; background: var(--cream); padding-top: 10px; }
+    .menu-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 0.7rem; }
+    .menu-tab { font-family: inherit; font-size: 1rem; font-weight: 800; letter-spacing: 0.06em; color: var(--red); background: var(--warm); border: 2px solid var(--red); border-radius: 24px; padding: 9px 26px; cursor: pointer; transition: background .2s, color .2s; }
+    .menu-tab.active { background: var(--red); color: #fff; }
+    .menu-tab:focus-visible, .cat-chip:focus-visible { outline: 3px solid #ddc69e; outline-offset: 2px; }
+    .cat-nav { display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 4px 0 10px; scrollbar-width: none; }
+    .cat-nav::-webkit-scrollbar { display: none; }
+    .cat-chip { flex: 0 0 auto; font-size: 0.82rem; font-weight: 800; color: var(--red); background: var(--warm); border: 2px solid var(--red); border-radius: 20px; padding: 5px 13px; text-decoration: none; white-space: nowrap; transition: background .2s, color .2s; }
+    .cat-chip.active { background: var(--red); color: #fff; }
+    .menu-day-note { text-align: center; color: var(--red); font-weight: 700; font-size: 0.95rem; margin: 0 0 1.2rem; }
+    .menu-cat-note { font-size: 0.85rem; color: var(--muted); font-weight: 600; margin: -0.6rem 0 0.8rem; }
+    .menu-foot-note { font-size: 0.92rem; color: var(--muted); text-align: center; margin-top: 1.2rem; line-height: 1.7; }
 
     /* ========= 店主より ========= */
     #story { background: var(--warm); padding: 70px 5%; }
@@ -401,22 +415,16 @@
 <section id="menu">
   <div class="section-title"><h2>お品書き</h2></div>
   <div class="menu-inner">
-    <div class="menu-block fade">
-      <div class="menu-block-title">ラーメン</div>
-      <div class="menu-row"><span class="menu-row-name">ねぎラーメン <span class="tag">人気</span></span><span class="menu-row-price">¥400</span></div>
-      <div class="menu-row"><span class="menu-row-name">チャーシューメン</span><span class="menu-row-price">時価</span></div>
-      <div class="menu-row"><span class="menu-row-name">味噌ラーメン</span><span class="menu-row-price">時価</span></div>
+    <div class="menu-sticky">
+      <div class="menu-tabs" id="menu-tabs" role="tablist">
+        <button class="menu-tab active" data-day="weekday" role="tab" aria-selected="true">平日</button>
+        <button class="menu-tab" data-day="weekend" role="tab" aria-selected="false">土日祝</button>
+      </div>
+      <nav class="cat-nav" id="cat-nav" aria-label="カテゴリ"></nav>
     </div>
-    <div class="menu-block fade">
-      <div class="menu-block-title">餃子・一品</div>
-      <div class="menu-row"><span class="menu-row-name">ジャンボ餃子 <span class="tag">名物</span></span><span class="menu-row-price">時価</span></div>
-      <div class="menu-row"><span class="menu-row-name">チャーハン</span><span class="menu-row-price">時価</span></div>
-    </div>
-    <div class="menu-block fade">
-      <div class="menu-block-title">定食</div>
-      <div class="menu-row"><span class="menu-row-name">中華定食（ラーメン＋おかず）</span><span class="menu-row-price">良心価格</span></div>
-    </div>
-    <p style="font-size:0.92rem;color:var(--muted);text-align:center;margin-top:1rem">※価格・メニューは変更になる場合があります。詳しくはお電話でご確認ください。</p>
+    <p class="menu-day-note" id="menu-day-note" hidden></p>
+    <div id="menu-list"></div>
+    <p class="menu-foot-note" id="menu-foot-note"></p>
   </div>
 </section>
 
@@ -515,6 +523,116 @@
       drawer.classList.remove('open');
     });
   });
+
+  // メニュー（menu.json から平日/土日を切り替え表示）
+  (function () {
+    const listEl = document.getElementById('menu-list');
+    const tabsEl = document.getElementById('menu-tabs');
+    const navEl = document.getElementById('cat-nav');
+    const stickyEl = document.querySelector('.menu-sticky');
+    const menuSection = document.getElementById('menu');
+    const dayNoteEl = document.getElementById('menu-day-note');
+    const footNoteEl = document.getElementById('menu-foot-note');
+    if (!listEl || !tabsEl) return;
+
+    const esc = s => String(s).replace(/[&<>"']/g, c => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+    const yen = n => '¥' + Number(n).toLocaleString('ja-JP');
+
+    let menu = null;
+    let spy = null;
+
+    function blockHtml(cat, id) {
+      const noteHtml = cat.note ? `<p class="menu-cat-note">${esc(cat.note)}</p>` : '';
+      const rows = cat.items.map(it => {
+        const tags = (it.tags || []).map(t => ` <span class="tag">${esc(t)}</span>`).join('');
+        const price = (it.price == null)
+          ? `<span class="menu-row-price is-desc">${esc(it.desc || '')}</span>`
+          : `<span class="menu-row-price">${yen(it.price)}</span>`;
+        return `<div class="menu-row"><span class="menu-row-name">${esc(it.name)}${tags}</span>${price}</div>`;
+      }).join('');
+      return `<div class="menu-block fade" id="${id}"><div class="menu-block-title">${esc(cat.name)}</div>${noteHtml}${rows}</div>`;
+    }
+
+    function setBlockHtml(s, id) {
+      if (!s) return '';
+      const rows = s.options.map(o =>
+        `<div class="menu-row"><span class="menu-row-name">${esc(o)}</span></div>`
+      ).join('');
+      const note = s.note ? `<p class="menu-cat-note">${esc(s.note)}</p>` : '';
+      return `<div class="menu-block fade" id="${id}"><div class="menu-block-title">${esc(s.name)}</div>${note}${rows}</div>`;
+    }
+
+    // スクロール連動で現在カテゴリのチップをハイライト（A-2）
+    function setupSpy(ids) {
+      if (spy) spy.disconnect();
+      if (reduceMotion) return; // 動きが苦手な設定では監視しない
+      const chips = {};
+      navEl.querySelectorAll('.cat-chip').forEach(c => { chips[c.dataset.target] = c; });
+      const topOffset = 54 + (stickyEl ? stickyEl.offsetHeight : 96);
+      spy = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          const c = chips[e.target.id];
+          if (!c) return;
+          navEl.querySelectorAll('.cat-chip.active').forEach(x => x.classList.remove('active'));
+          c.classList.add('active');
+          c.scrollIntoView({ inline: 'center', block: 'nearest' });
+        });
+      }, { rootMargin: `-${topOffset}px 0px -65% 0px`, threshold: 0 });
+      ids.forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
+    }
+
+    function render(dayKey) {
+      const day = menu.days[dayKey];
+      if (!day) return;
+
+      const ids = day.categories.map((_, i) => 'cat-' + i);
+      let html = day.categories.map((cat, i) => blockHtml(cat, ids[i])).join('');
+      if (menu.setInfo) { html += setBlockHtml(menu.setInfo, 'cat-set'); ids.push('cat-set'); }
+      listEl.innerHTML = html;
+
+      // カテゴリ・ジャンプナビを曜日に合わせて動的生成（A-1）
+      const chipNames = day.categories.map(c => c.name);
+      if (menu.setInfo) chipNames.push(menu.setInfo.name);
+      navEl.innerHTML = chipNames.map((name, i) =>
+        `<a class="cat-chip" href="#${ids[i]}" data-target="${ids[i]}">${esc(name)}</a>`
+      ).join('');
+
+      if (day.note) { dayNoteEl.textContent = day.note; dayNoteEl.hidden = false; }
+      else { dayNoteEl.hidden = true; }
+
+      footNoteEl.innerHTML = (menu.globalNotes || []).map(esc).join('<br>');
+
+      // 動的に追加したブロックもフェードイン対象にする
+      listEl.querySelectorAll('.fade').forEach(el => {
+        if (reduceMotion) el.classList.add('visible'); else io.observe(el);
+      });
+
+      tabsEl.querySelectorAll('.menu-tab').forEach(b => {
+        const active = b.dataset.day === dayKey;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+
+      // stickyバー高さをCSS変数へ（アンカー時のスクロール位置調整用）
+      if (menuSection && stickyEl) menuSection.style.setProperty('--sticky-h', stickyEl.offsetHeight + 'px');
+      setupSpy(ids);
+    }
+
+    tabsEl.addEventListener('click', e => {
+      const btn = e.target.closest('.menu-tab');
+      if (btn && menu) render(btn.dataset.day);
+    });
+
+    fetch('menu.json')
+      .then(r => r.json())
+      .then(data => { menu = data; render('weekday'); })
+      .catch(() => {
+        listEl.innerHTML = '<p style="text-align:center;color:var(--muted)">メニューを読み込めませんでした。お手数ですがお電話でご確認ください。</p>';
+      });
+  })();
 </script>
 
 </body>
