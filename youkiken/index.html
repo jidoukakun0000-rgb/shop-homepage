@@ -216,7 +216,7 @@
       font-size: 4rem; position: relative;
     }
     .feature-photo.p1 { background: #2a1a10 url('photos/gyoza-1x1.jpg') center/cover no-repeat; }
-    .feature-photo.p2 { background: #2a1a10 url('photos/ramen-1x1.jpg') center/cover no-repeat; }
+    .feature-photo.p2 { background: #2a1a10 url('photos/charshumen-1x1.jpg') center/cover no-repeat; }
     .feature-photo.p3 { background: linear-gradient(135deg, #f5d088, #e0a830); }
     .feature-photo .ph-note { position: absolute; bottom: 6px; right: 8px; background: rgba(0,0,0,0.35); color: #fff; font-size: 0.62rem; padding: 2px 8px; border-radius: 10px; }
     .feature-body { padding: 1.4rem; text-align: center; }
@@ -311,7 +311,6 @@
     <li><a href="#service">ご利用</a></li>
     <li><a href="#feature">おすすめ</a></li>
     <li><a href="#menu">メニュー</a></li>
-    <li><a href="#story">店主より</a></li>
     <li><a href="#info">アクセス</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="メニューを開く">
@@ -324,7 +323,6 @@
   <a href="#service" class="drawer-link">ご利用</a>
   <a href="#feature" class="drawer-link">おすすめ</a>
   <a href="#menu" class="drawer-link">メニュー</a>
-  <a href="#story" class="drawer-link">店主より</a>
   <a href="#info" class="drawer-link">アクセス</a>
 </div>
 
@@ -395,7 +393,7 @@
       </div>
     </div>
     <div class="feature-card fade fade-d2">
-      <div class="feature-photo p2" role="img" aria-label="手打ち陽気ラーメン"></div>
+      <div class="feature-photo p2" role="img" aria-label="炙り焼きチャーシューメン"></div>
       <div class="feature-body">
         <h3>手打ちラーメン</h3>
         <p>毎朝打つ自家製の手打ち麺。具だくさんの陽気ラーメンが一番人気です。</p>
@@ -419,32 +417,14 @@
   <div class="menu-inner">
     <div class="menu-sticky">
       <div class="menu-tabs" id="menu-tabs" role="tablist">
-        <button class="menu-tab active" data-day="weekday" role="tab" aria-selected="true">平日</button>
-        <button class="menu-tab" data-day="weekend" role="tab" aria-selected="false">土日祝</button>
+        <button class="menu-tab active" data-day="weekend" role="tab" aria-selected="true">土日祝</button>
+        <button class="menu-tab" data-day="weekday" role="tab" aria-selected="false">平日</button>
       </div>
       <nav class="cat-nav" id="cat-nav" aria-label="カテゴリ"></nav>
     </div>
     <p class="menu-day-note" id="menu-day-note" hidden></p>
     <div id="menu-list"></div>
     <p class="menu-foot-note" id="menu-foot-note"></p>
-  </div>
-</section>
-
-<!-- 店主より -->
-<section id="story">
-  <div class="section-title"><h2>店主より</h2></div>
-  <div class="story-wrap fade">
-    <div class="story-year-block">
-      <div class="story-year">1961<small>昭和36年創業</small></div>
-      <div class="story-divider"></div>
-      <div class="story-badge">🏆 絶メシリスト</div>
-    </div>
-    <p class="story-text">
-      父が吉井の地で始めた陽気軒を、<strong>私が2代目として受け継いで</strong>います。<br><br>
-      難しいことは何もしていません。毎朝麺を打って、スープを仕込んで、<strong>でかい餃子を包む。</strong>それを60年以上続けてきました。<br><br>
-      安くて、多くて、うまい。<strong>それだけを守り続けます。</strong><br><br>
-      ぜひ一度、食べに来てください。
-    </p>
   </div>
 </section>
 
@@ -590,16 +570,25 @@
       const day = menu.days[dayKey];
       if (!day) return;
 
-      const ids = day.categories.map((_, i) => 'cat-' + i);
-      let html = day.categories.map((cat, i) => blockHtml(cat, ids[i])).join('');
-      if (menu.setInfo) { html += setBlockHtml(menu.setInfo, 'cat-set'); ids.push('cat-set'); }
-      listEl.innerHTML = html;
+      // カテゴリを組み立て、ラーメンセットは「ラーメン」カテゴリの最後の直後に挿入
+      const entries = day.categories.map((cat, i) => ({
+        id: 'cat-' + i, name: cat.name, html: blockHtml(cat, 'cat-' + i)
+      }));
+      if (menu.setInfo) {
+        let insertAt = entries.length; // ラーメンが無ければ末尾
+        for (let i = 0; i < day.categories.length; i++) {
+          if (day.categories[i].name.includes('ラーメン')) insertAt = i + 1;
+        }
+        entries.splice(insertAt, 0, {
+          id: 'cat-set', name: menu.setInfo.name, html: setBlockHtml(menu.setInfo, 'cat-set')
+        });
+      }
+      const ids = entries.map(e => e.id);
+      listEl.innerHTML = entries.map(e => e.html).join('');
 
       // カテゴリ・ジャンプナビを曜日に合わせて動的生成（A-1）
-      const chipNames = day.categories.map(c => c.name);
-      if (menu.setInfo) chipNames.push(menu.setInfo.name);
-      navEl.innerHTML = chipNames.map((name, i) =>
-        `<a class="cat-chip" href="#${ids[i]}" data-target="${ids[i]}">${esc(name)}</a>`
+      navEl.innerHTML = entries.map(e =>
+        `<a class="cat-chip" href="#${e.id}" data-target="${e.id}">${esc(e.name)}</a>`
       ).join('');
 
       if (day.note) { dayNoteEl.textContent = day.note; dayNoteEl.hidden = false; }
@@ -630,7 +619,7 @@
 
     fetch('menu.json')
       .then(r => r.json())
-      .then(data => { menu = data; render('weekday'); })
+      .then(data => { menu = data; render('weekend'); })
       .catch(() => {
         listEl.innerHTML = '<p style="text-align:center;color:var(--muted)">メニューを読み込めませんでした。お手数ですがお電話でご確認ください。</p>';
       });
