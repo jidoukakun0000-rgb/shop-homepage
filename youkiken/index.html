@@ -9,7 +9,6 @@
   <meta property="og:description" content="昭和36年創業。名物ジャンボ餃子と手打ちラーメン。でかい・うまい・安い、吉井の町中華。">
   <meta property="og:type" content="restaurant">
   <meta name="format-detection" content="telephone=no">
-  <link rel="preload" as="image" href="photos/ramen-16x9.jpg" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -88,55 +87,31 @@
     }
     .drawer a:active { background: rgba(0,0,0,0.15); }
 
-    /* ========= ヒーロー（看板写真フルブリード） ========= */
+    /* ========= ヒーロー（テキスト） ========= */
     #hero {
       padding-top: 54px;
       position: relative;
     }
-    /* 看板料理を全幅で見せ、その上にコピー＋CTAを重ねる */
-    .hero-banner {
-      position: relative;
-      width: 100%;
-      height: clamp(440px, 70vh, 660px);
-      overflow: hidden;
-      background: #2a1a10;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center 42%;
-      display: block;
-    }
-    /* 文字を読みやすくする暗幕（下を濃く） */
-    .hero-banner::after {
-      content: ''; position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(to top,
-        rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.45) 30%,
-        rgba(0,0,0,0.05) 60%, rgba(0,0,0,0.32) 100%);
-    }
     .hero-catch {
-      position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
       text-align: center;
-      padding: 0 5% clamp(26px, 5vh, 50px);
+      background: var(--warm);
+      padding: 28px 5% 24px;
     }
     .hero-since {
       display: inline-block;
       background: var(--red); color: #fff;
       font-size: 0.82rem; font-weight: 700; letter-spacing: 0.18em;
       padding: 5px 16px; border-radius: 2px; margin-bottom: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
     }
     .hero-name {
       font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 800;
-      color: #fff; line-height: 1.2; letter-spacing: 0.05em;
+      color: var(--text); line-height: 1.2; letter-spacing: 0.05em;
       margin-bottom: 0.6rem;
-      text-shadow: 0 2px 16px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.6);
     }
     .hero-copy {
       font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 800;
-      color: #ffd76a; letter-spacing: 0.06em;
+      color: var(--red); letter-spacing: 0.06em;
       margin-bottom: 1.2rem;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.7);
     }
     .hero-actions {
       display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
@@ -183,10 +158,10 @@
     }
     /* スライド背景写真（実物メニュー写真） */
     .slide { justify-content: flex-end; padding-bottom: clamp(40px, 9vh, 70px); }
-    .slide-1 { background: #2a1a10 url('photos/gyoza-16x9.jpg')     center/cover no-repeat; }
-    .slide-2 { background: #2a1a10 url('photos/ramen-16x9.jpg')     center/cover no-repeat; }
-    .slide-3 { background: #2a1a10 url('photos/chahan-16x9.jpg')    center/cover no-repeat; }
-    .slide-4 { background: #2a1a10 url('photos/charshumen-16x9.jpg') center/cover no-repeat; }
+    .slide-1 { background: #2a1a10 url('photos/gyoza-16x9.jpg')      center/cover no-repeat; }
+    .slide-2 { background: #2a1a10 url('photos/charshumen-16x9.jpg') center/cover no-repeat; }
+    .slide-3 { background: #2a1a10 url('photos/ramen-16x9.jpg')      center/cover no-repeat; }
+    .slide-4 { background: #2a1a10 url('photos/chahan-16x9.jpg')     center/cover no-repeat; }
     /* 写真差し替え用メモ枠 */
     .photo-note {
       position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
@@ -358,18 +333,15 @@
   <a href="tel:0273877082">📞 027-387-7082　今すぐ電話する</a>
 </div>
 
-<!-- ヒーロー（看板料理を全幅で見せる） -->
+<!-- ヒーロー -->
 <section id="hero">
-  <div class="hero-banner">
-    <img class="hero-bg" src="photos/ramen-16x9.jpg" width="1280" height="720" fetchpriority="high" alt="陽気軒の手打ち陽気ラーメン">
-    <div class="hero-catch">
-      <span class="hero-since">昭和36年創業 · 群馬県高崎市吉井町</span>
-      <h1 class="hero-name">吉井の町中華 陽気軒</h1>
-      <p class="hero-copy">でかい。うまい。安い。</p>
+  <div class="hero-catch">
+    <span class="hero-since">昭和36年創業 · 群馬県高崎市吉井町</span>
+    <h1 class="hero-name">吉井の町中華 陽気軒</h1>
+    <p class="hero-copy">でかい。うまい。安い。</p>
     <div class="hero-actions">
       <a href="tel:0273877082" class="hero-btn tel">📞 027-387-7082</a>
       <a href="https://www.google.com/maps/search/?api=1&query=群馬県高崎市吉井町塩川37-4" target="_blank" rel="noopener" class="hero-btn map">📍 地図を見る</a>
-    </div>
     </div>
   </div>
 
@@ -378,14 +350,14 @@
     <div class="slide slide-1 active" role="img" aria-label="名物ジャンボ餃子">
       <div class="photo-name">名物 ジャンボ餃子</div>
     </div>
-    <div class="slide slide-2" role="img" aria-label="手打ち陽気ラーメン">
+    <div class="slide slide-2" role="img" aria-label="炙り焼きチャーシューメン">
+      <div class="photo-name">炙り焼きチャーシューメン</div>
+    </div>
+    <div class="slide slide-3" role="img" aria-label="手打ち陽気ラーメン">
       <div class="photo-name">手打ち 陽気ラーメン</div>
     </div>
-    <div class="slide slide-3" role="img" aria-label="チャーハン">
+    <div class="slide slide-4" role="img" aria-label="チャーハン">
       <div class="photo-name">チャーハン</div>
-    </div>
-    <div class="slide slide-4" role="img" aria-label="炙り焼きチャーシューメン">
-      <div class="photo-name">炙り焼きチャーシューメン</div>
     </div>
     <div class="slider-dots" id="dots"></div>
   </div>
