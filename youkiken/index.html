@@ -219,6 +219,16 @@
     .feature-body h3 { font-size: 1.25rem; font-weight: 800; color: var(--text); margin-bottom: 0.5rem; }
     .feature-body p { font-size: 1rem; color: var(--muted); line-height: 1.85; }
     .feature-body .price-tag { display: inline-block; margin-top: 0.8rem; background: var(--red); color: #fff; font-size: 0.92rem; font-weight: 700; padding: 5px 18px; border-radius: 20px; }
+    /* おすすめカード → 該当メニューへジャンプ */
+    .feature-card[data-menu-target] { cursor: pointer; }
+    .feature-card[data-menu-target]:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+    .feature-jump { margin-top: 0.7rem; color: var(--red); font-weight: 800; font-size: 0.9rem; letter-spacing: 0.04em; }
+    .menu-block.flash { animation: menuFlash 1.8s ease; }
+    @keyframes menuFlash {
+      0%, 100% { box-shadow: none; background: var(--warm); }
+      12% { box-shadow: 0 0 0 3px var(--red); background: #fff4e6; }
+    }
+    @media (prefers-reduced-motion: reduce) { .menu-block.flash { animation: none; } }
 
     /* ========= メニュー ========= */
     #menu { background: var(--cream); padding: 70px 5%; }
@@ -373,28 +383,31 @@
 <section id="feature">
   <div class="section-title"><h2>陽気軒の<span>おすすめ</span></h2></div>
   <div class="feature-grid">
-    <div class="feature-card fade fade-d1">
+    <div class="feature-card fade fade-d1" data-menu-target="ギョーザ" role="button" tabindex="0" aria-label="ジャンボ餃子のメニューを見る">
       <div class="feature-photo p1" role="img" aria-label="ジャンボ餃子"></div>
       <div class="feature-body">
         <h3>ジャンボ餃子</h3>
         <p>手のひらサイズという驚きの大きさ。皮はもちもち、野菜たっぷりであっさり、いくつでも食べられます。</p>
         <span class="price-tag">名物</span>
+        <span class="feature-jump" aria-hidden="true">メニューを見る →</span>
       </div>
     </div>
-    <div class="feature-card fade fade-d2">
+    <div class="feature-card fade fade-d2" data-menu-target="ラーメン" role="button" tabindex="0" aria-label="ラーメンのメニューを見る">
       <div class="feature-photo p2" role="img" aria-label="炙り焼きチャーシューメン"></div>
       <div class="feature-body">
         <h3>ラーメン</h3>
         <p>毎朝仕込む自家製麺。醤油・味噌・塩の3種。</p>
         <span class="price-tag">人気</span>
+        <span class="feature-jump" aria-hidden="true">メニューを見る →</span>
       </div>
     </div>
-    <div class="feature-card fade fade-d3">
+    <div class="feature-card fade fade-d3" data-menu-target="チャーハン" role="button" tabindex="0" aria-label="チャーハンのメニューを見る">
       <div class="feature-photo p3" role="img" aria-label="チャーハン"></div>
       <div class="feature-body">
         <h3>チャーハン</h3>
         <p>高菜・にんにく・スタミナなど種類も豊富。パラパラ炒めの本格派。</p>
         <span class="price-tag">人気</span>
+        <span class="feature-jump" aria-hidden="true">メニューを見る →</span>
       </div>
     </div>
   </div>
@@ -614,6 +627,36 @@
       .catch(() => {
         listEl.innerHTML = '<p style="text-align:center;color:var(--muted)">メニューを読み込めませんでした。お手数ですがお電話でご確認ください。</p>';
       });
+  })();
+
+  // おすすめカード → 該当メニューへスクロール＋一瞬ハイライト
+  (function () {
+    const cards = document.querySelectorAll('.feature-card[data-menu-target]');
+    if (!cards.length) return;
+    const listEl = document.getElementById('menu-list');
+    function jumpTo(keyword) {
+      let target = null;
+      if (listEl) {
+        listEl.querySelectorAll('.menu-block-title').forEach(t => {
+          if (!target && t.textContent.includes(keyword)) target = t.closest('.menu-block');
+        });
+      }
+      const dest = target || document.getElementById('menu');
+      if (!dest) return;
+      dest.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      if (target) {
+        target.classList.remove('flash');
+        void target.offsetWidth; // アニメーションを再スタートさせるためのリフロー
+        target.classList.add('flash');
+      }
+    }
+    cards.forEach(card => {
+      const kw = card.dataset.menuTarget;
+      card.addEventListener('click', () => jumpTo(kw));
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jumpTo(kw); }
+      });
+    });
   })();
 </script>
 
