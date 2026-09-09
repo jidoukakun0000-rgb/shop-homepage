@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "youkiken",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["-y", "serve", "youkiken", "-l", "4321"],
+      "port": 4321
+    }
+  ]
+}
