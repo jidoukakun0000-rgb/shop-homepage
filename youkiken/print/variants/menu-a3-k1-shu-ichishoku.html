@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>陽気軒 メニュー表 A3（k1 朱一色刷り）</title>
+<!--
+  陽気軒 紙メニュー A3版下 ／ 案 k1「朱一色刷り」
+  - A3横（420×297mm）× 表裏。表＝麺類の部、裏＝ご飯の部（平日・土日祝の計4面）
+  - 使用インキは朱赤 #C4281A の1色のみ。濃度（ベタ／70／40／15／8％）と紙のクリーム地だけで階層をつくる。
+    金・黒・青などの他色は一切使わない（本文も黒ではなく濃朱茶 #5A1E12）。
+  - 版ズレ風のハードシャドウ以外、ぼかし影は使用しない（印刷適性のため）
+  - 自動組版：カラムがあふれない範囲で本文級数・行間・ブロック間アキを最大化し、紙面下部の空きを潰す
+  - あふれ検出：カラムが縦にあふれると赤い「あふれ」タグ。未配置カテゴリは上部に赤帯で警告
+-->
+<style>
+  :root {
+    /* ── 朱一色。すべてこの1色の濃度違い ───────────── */
+    --shu:      #C4281A;   /* ベタ 100% */
+    --shu85:    #CB4132;
+    --shu70:    #CF5A4A;
+    --shu55:    #DC8375;
+    --shu40:    #E3A193;
+    --shu25:    #EBC0B5;
+    --shu15:    #F0D5C9;
+    --shu10:    #F3DFD6;
+    --shu08:    #F5E5DD;
+    --shu05:    #F8EDE7;
+    --ink:      #5A1E12;   /* 本文（濃い朱茶。黒は使わない） */
+    --ink-mid:  #8E3D2A;
+    --paper:    #F7F1E4;   /* 紙のクリーム地 */
+    --paper-lt: #FDF9F0;   /* 抜き文字・枠内の明るい地 */
+
+    /* 自動組版で上書きされる寸法（初期値＝最小値） */
+    --fs-item: 16.3px;
+    --fs-price: 17.3px;
+    --pad-item: 3.8px;
+    --fs-cat: 20px;
+    --pad-cat: 5.7px;
+    --gap-cat: 12.1px;
+    --k: 1;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #6f6f6f; }
+  body {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
+    color: var(--ink);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @page { size: 420mm 297mm; margin: 0; }
+
+  .page {
+    position: relative;
+    width: 420mm;
+    height: 297mm;
+    background: var(--paper);
+    overflow: hidden;
+    page-break-after: always;
+    margin: 0 auto 10px;
+  }
+  @media print { .page { margin: 0; } }
+
+  /* ── 罫：外太・内細の二重罫（一色刷りの締め） ───────── */
+  .frame {
+    position: absolute;
+    inset: 7mm;
+    border: 0.9mm solid var(--shu);
+    pointer-events: none;
+  }
+  .frame::before {
+    content: '';
+    position: absolute;
+    inset: 1.7mm;
+    border: 0.28mm solid var(--shu55);
+  }
+  /* 四隅に小さな朱の角印（版画的なアクセント。全周には敷き詰めない） */
+  .frame i {
+    position: absolute;
+    width: 4.4mm;
+    height: 4.4mm;
+    background: var(--shu);
+  }
+  .frame i:nth-child(1) { top: -0.9mm; left: -0.9mm; }
+  .frame i:nth-child(2) { top: -0.9mm; right: -0.9mm; }
+  .frame i:nth-child(3) { bottom: -0.9mm; right: -0.9mm; }
+  .frame i:nth-child(4) { bottom: -0.9mm; left: -0.9mm; }
+
+  .page-inner {
+    position: absolute;
+    inset: 14mm 15mm 12.5mm;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── ヘッダー ─────────────────────────── */
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 7mm;
+    padding-bottom: 3.4mm;
+  }
+  .shop { display: flex; align-items: center; gap: 4.6mm; }
+  .mark-lg { width: 26mm; height: 26mm; flex: none; display: block; }
+  .mark-sm { width: 7.4mm; height: 7.4mm; flex: none; display: block; }
+  .shop-text { display: flex; flex-direction: column; }
+  .shop-name {
+    font-size: 50pt;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    color: var(--shu);
+    white-space: nowrap;
+  }
+  .shop-tagline {
+    font-size: 10.5pt;
+    font-weight: 600;
+    letter-spacing: 0.46em;
+    color: var(--ink-mid);
+    white-space: nowrap;
+    margin-top: 2.2mm;
+    padding-left: 0.4mm;
+  }
+  .shop-tagline i { font-style: normal; color: var(--shu40); }
+
+  .face-title {
+    background: var(--shu);
+    color: var(--paper-lt);
+    font-size: 25pt;
+    font-weight: 600;
+    letter-spacing: 0.42em;
+    line-height: 1;
+    padding: 4.2mm 5.2mm 4.2mm 9.4mm;
+    white-space: nowrap;
+  }
+  .day-tag {
+    font-size: 15pt;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    line-height: 1;
+    color: var(--shu);
+    border: 0.55mm solid var(--shu);
+    padding: 3.7mm 3mm 3.7mm 5.4mm;
+    white-space: nowrap;
+    background: var(--paper-lt);
+  }
+  .head-title { display: flex; align-items: stretch; }
+  .head-spacer { flex: 1; }
+
+  /* ── 凡例（各ページ右上） ─────────────────── */
+  .legend {
+    border: 0.32mm solid var(--shu40);
+    background: var(--shu05);
+    padding: 2.4mm 4mm 2.6mm;
+    font-size: 9pt;
+    font-weight: 600;
+    line-height: 1.6;
+    max-width: 152mm;
+  }
+  .legend-title {
+    font-size: 9pt;
+    font-weight: 600;
+    letter-spacing: 0.34em;
+    color: var(--shu);
+    border-bottom: 0.28mm solid var(--shu40);
+    padding-bottom: 0.9mm;
+    margin-bottom: 1.2mm;
+  }
+  .legend b { color: var(--shu); font-weight: 600; }
+  .legend .row-note { color: var(--ink-mid); font-size: 8.5pt; }
+  .legend .sep { display: inline-block; width: 5mm; }
+
+  /* ── 雷文の帯（全周には回さず、ヘッダー下の一本だけ） ─── */
+  .raimon-band {
+    height: 4.6mm;
+    flex: none;
+    background:
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2234%22%20height%3D%2232%22%20viewBox%3D%220%200%2034%2032%22%3E%3Crect%20width%3D%2234%22%20height%3D%2232%22%20fill%3D%22%23C4281A%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23F7F1E4%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22butt%22%20stroke-linejoin%3D%22miter%22%3E%3Cpath%20d%3D%22M0%2016%20H4%22%2F%3E%3Cpath%20d%3D%22M30%2016%20H34%22%2F%3E%3Crect%20x%3D%224.5%22%20y%3D%224.5%22%20width%3D%2225%22%20height%3D%2223%22%2F%3E%3Crect%20x%3D%2212%22%20y%3D%2212%22%20width%3D%2210%22%20height%3D%228%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")
+      repeat-x 0 0 / auto 100%;
+    margin-bottom: 5mm;
+  }
+
+  /* ── バッジ「特」「持」（5mm角以上・朱一色） ────────── */
+  .kbadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 5.4mm;
+    height: 5.4mm;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+    font-size: 10.5pt;
+    font-weight: 700;
+    line-height: 1;
+    vertical-align: -1.3mm;
+    flex: none;
+  }
+  .kbadge-toku { background: var(--shu); color: var(--paper-lt); }
+  .kbadge-mochi { background: var(--paper-lt); color: var(--shu); box-shadow: inset 0 0 0 0.45mm var(--shu); }
+  .legend .kbadge { width: 6.4mm; height: 6.4mm; font-size: 12.5pt; vertical-align: -1.9mm; }
+
+  /* ── 本体：4カラム ───────────────────── */
+  .cols {
+    flex: 1;
+    display: flex;
+    gap: 6mm;
+    min-height: 0;
+  }
+  .col {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--gap-cat);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── カテゴリ：濃度だけで階層をつくる ───────────── */
+  .cat { break-inside: avoid; border: 0.3mm solid var(--shu40); }
+  .cat-head {
+    font-size: var(--fs-cat);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    padding: var(--pad-cat) 3.4mm var(--pad-cat) 3.2mm;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0 3mm;
+    line-height: 1.25;
+  }
+  .cat-head::before {
+    content: '';
+    flex: none;
+    align-self: center;
+    width: 1.9mm;
+    height: 1.9mm;
+    transform: rotate(45deg);
+    margin-right: 0.6mm;
+  }
+  .cat-head .cat-nm { white-space: nowrap; }
+  .cat-head small {
+    font-size: 8.8pt;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    line-height: 1.4;
+  }
+  /* 濃度3段：ベタ／70％／40％ */
+  .d1 .cat-head { background: var(--shu);   color: var(--paper-lt); }
+  .d1 .cat-head::before { background: var(--paper-lt); }
+  .d1 .cat-head small { color: var(--shu25); }
+  .d2 .cat-head { background: var(--shu70); color: var(--paper-lt); }
+  .d2 .cat-head::before { background: var(--paper-lt); }
+  .d2 .cat-head small { color: var(--shu15); }
+  .d3 .cat-head { background: var(--shu40); color: var(--ink); border-bottom: 0.3mm solid var(--shu55); }
+  .d3 .cat-head::before { background: var(--shu); }
+  .d3 .cat-head small { color: var(--ink-mid); }
+
+  .cat-body {
+    background: var(--shu08);
+    padding: 1.8mm 3mm 2.2mm;
+  }
+  .item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.3mm;
+    padding: var(--pad-item) 0;
+    line-height: 1.3;
+  }
+  .item + .item { border-top: 0.22mm solid var(--shu25); }
+  /* 品名は左寄せ・素直な字間（均等割り付けは判読性を損なうため不採用） */
+  .item .nm {
+    font-size: var(--fs-item);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.005em;
+    color: var(--ink);
+  }
+  .item .nm .paren { font-size: 0.68em; }
+  .item .dots {
+    flex: 1;
+    border-bottom: 0.28mm dotted var(--shu40);
+    transform: translateY(-1.1mm);
+    min-width: 2.2mm;
+  }
+  .item .pr {
+    font-size: var(--fs-price);
+    font-weight: 600;
+    color: var(--shu);
+    white-space: nowrap;
+    font-feature-settings: "tnum";
+    min-width: 12.8mm;
+    text-align: right;
+    letter-spacing: 0.01em;
+  }
+  .item .pr small { font-size: 0.62em; font-weight: 600; color: var(--ink-mid); margin-left: 0.3mm; }
+
+  /* ── 看板商品：ここだけ朱ベタで強く ───────────── */
+  .feature {
+    position: relative;
+    background: var(--shu);
+    color: var(--paper-lt);
+    padding: calc(4mm * var(--ky, var(--k))) 4.4mm calc(4mm * var(--ky, var(--k)));
+    break-inside: avoid;
+    box-shadow: 1.3mm 1.3mm 0 var(--shu15);
+  }
+  .feature-label {
+    display: inline-block;
+    background: var(--paper-lt);
+    color: var(--shu);
+    font-size: calc(9.5pt * var(--k));
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    padding: 1.2mm 2mm 1.2mm 3mm;
+    margin-bottom: 2.2mm;
+    line-height: 1;
+  }
+  .feature-name {
+    font-size: calc(17.5pt * var(--k));
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    line-height: 1.25;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0 2.6mm;
+  }
+  .feature-name .pr { font-size: calc(23pt * var(--k)); letter-spacing: 0.01em; }
+  .feature-name .pr small { font-size: 0.5em; }
+  .feature-desc {
+    font-size: calc(9.2pt * var(--k));
+    font-weight: 600;
+    margin-top: calc(2.2mm * var(--ky, var(--k)));
+    padding-top: calc(2.2mm * var(--ky, var(--k)));
+    border-top: 0.28mm solid var(--shu55);
+    line-height: 1.6;
+    color: var(--shu15);
+    word-break: auto-phrase;
+  }
+  .feature .kbadge-toku { background: var(--paper-lt); color: var(--shu); }
+  .feature .kbadge-mochi { background: transparent; color: var(--paper-lt); box-shadow: inset 0 0 0 0.45mm var(--paper-lt); }
+
+  /* ── セット枠 ─────────────────────────── */
+  .setbox {
+    border: 0.7mm solid var(--shu);
+    background: var(--paper-lt);
+    padding: calc(4mm * var(--ky, var(--k))) 4mm calc(3.8mm * var(--ky, var(--k)));
+    break-inside: avoid;
+    box-shadow: 1.3mm 1.3mm 0 var(--shu15);
+  }
+  .toku-circle {
+    flex: none;
+    width: 8.6mm;
+    height: 8.6mm;
+    border-radius: 50%;
+    background: var(--paper-lt);
+    color: var(--shu);
+    font-size: calc(11pt * var(--k));
+    font-weight: 600;
+    letter-spacing: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .setbox-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3.2mm;
+    font-size: calc(16pt * var(--k));
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--paper-lt);
+    background: var(--shu);
+    padding: calc(2mm * var(--ky, var(--k))) 2.5mm;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .setbox-title .ttl { padding-left: 0.3em; }
+  .setbox-plus {
+    white-space: nowrap;
+    text-align: center;
+    font-size: calc(12pt * var(--k));
+    font-weight: 600;
+    margin: calc(2.8mm * var(--ky, var(--k))) 0 calc(2.6mm * var(--ky, var(--k)));
+    letter-spacing: 0.04em;
+  }
+  .setbox-plus b { font-size: calc(25pt * var(--k)); color: var(--shu); font-weight: 600; margin: 0 0.8mm; }
+  .setbox ul { list-style: none; font-size: calc(11pt * var(--k)); font-weight: 600; }
+  .setbox ul li {
+    display: flex;
+    gap: 3mm;
+    padding: calc(1.5mm * var(--ky, var(--k))) 1mm;
+    border-top: 0.25mm solid var(--shu25);
+  }
+  .setbox ul li b { color: var(--shu); font-weight: 600; flex: none; letter-spacing: 0.06em; }
+  .setbox .note { font-size: 8.4pt; margin-top: 2mm; color: var(--ink-mid); border-top: 0.25mm solid var(--shu25); padding-top: 1.6mm; }
+
+  /* ── お知らせ枠・大盛り訴求 ────────────────── */
+  .infobox {
+    border: 0.32mm solid var(--shu40);
+    background: var(--shu05);
+    padding: calc(3mm * var(--ky, var(--k))) 3.6mm;
+    font-size: calc(10pt * var(--k));
+    font-weight: 600;
+    line-height: 1.7;
+  }
+  .infobox b { color: var(--shu); font-weight: 600; }
+  .banner-oomori {
+    background: var(--shu);
+    color: var(--paper-lt);
+    text-align: center;
+    font-size: calc(14pt * var(--k));
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    padding: calc(3.4mm * var(--ky, var(--k))) 3mm;
+    line-height: 1.5;
+    box-shadow: 1.3mm 1.3mm 0 var(--shu15);
+  }
+  .banner-oomori .big {
+    display: block;
+    white-space: nowrap;
+    font-size: calc(22pt * var(--k));
+    letter-spacing: 0.16em;
+    margin: 0.8mm 0 0.4mm;
+  }
+  .banner-oomori small {
+    display: block;
+    font-size: calc(9pt * var(--k));
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--shu15);
+    margin-top: 1mm;
+    padding-top: 1.4mm;
+    border-top: 0.28mm solid var(--shu55);
+  }
+
+  /* ── フッター ─────────────────────────── */
+  .foot {
+    margin-top: 4.5mm;
+    flex: none;
+    background: var(--shu);
+    color: var(--paper-lt);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5mm 4.5mm 1.5mm 3mm;
+    font-size: 10.5pt;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+  }
+  .foot-brand { display: flex; align-items: center; gap: 2.8mm; }
+  .foot small { font-weight: 600; font-size: 9pt; letter-spacing: 0.06em; color: var(--shu15); }
+
+  /* ── QA表示（版下には出ない想定・検版用） ────────── */
+  .overflow-tag {
+    position: absolute;
+    top: 0; right: 0;
+    background: #D40000;
+    color: #fff;
+    font-size: 9pt;
+    font-weight: 700;
+    padding: 1mm 2.5mm;
+    z-index: 10;
+  }
+  .qa-banner {
+    background: #D40000;
+    color: #fff;
+    font-size: 10pt;
+    font-weight: 700;
+    padding: 2mm 4mm;
+    margin-bottom: 2mm;
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   メニューデータ（menu.json 2026-06版の埋め込みコピー）
+   確定版が出たら youkiken/menu.json から再同期すること
+   ============================================================ */
+const MENU = {
+  "updated": "2026-06",
+  "globalNotes": [
+    "ラーメン大盛りは平日無料／土日祝は＋¥200です。",
+    "価格はすべて税込です。",
+    "価格・メニューは変更になる場合があります。詳しくはお電話でご確認ください。"
+  ],
+  "setInfo": {
+    "name": "ラーメンセット",
+    "note": "お好きな麺類に プラス350円（※Bセットは揚げ餃子は出来ません）",
+    "options": ["Aセット：半チャーハン", "Bセット：ジャンボ餃子3ケ", "Cセット：半カレー"]
+  },
+  "days": {
+    "weekday": {
+      "label": "平日",
+      "categories": [
+        {
+          "name": "ラーメン（醤油）",
+          "note": "麺類大盛り無料",
+          "items": [
+            { "name": "ねぎラーメン", "price": 500 },
+            { "name": "中華そば", "price": 600 },
+            { "name": "陽気ラーメン", "price": 700, "tags": ["人気"] },
+            { "name": "チャーシューメン", "price": 900 },
+            { "name": "特製チャーシューメン", "price": 950 },
+            { "name": "あぶり焼きチャーシューメン", "price": 980 },
+            { "name": "全部のせラーメン", "price": 980 },
+            { "name": "ワンタンメン", "price": 750 },
+            { "name": "スタミナラーメン", "price": 950 },
+            { "name": "ニンニクラーメン", "price": 950 },
+            { "name": "チャーシュー3種ラーメン", "price": 980 },
+            { "name": "カレーラーメン", "price": 800 },
+            { "name": "マヨラーメン", "price": 800 },
+            { "name": "こくうまラーメン", "price": 750 }
+          ]
+        },
+        {
+          "name": "ラーメン（味噌）",
+          "items": [
+            { "name": "味噌ラーメン", "price": 850 },
+            { "name": "辛味噌ラーメン", "price": 900 },
+            { "name": "味噌チャーシューメン", "price": 980 },
+            { "name": "味噌トマトチーズラーメン", "price": 950 }
+          ]
+        },
+        {
+          "name": "ラーメン（塩）",
+          "items": [
+            { "name": "塩ねぎラーメン", "price": 550 },
+            { "name": "塩ラーメン", "price": 650 },
+            { "name": "タンメン", "price": 700 },
+            { "name": "野菜あんかけラーメン", "price": 850 },
+            { "name": "海鮮チャンポン", "price": 950 },
+            { "name": "えびそば（ラーメン）", "price": 950 },
+            { "name": "ギョーザラーメン", "price": 850 },
+            { "name": "玉子魚具あんかけラーメン", "price": 950 }
+          ]
+        },
+        {
+          "name": "定食",
+          "items": [
+            { "name": "チャーシューエッグ", "price": 980 },
+            { "name": "チャーシュー玉子炒め", "price": 980 },
+            { "name": "野菜炒め", "price": 800 },
+            { "name": "肉野菜炒め", "price": 900 },
+            { "name": "レバニラ炒め", "price": 900 },
+            { "name": "玉子レバニラ炒め", "price": 880 },
+            { "name": "野菜レバニラ炒め", "price": 880 },
+            { "name": "スタミナ炒め", "price": 980 },
+            { "name": "ネギ玉炒め", "price": 750 },
+            { "name": "玉子きくらげ炒め（もつ）", "price": 750 },
+            { "name": "若鶏のから揚げ", "price": 980 },
+            { "name": "肉のかたまり", "price": 980 },
+            { "name": "豚かつ", "price": 980 },
+            { "name": "豚キムチ", "price": 980 },
+            { "name": "麻婆豆腐", "price": 900 },
+            { "name": "麻婆茄子", "price": 900 },
+            { "name": "カツ煮", "price": 900 },
+            { "name": "ジャンボギョーザ定食", "price": 950 },
+            { "name": "揚げギョーザ5個", "price": 980 },
+            { "name": "半ねぎラーメン", "price": 200 },
+            { "name": "まんぷく定食（ねぎラーメン＋半チャーハン＋餃子2個）", "price": 980 }
+          ]
+        },
+        {
+          "name": "どんぶり",
+          "note": "スープ・つけ物付",
+          "items": [
+            { "name": "玉子丼", "price": 500 },
+            { "name": "チャーシュー丼", "price": 800 },
+            { "name": "あぶり焼きチャーシュー丼", "price": 850 },
+            { "name": "中華丼", "price": 800 },
+            { "name": "かつ丼（玉子とじ）", "price": 800 },
+            { "name": "親子丼", "price": 800 }
+          ]
+        },
+        {
+          "name": "チャーハン",
+          "note": "スープ付",
+          "items": [
+            { "name": "チャーハン", "price": 650 },
+            { "name": "ネギ玉子チャーハン", "price": 500 },
+            { "name": "高菜チャーハン", "price": 600 },
+            { "name": "にんにくチャーハン", "price": 700 },
+            { "name": "スタミナチャーハン", "price": 750 },
+            { "name": "肉あんかけチャーハン", "price": 850 },
+            { "name": "ギョーザチャーハン", "price": 750 },
+            { "name": "海鮮あんかけチャーハン", "price": 850 }
+          ]
+        },
+        {
+          "name": "ご飯類",
+          "note": "スープ付",
+          "items": [
+            { "name": "カレーライス", "price": 650 },
+            { "name": "カツカレー", "price": 1000 },
+            { "name": "オムライス", "price": 900 },
+            { "name": "オムカレー", "price": 950 },
+            { "name": "ご飯類大盛り", "price": 200 }
+          ]
+        },
+        {
+          "name": "麺類（焼きそば・冷やし）",
+          "items": [
+            { "name": "ソース焼きそば", "price": 650 },
+            { "name": "揚げ焼きそば", "price": 900 },
+            { "name": "塩焼きそば", "price": 650 },
+            { "name": "醤油焼きそば", "price": 650 },
+            { "name": "五目あんかけ焼きそば", "price": 950 },
+            { "name": "ざる中華", "price": 500 },
+            { "name": "冷やし中華（5月〜10月）", "price": 800 },
+            { "name": "冷やしラーメン", "price": 800 },
+            { "name": "替え玉", "price": 200 }
+          ]
+        },
+        {
+          "name": "スープ",
+          "items": [
+            { "name": "玉子スープ", "price": 450 },
+            { "name": "にんにく玉子スープ", "price": 600 },
+            { "name": "ワンタンスープ", "price": 600 },
+            { "name": "たっぷり野菜の肉ワンタンスープ", "price": 650 },
+            { "name": "スープ大盛り", "price": 200 }
+          ]
+        },
+        {
+          "name": "ライス",
+          "note": "スープ・つけ物付",
+          "items": [
+            { "name": "ライス", "price": 350 },
+            { "name": "半ライス", "price": 250 },
+            { "name": "小ライス", "price": 200 },
+            { "name": "ニンニクライス", "price": 350 },
+            { "name": "バターライス", "price": 350 },
+            { "name": "鳥そぼろライス", "price": 350 }
+          ]
+        },
+        {
+          "name": "ギョーザ",
+          "note": "当店名物",
+          "items": [
+            { "name": "ジャンボギョーザ3個", "price": 360, "tags": ["名物"] },
+            { "name": "ジャンボギョーザ5個", "price": 600 }
+          ]
+        },
+        {
+          "name": "トッピング",
+          "items": [
+            { "name": "昔ながらのチャーシュー3枚", "price": 250 },
+            { "name": "あぶり焼きチャーシュー1枚", "price": 200 },
+            { "name": "特製チャーシュー1枚", "price": 200 },
+            { "name": "コーン", "price": 150 },
+            { "name": "バター", "price": 150 },
+            { "name": "メンマ", "price": 150 },
+            { "name": "煮玉子", "price": 150 },
+            { "name": "生玉子", "price": 100 }
+          ]
+        },
+        {
+          "name": "お飲み物",
+          "note": "ソフトドリンクは店舗前の自動販売機をご利用ください",
+          "items": [
+            { "name": "ノンアルコールビール", "price": 450 },
+            { "name": "ビール（中ビン・キリン一番搾り）", "price": 650 },
+            { "name": "ビール（アサヒスーパードライ）", "price": 650 },
+            { "name": "サントリー角ハイボール", "price": 500 },
+            { "name": "チューハイ", "price": 450 },
+            { "name": "レモンサワー", "price": 450 },
+            { "name": "グレープフルーツサワー", "price": 450 },
+            { "name": "ウーロンハイ", "price": 450 },
+            { "name": "焼酎（甲類）ロック（グラス）", "price": 400 },
+            { "name": "焼酎（甲類）水割り（グラス）", "price": 400 },
+            { "name": "日本酒 聖徳（1合）", "price": 500 }
+          ]
+        }
+      ]
+    },
+    "weekend": {
+      "label": "土日祝",
+      "note": "土日祝は一部メニューを簡略してご提供しています。",
+      "categories": [
+        {
+          "name": "ラーメン（醤油）",
+          "note": "麺類大盛り＋¥200（土日祝）",
+          "items": [
+            { "name": "中華そば", "price": 600 },
+            { "name": "陽気ラーメン", "price": 700, "tags": ["人気"] },
+            { "name": "チャーシューメン", "price": 900 },
+            { "name": "特製チャーシューメン", "price": 950 },
+            { "name": "あぶり焼きチャーシューメン", "price": 980 },
+            { "name": "全部のせラーメン", "price": 980 },
+            { "name": "ワンタンメン", "price": 750 },
+            { "name": "スタミナラーメン", "price": 950 },
+            { "name": "ニンニクラーメン", "price": 950 },
+            { "name": "チャーシュー3種ラーメン", "price": 980 },
+            { "name": "カレーラーメン", "price": 800 },
+            { "name": "マヨラーメン", "price": 800 },
+            { "name": "こくうまラーメン", "price": 750 }
+          ]
+        },
+        {
+          "name": "ラーメン（味噌）",
+          "items": [
+            { "name": "味噌ラーメン", "price": 850 },
+            { "name": "辛味噌ラーメン", "price": 900 },
+            { "name": "味噌チャーシューメン", "price": 980 },
+            { "name": "味噌トマトチーズラーメン", "price": 950 }
+          ]
+        },
+        {
+          "name": "ラーメン（塩）",
+          "items": [
+            { "name": "塩ラーメン", "price": 650 },
+            { "name": "タンメン", "price": 700 },
+            { "name": "野菜あんかけラーメン", "price": 850 },
+            { "name": "海鮮チャンポン", "price": 950 },
+            { "name": "えびそば（ラーメン）", "price": 950 },
+            { "name": "ギョーザラーメン", "price": 850 },
+            { "name": "玉子魚具あんかけラーメン", "price": 950 }
+          ]
+        },
+        {
+          "name": "単品",
+          "items": [
+            { "name": "おつまみチャーシュー", "price": 550 },
+            { "name": "チャーシューメンマ", "price": 450 },
+            { "name": "野菜炒め", "price": 550 },
+            { "name": "肉野菜炒め", "price": 700 },
+            { "name": "レバニラ炒め", "price": 700 },
+            { "name": "若鶏から揚げ", "price": 750 }
+          ]
+        },
+        {
+          "name": "どんぶり",
+          "note": "スープ・つけ物付",
+          "items": [
+            { "name": "玉子丼", "price": 500 },
+            { "name": "チャーシュー丼", "price": 800 },
+            { "name": "あぶり焼きチャーシュー丼", "price": 850 },
+            { "name": "中華丼", "price": 800 },
+            { "name": "かつ丼（玉子とじ）", "price": 800 },
+            { "name": "親子丼", "price": 800 }
+          ]
+        },
+        {
+          "name": "チャーハン",
+          "note": "スープ付",
+          "items": [
+            { "name": "チャーハン", "price": 650 },
+            { "name": "高菜チャーハン", "price": 600 },
+            { "name": "にんにくチャーハン", "price": 700 },
+            { "name": "スタミナチャーハン", "price": 750 }
+          ]
+        },
+        {
+          "name": "ご飯類",
+          "note": "スープ付",
+          "items": [
+            { "name": "カレーライス", "price": 650 },
+            { "name": "ご飯類大盛り", "price": 200 }
+          ]
+        },
+        {
+          "name": "麺類（焼きそば）",
+          "items": [
+            { "name": "ソース焼きそば", "price": 650 },
+            { "name": "塩焼きそば", "price": 650 },
+            { "name": "醤油焼きそば", "price": 650 },
+            { "name": "替え玉", "price": 200 }
+          ]
+        },
+        {
+          "name": "スープ",
+          "items": [
+            { "name": "玉子スープ", "price": 450 },
+            { "name": "にんにく玉子スープ", "price": 600 },
+            { "name": "ワンタンスープ", "price": 600 },
+            { "name": "たっぷり野菜の肉ワンタンスープ", "price": 650 },
+            { "name": "スープ大盛り", "price": 200 }
+          ]
+        },
+        {
+          "name": "ライス",
+          "note": "スープ・つけ物付",
+          "items": [
+            { "name": "ライス", "price": 350 },
+            { "name": "半ライス", "price": 250 },
+            { "name": "小ライス", "price": 200 },
+            { "name": "ニンニクライス", "price": 350 },
+            { "name": "バターライス", "price": 350 },
+            { "name": "鳥そぼろライス", "price": 350 }
+          ]
+        },
+        {
+          "name": "ギョーザ",
+          "note": "当店名物",
+          "items": [
+            { "name": "ジャンボギョーザ3個", "price": 360, "tags": ["名物"] },
+            { "name": "ジャンボギョーザ5個", "price": 600 }
+          ]
+        },
+        {
+          "name": "トッピング",
+          "items": [
+            { "name": "昔ながらのチャーシュー3枚", "price": 250 },
+            { "name": "あぶり焼きチャーシュー1枚", "price": 200 },
+            { "name": "特製チャーシュー1枚", "price": 200 },
+            { "name": "コーン", "price": 150 },
+            { "name": "バター", "price": 150 },
+            { "name": "メンマ", "price": 150 },
+            { "name": "煮玉子", "price": 150 },
+            { "name": "生玉子", "price": 100 }
+          ]
+        },
+        {
+          "name": "お飲み物",
+          "note": "ソフトドリンクは店舗前の自動販売機をご利用ください",
+          "items": [
+            { "name": "ノンアルコールビール", "price": 450 },
+            { "name": "ビール（中ビン・キリン一番搾り）", "price": 650 },
+            { "name": "ビール（アサヒスーパードライ）", "price": 650 },
+            { "name": "サントリー角ハイボール", "price": 500 },
+            { "name": "チューハイ", "price": 450 },
+            { "name": "レモンサワー", "price": 450 },
+            { "name": "グレープフルーツサワー", "price": 450 },
+            { "name": "ウーロンハイ", "price": 450 },
+            { "name": "焼酎（甲類）ロック（グラス）", "price": 400 },
+            { "name": "焼酎（甲類）水割り（グラス）", "price": 400 },
+            { "name": "日本酒 聖徳（1合）", "price": 500 }
+          ]
+        }
+      ]
+    }
+  }
+};
+
+/* ============================================================
+   面構成の設定：表＝麺類の部、裏＝ご飯の部
+   ============================================================ */
+/* 色相ではなく「濃度」でカテゴリを区別する。
+   d1＝朱ベタ（看板の麺類）／d2＝朱70％（主力のご飯・麺）／d3＝朱40％（添え物・飲み物） */
+const DENSITY = {
+  'ラーメン（醤油）': 'd1',
+  'ラーメン（味噌）': 'd1',
+  'ラーメン（塩）': 'd1',
+  '定食': 'd1',
+  'どんぶり': 'd2',
+  'チャーハン': 'd2',
+  '麺類（焼きそば・冷やし）': 'd2',
+  '麺類（焼きそば）': 'd2',
+  'ご飯類': 'd2',
+  '単品': 'd2',
+  'ギョーザ': 'd2',
+  'ライス': 'd3',
+  'スープ': 'd3',
+  'トッピング': 'd3',
+  'お飲み物': 'd3',
+};
+const bandOf = (name) => DENSITY[name] || 'd2';
+
+/* 現物メニューの見出し表記（しょうゆ・しお・みそ）に合わせる */
+const CAT_DISPLAY = {
+  'ラーメン（醤油）': '醤油ラーメン',
+  'ラーメン（味噌）': '味噌ラーメン',
+  'ラーメン（塩）': '塩ラーメン',
+  '麺類（焼きそば・冷やし）': '焼きそば・冷やし',
+  '麺類（焼きそば）': '焼きそば',
+};
+const catDisplayName = (name) => CAT_DISPLAY[name] || name;
+
+/* 特設枠に抜き出す品（一覧の行からは除外して二重掲載を防ぐ） */
+const FEATURES = {
+  '陽気ラーメン': { label: '', cls: '', desc: '陽気軒いちばんの看板ラーメン。まずはこの一杯から。' },
+  'ジャンボギョーザ3個': { label: '', cls: 'orange', desc: '手づくりの大ぶり餃子。ラーメンのお供にどうぞ。（5個 600円）', omitAlso: ['ジャンボギョーザ5個'] },
+  'まんぷく定食（ねぎラーメン＋半チャーハン＋餃子2個）': { label: 'いちばん得', cls: '', rename: 'まんぷく定食', desc: 'ねぎラーメン＋半チャーハン＋餃子2個のおトクなセット。' },
+};
+
+/* 持帰・特盛可の仮付与（★サンプル★ 対象品はスプシ検討で確定後に menu.json の tags へ移す。
+   持帰は現行メニュー表のお持ち帰りマーク（焼きそば・トッピング・餃子など）を手がかりにした仮案 */
+const SAMPLE_TAGS = {
+  'ソース焼きそば': ['持帰'],
+  '揚げ焼きそば': ['持帰'],
+  '塩焼きそば': ['持帰'],
+  '醤油焼きそば': ['持帰'],
+  'ジャンボギョーザ3個': ['持帰'],
+  'ジャンボギョーザ5個': ['持帰'],
+  '昔ながらのチャーシュー3枚': ['持帰'],
+  'あぶり焼きチャーシュー1枚': ['持帰'],
+  '特製チャーシュー1枚': ['持帰'],
+  'コーン': ['持帰'],
+  'バター': ['持帰'],
+  'メンマ': ['持帰'],
+  '煮玉子': ['持帰'],
+  '若鶏のから揚げ': ['持帰'],
+  '若鶏から揚げ': ['持帰'],
+  'チャーハン': ['特盛可', '持帰'],
+  '高菜チャーハン': ['特盛可'],
+  'にんにくチャーハン': ['特盛可'],
+  'カレーライス': ['特盛可', '持帰'],
+  'カツカレー': ['特盛可'],
+  '中華そば': ['特盛可'],
+  '陽気ラーメン': ['特盛可'],
+  'チャーシューメン': ['特盛可'],
+  '味噌ラーメン': ['特盛可'],
+  '塩ラーメン': ['特盛可'],
+};
+
+const PAGES = [
+  { day: 'weekday', face: '麺類の部',
+    cols: [
+      ['@feature:陽気ラーメン', 'ラーメン（醤油）'],
+      ['ラーメン（味噌）', 'ラーメン（塩）'],
+      ['麺類（焼きそば・冷やし）', 'トッピング'],
+      ['@set', '@feature:ジャンボギョーザ3個', '@oomori-men'],
+    ] },
+  { day: 'weekday', face: 'ご飯の部',
+    cols: [
+      ['定食'],
+      ['どんぶり', 'チャーハン'],
+      ['ご飯類', 'ライス', 'スープ'],
+      ['@feature:まんぷく定食（ねぎラーメン＋半チャーハン＋餃子2個）', 'お飲み物', '@oomori-gohan'],
+    ] },
+  { day: 'weekend', face: '麺類の部',
+    cols: [
+      ['@feature:陽気ラーメン', 'ラーメン（醤油）'],
+      ['ラーメン（味噌）', 'ラーメン（塩）'],
+      ['麺類（焼きそば）', 'トッピング', '@feature:ジャンボギョーザ3個'],
+      ['@set', '@weekend-note', '@oomori-men'],
+    ] },
+  { day: 'weekend', face: 'ご飯の部',
+    cols: [
+      ['単品', 'どんぶり'],
+      ['チャーハン', 'ご飯類', '@oomori-gohan'],
+      ['ライス', 'スープ'],
+      ['お飲み物'],
+    ] },
+];
+
+/* ============================================================
+   マーク：中華ラーメンの丼エンブレム（朱一色・抜きは紙のクリーム地）
+   金は一切使わない。線は実寸0.3mm以上を確保して印刷でのトビを防ぐ
+   ============================================================ */
+let MARK_SEQ = 0;
+
+function ramenMarkLarge() {
+  const uid = 'bowl' + (++MARK_SEQ);
+  const key = (x) => `<path transform="translate(${x} 81)" d="M-6.5 5 V-5 H6.5 V5 H-1 V-1 H3.2"/>`;
+  const keys = [24, 42, 60, 78, 96].map(key).join('');
+  return `<svg class="mark-lg" viewBox="0 0 120 120" role="img" aria-label="陽気軒 中華ラーメンのマーク">
+  <defs><clipPath id="${uid}"><path d="M20 62 C20 89 37 101 60 101 C83 101 100 89 100 62 Z"/></clipPath></defs>
+  <circle cx="60" cy="60" r="58.4" fill="none" stroke="#C4281A" stroke-width="2.6"/>
+  <circle cx="60" cy="60" r="53.4" fill="none" stroke="#C4281A" stroke-width="1.1"/>
+  <g fill="none" stroke="#C4281A" stroke-width="3.6" stroke-linecap="round">
+    <path d="M43 48 C37 42 49 37 43 31 C38 26 46 22 43 17.5"/>
+    <path d="M60 45 C54 39 66 34 60 28 C55 23 63 19 60 14"/>
+    <path d="M77 48 C71 42 83 37 77 31 C72 26 80 22 77 17.5"/>
+  </g>
+  <path d="M20 62 C20 89 37 101 60 101 C83 101 100 89 100 62 Z" fill="#C4281A"/>
+  <g clip-path="url(#${uid})">
+    <rect x="14" y="74" width="92" height="1.6" fill="#F7F1E4"/>
+    <rect x="14" y="86.6" width="92" height="1.6" fill="#F7F1E4"/>
+    <g fill="none" stroke="#F7F1E4" stroke-width="2.4" stroke-linejoin="miter" stroke-linecap="butt">${keys}</g>
+  </g>
+  <ellipse cx="60" cy="62" rx="43" ry="10.6" fill="#C4281A"/>
+  <ellipse cx="60" cy="62" rx="35.4" ry="6.4" fill="#F7F1E4"/>
+  <ellipse cx="45.2" cy="62" rx="8.2" ry="5.2" fill="none" stroke="#C4281A" stroke-width="1.9"/>
+  <path d="M48.2 59.3 C51.3 60.8 50.7 64.1 47.1 64.5 C43.7 64.9 42 62.8 43.1 61.3" fill="none" stroke="#C4281A" stroke-width="1.9" stroke-linecap="round"/>
+</svg>`;
+}
+
+/* 小サイズ（フッター帯の中・朱ベタ地に紙色で抜く） */
+function ramenMarkSmall() {
+  return `<svg class="mark-sm" viewBox="0 0 120 120" role="img" aria-label="陽気軒マーク">
+  <g fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round">
+    <path d="M42 42 C36 34 48 28 42 19"/>
+    <path d="M60 40 C54 32 66 26 60 17"/>
+    <path d="M78 42 C72 34 84 28 78 19"/>
+  </g>
+  <path d="M16 57 C16 84 35 99 60 99 C85 99 104 84 104 57 Z" fill="currentColor"/>
+  <ellipse cx="60" cy="57" rx="47" ry="10.5" fill="currentColor"/>
+</svg>`;
+}
+
+/* ============================================================
+   描画
+   ============================================================ */
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const yen = (p) => `${p.toLocaleString()}<small>円</small>`;
+
+function nameHtml(name) {
+  return esc(name).replace(/（([^）]*)）/g, '<span class="paren">（$1）</span>');
+}
+
+const BADGE_IMG = {
+  '持帰': '<span class="kbadge kbadge-mochi">持</span>',
+  '特盛可': '<span class="kbadge kbadge-toku">特</span>',
+};
+
+function tagBadges(tags) {
+  if (!tags || !tags.length) return '';
+  const map = {
+    '特盛可': BADGE_IMG['特盛可'],
+    '持ち帰り可': BADGE_IMG['持帰'],
+    '持帰': BADGE_IMG['持帰'],
+  };
+  const order = ['名物', '人気', '特盛可', '持ち帰り可', '持帰'];
+  return [...tags].sort((a, b) => order.indexOf(a) - order.indexOf(b)).map((t) => map[t] || '').join('');
+}
+
+function itemRow(it) {
+  const tags = [...(it.tags || []), ...(SAMPLE_TAGS[it.name] || [])];
+  return `<div class="item"><span class="nm">${nameHtml(it.name)}</span>${tagBadges(tags)}<span class="dots"></span><span class="pr">${yen(it.price)}</span></div>`;
+}
+
+function catBlock(cat, omit) {
+  const items = cat.items.filter((it) => !omit.has(it.name));
+  if (!items.length) return '';
+  const note = cat.note ? `<small>${esc(cat.note)}</small>` : '';
+  return `<section class="cat ${bandOf(cat.name)}">
+    <div class="cat-head"><span class="cat-nm">${esc(catDisplayName(cat.name))}</span>${note}</div>
+    <div class="cat-body">${items.map(itemRow).join('')}</div>
+  </section>`;
+}
+
+function featureBlock(key, day) {
+  const f = FEATURES[key];
+  const item = findItem(day, key);
+  if (!item) return '';
+  const name = f.rename || item.name;
+  const tags = [...(SAMPLE_TAGS[key] || [])];
+  const labelHtml = f.label ? `<span class="feature-label">${esc(f.label)}</span>` : '';
+  return `<section class="feature">
+    ${labelHtml}
+    <div class="feature-name"><span>${esc(name)}</span><span class="pr">${yen(item.price)}</span>${tagBadges(tags)}</div>
+    <div class="feature-desc">${esc(f.desc)}</div>
+  </section>`;
+}
+
+function setBlock() {
+  const s = MENU.setInfo;
+  const opts = s.options.map((o) => {
+    const m = o.match(/^(.*?セット)：(.*)$/);
+    return m ? `<li><b>${esc(m[1])}</b><span>${esc(m[2])}</span></li>` : `<li>${esc(o)}</li>`;
+  }).join('');
+  return `<section class="setbox">
+    <div class="setbox-title"><span class="toku-circle">得</span><span class="ttl">ラーメンセット</span></div>
+    <div class="setbox-plus">お好きな麺類に プラス<b>350</b>円</div>
+    <ul>${opts}</ul>
+    <div class="note">※Bセットは揚げ餃子は出来ません</div>
+  </section>`;
+}
+
+function legendBlock(day) {
+  const oomori = day === 'weekday' ? '麺類大盛り：平日は無料（土日祝＋200円）' : '麺類大盛り：土日祝＋200円（平日は無料）';
+  return `<div class="legend">
+    <div class="legend-title">マークのご案内</div>
+    <div>${BADGE_IMG['特盛可']} … <b>特盛</b>にできます（別途追加料金）<span class="sep"></span>${BADGE_IMG['持帰']} … <b>お持ち帰り</b>できます</div>
+    <div class="row-note">※${oomori}／ご飯類・スープ大盛り＋200円</div>
+  </div>`;
+}
+
+function specialBlock(token, day) {
+  if (token === '@set') return setBlock();
+  if (token === '@oomori-men') {
+    const t = day === 'weekday'
+      ? '麺類<span class="big">大盛り無料</span><small>平日のみ／土日祝は＋200円にて承ります</small>'
+      : '麺類大盛り<span class="big">＋200円</span><small>平日は大盛り無料にて承ります</small>';
+    return `<section class="banner-oomori">${t}</section>`;
+  }
+  if (token === '@oomori-gohan') {
+    return `<section class="infobox">ご飯類・スープの大盛りは<b>＋200円</b>にて承ります。</section>`;
+  }
+  if (token === '@weekend-note') {
+    return `<section class="infobox">${esc(MENU.days.weekend.note || '')}</section>`;
+  }
+  if (token.startsWith('@feature:')) return featureBlock(token.slice(9), day);
+  return '';
+}
+
+function findItem(day, name) {
+  for (const cat of MENU.days[day].categories) {
+    const hit = cat.items.find((it) => it.name === name);
+    if (hit) return hit;
+  }
+  return null;
+}
+
+function omitSetFor(page) {
+  const omit = new Set();
+  for (const col of page.cols) for (const token of col) {
+    if (token.startsWith('@feature:')) {
+      const key = token.slice(9);
+      omit.add(key);
+      (FEATURES[key]?.omitAlso || []).forEach((n) => omit.add(n));
+    }
+  }
+  return omit;
+}
+
+function renderPage(page, qaMessages) {
+  const dayLabel = MENU.days[page.day].label;
+  const omit = omitSetFor(page);
+  const catsByName = Object.fromEntries(MENU.days[page.day].categories.map((c) => [c.name, c]));
+
+  const colsHtml = page.cols.map((col) => {
+    const blocks = col.map((token) => {
+      if (token.startsWith('@')) return specialBlock(token, page.day);
+      const cat = catsByName[token];
+      if (!cat) { qaMessages.push(`【${dayLabel}・${page.face}】カテゴリ「${token}」がmenu.jsonに見つかりません`); return ''; }
+      return catBlock(cat, omit);
+    }).join('');
+    return `<div class="col">${blocks}</div>`;
+  }).join('');
+
+  return `<div class="page" data-label="${dayLabel}・${page.face}">
+    <div class="frame"><i></i><i></i><i></i><i></i></div>
+    <div class="page-inner">
+      <div class="head">
+        <div class="shop">
+          ${ramenMarkLarge()}
+          <div class="shop-text">
+            <span class="shop-name">陽気軒</span>
+            <span class="shop-tagline">ラーメン<i>・</i>中華食堂</span>
+          </div>
+        </div>
+        <div class="head-title">
+          <span class="face-title">${esc(page.face)}</span>
+          <span class="day-tag">${esc(dayLabel)}</span>
+        </div>
+        <div class="head-spacer"></div>
+        ${legendBlock(page.day)}
+      </div>
+      <div class="raimon-band"></div>
+      <div class="cols">${colsHtml}</div>
+      <div class="foot">
+        <span class="foot-brand">${ramenMarkSmall()}<span>陽気軒</span></span>
+        <small>価格はすべて税込です。メニュー・価格は変更になる場合があります。</small>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   自動組版：紙面下部の空きを潰す
+   カラムがあふれない範囲で本文級数・行間・ブロック間アキを最大化し、
+   最後に残ったアキをブロック間へ均等配分して天地を使い切る
+   ============================================================ */
+const PT = 96 / 72;
+const MM = 96 / 25.4;
+
+function fitStep(t) {
+  return {
+    '--fs-item':  (12.2 + 5.0 * t) * PT,
+    '--fs-price': (13.0 + 5.4 * t) * PT,
+    '--pad-item': (0.95 + 2.25 * t) * MM,
+    '--fs-cat':   (15.0 + 5.5 * t) * PT,
+    '--pad-cat':  (1.5 + 1.5 * t) * MM,
+    '--gap-cat':  (3.2 + 3.8 * t) * MM,
+    '--k':        1 + 0.6 * t,
+  };
+}
+
+function applyStep(pageEl, s) {
+  for (const k in s) pageEl.style.setProperty(k, k === '--k' ? String(s[k]) : s[k] + 'px');
+}
+
+function colsFit(cols) {
+  return cols.every((c) => c.scrollHeight <= c.clientHeight + 0.5);
+}
+
+/* 各カテゴリでいちばん長い品名。級数を上げすぎて長い行だけ極端に小さくなるのを防ぐ見張り役 */
+function longestNames(pageEl) {
+  const list = [];
+  pageEl.querySelectorAll('.cat-body').forEach((body) => {
+    let worst = null;
+    let len = 0;
+    body.querySelectorAll('.item .nm').forEach((nm) => {
+      const n = nm.textContent.length;
+      if (n > len) { len = n; worst = nm; }
+    });
+    if (worst) list.push(worst);
+  });
+  return list;
+}
+const NAME_MIN_RATIO = 0.8;  /* 長い品名でも本文級数の8割は保つ */
+function namesFit(list) {
+  return list.every((nm) => nm.clientWidth >= nm.scrollWidth * NAME_MIN_RATIO - 0.5);
+}
+
+function autoFit() {
+  const STEPS = 40;
+  document.querySelectorAll('.page').forEach((pageEl) => {
+    const cols = [...pageEl.querySelectorAll('.col')];
+
+    /* 1) 面全体：どの段もあふれない範囲で級数・行間・アキを最大化 */
+    const longs = longestNames(pageEl);
+    let best = 0;
+    for (let i = 0; i <= STEPS; i++) {
+      applyStep(pageEl, fitStep(i / STEPS));
+      if (colsFit(cols) && namesFit(longs)) best = i; else break;
+    }
+    applyStep(pageEl, fitStep(best / STEPS));
+
+    const cs = getComputedStyle(pageEl);
+    const basePad = parseFloat(cs.getPropertyValue('--pad-item')) || 0;
+    const baseGap = parseFloat(cs.getPropertyValue('--gap-cat')) || 0;
+    const pageK = parseFloat(pageEl.style.getPropertyValue('--k')) || 1;
+    const fitsH = (c) => c.scrollHeight <= c.clientHeight + 0.5;
+    /* 折り返さない大きな文字（セット枠・大盛り帯）が枠の内アキを食い潰さないか見る */
+    const fitsW = (c) => c.scrollWidth <= c.clientWidth + 0.5
+      && [...c.querySelectorAll('.setbox-title, .setbox-plus, .banner-oomori .big')]
+           .every((e) => e.scrollWidth <= e.clientWidth - 2);
+
+    cols.forEach((c) => {
+      const kids = [...c.children];
+      const n = kids.length;
+      if (!n) return;
+      const rows = c.querySelectorAll('.item').length;
+
+      /* 2) 特設枠だけの段は、枠の級数と天地の内アキを先に育てる（横幅の見張り付き） */
+      const growKy = (from, limit) => {
+        let by = from;
+        for (let y = from; y <= limit; y += 0.04) {
+          c.style.setProperty('--ky', String(y));
+          if (fitsH(c)) by = y; else break;
+        }
+        c.style.setProperty('--ky', String(by));
+      };
+      if (!c.querySelector('.cat')) {
+        let bk = pageK;
+        for (let k = pageK; k <= 1.9; k += 0.02) {
+          c.style.setProperty('--k', String(k));
+          if (fitsH(c) && fitsW(c)) bk = k; else break;
+        }
+        c.style.setProperty('--k', String(bk));
+        growKy(bk, 3.2);
+      }
+
+      /* 3) 残りを行アキ（各品の上下）とブロック間アキへ配分 */
+      const last = () => { const k = c.children[c.children.length - 1]; return k.offsetTop + k.offsetHeight; };
+      let slack = c.clientHeight - last() - 2;
+      if (slack > 0) {
+        const rowCap = rows * 4.0 * MM;
+        const gapCap = Math.max(0, n - 1) * 20 * MM;
+        const cap = rowCap + gapCap;
+        if (cap > 0) {
+          const use = Math.min(slack, cap);
+          const rowPart = use * (rowCap / cap);
+          const gapPart = use - rowPart;
+          if (rows > 0 && rowPart > 0) c.style.setProperty('--pad-item', (basePad + rowPart / rows / 2) + 'px');
+          if (n > 1 && gapPart > 0) c.style.rowGap = (baseGap + gapPart / (n - 1)) + 'px';
+        }
+      }
+
+      /* 4) なお余るときは、特設枠の天地内アキを伸ばして紙面を使い切る */
+      if (c.clientHeight - last() > 4 && c.querySelector('.feature, .setbox, .banner-oomori, .infobox')) {
+        growKy(parseFloat(c.style.getPropertyValue('--ky')) || parseFloat(c.style.getPropertyValue('--k')) || pageK, 4.2);
+      }
+    });
+  });
+}
+
+/* 品名が枠に収まらない場合だけ、その行の級数を落とす（下限12pt厳守） */
+function fitNames() {
+  const MIN = 12 * PT;
+  document.querySelectorAll('.item').forEach((it) => {
+    const nm = it.querySelector('.nm');
+    if (!nm) return;
+    const base = parseFloat(getComputedStyle(nm).fontSize);
+    let fs = base;
+    let guard = 0;
+    while (nm.scrollWidth > nm.clientWidth + 0.5 && fs > MIN && guard++ < 60) {
+      fs = Math.max(MIN, fs - 0.4);
+      nm.style.fontSize = fs + 'px';
+    }
+    /* 印刷時のわずかな組み幅の差で三点リーダに化けないよう、詰めた行だけ余裕を持たせる */
+    if (fs < base - 0.01) {
+      fs = Math.max(MIN, fs - 0.8);
+      nm.style.fontSize = fs + 'px';
+    }
+  });
+}
+
+/* ============================================================
+   QAチェック：未配置カテゴリ・カラムあふれの検出
+   ============================================================ */
+function qaUnplacedCategories(qaMessages) {
+  for (const dayKey of ['weekday', 'weekend']) {
+    const placed = new Set();
+    const featured = new Set();
+    PAGES.filter((p) => p.day === dayKey).forEach((p) => p.cols.flat().forEach((t) => {
+      if (t.startsWith('@feature:')) {
+        const key = t.slice(9);
+        featured.add(key);
+        (FEATURES[key]?.omitAlso || []).forEach((n) => featured.add(n));
+      } else if (!t.startsWith('@')) {
+        placed.add(t);
+      }
+    }));
+    for (const cat of MENU.days[dayKey].categories) {
+      if (placed.has(cat.name)) continue;
+      if (cat.items.every((it) => featured.has(it.name))) continue;
+      qaMessages.push(`【${MENU.days[dayKey].label}】カテゴリ「${cat.name}」（${cat.items.length}品）がどの面にも配置されていません`);
+    }
+  }
+}
+
+function qaOverflow() {
+  document.querySelectorAll('.page').forEach((pageEl) => {
+    pageEl.querySelectorAll('.col').forEach((colEl, i) => {
+      if (colEl.scrollHeight > colEl.clientHeight + 1) {
+        const tag = document.createElement('div');
+        tag.className = 'overflow-tag';
+        tag.textContent = `あふれ：${colEl.scrollHeight - colEl.clientHeight}px`;
+        colEl.appendChild(tag);
+        console.error(`[overflow] ${pageEl.dataset.label} 第${i + 1}カラム`);
+      }
+    });
+  });
+}
+
+const qaMessages = [];
+qaUnplacedCategories(qaMessages);
+const html = PAGES.map((p) => renderPage(p, qaMessages)).join('');
+const banner = qaMessages.length
+  ? `<div class="qa-banner">要修正：${qaMessages.map(esc).join('／')}</div>` : '';
+document.getElementById('app').innerHTML = banner + html;
+autoFit();
+fitNames();
+qaOverflow();
+</script>
+</body>
+</html>
