@@ -10,10 +10,13 @@ src = sys.argv[1]; prefix = src[:-4]
 url = CoreFoundation.CFURLCreateWithFileSystemPath(None, src, CoreFoundation.kCFURLPOSIXPathStyle, False)
 doc = Quartz.CGPDFDocumentCreateWithURL(url); n = Quartz.CGPDFDocumentGetNumberOfPages(doc)
 for i in range(1, n+1):
-    pg = Quartz.CGPDFDocumentGetPage(doc, i); box = Quartz.CGPDFPageGetBoxRect(pg, Quartz.kCGPDFMediaBox); s = 1.4
+    # s=3.0（約216dpi）。1.4（約100dpi）だとイラストや細い線がジャギって見え、
+    # 版下の問題と紛らわしいので上げた（2026-09-13）
+    pg = Quartz.CGPDFDocumentGetPage(doc, i); box = Quartz.CGPDFPageGetBoxRect(pg, Quartz.kCGPDFMediaBox); s = 3.0
     w, h = int(box.size.width*s), int(box.size.height*s)
     ctx = Quartz.CGBitmapContextCreate(None, w, h, 8, 0, Quartz.CGColorSpaceCreateDeviceRGB(), Quartz.kCGImageAlphaPremultipliedLast)
     Quartz.CGContextSetRGBFillColor(ctx, 1, 1, 1, 1); Quartz.CGContextFillRect(ctx, Quartz.CGRectMake(0, 0, w, h))
+    Quartz.CGContextSetInterpolationQuality(ctx, Quartz.kCGInterpolationHigh)
     Quartz.CGContextScaleCTM(ctx, s, s); Quartz.CGContextDrawPDFPage(ctx, pg)
     img = Quartz.CGBitmapContextCreateImage(ctx)
     out = CoreFoundation.CFURLCreateWithFileSystemPath(None, f'{prefix}-p{i}.png', CoreFoundation.kCFURLPOSIXPathStyle, False)
