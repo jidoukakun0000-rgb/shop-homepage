@@ -418,26 +418,26 @@
   /* セット枠：赤丸「得」付き */
   .setbox {
     position: relative;
-    border: 1.1mm solid var(--orange-deep);
+    border: 0.8mm solid var(--orange-deep);
     border-radius: 2.5mm;
     background: linear-gradient(180deg, #FFFDF4, #FFF0CE);
-    padding: 3mm;
+    padding: 2.4mm;
     box-shadow: 0.7mm 0.7mm 0 rgba(110, 50, 10, 0.25);
   }
   .toku-circle {
     position: absolute;
-    top: -4.5mm;
-    left: -4.5mm;
-    width: 14mm;
-    height: 14mm;
+    top: -3.5mm;
+    left: -3.5mm;
+    width: 11mm;
+    height: 11mm;
     border-radius: 50%;
     background: radial-gradient(circle at 35% 30%, #E8503A, #A50F02);
     color: #FFE9A8;
     /* 漢字は行ボックス内で上に寄って見えるので、少し下げて光学中央に座らせる */
-    font-size: 18pt;
+    font-size: 14pt;
     font-weight: 800;
     line-height: 1;
-    padding-top: 0.7mm;
+    padding-top: 0.5mm;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -447,30 +447,30 @@
   }
   .setbox-title {
     text-align: center;
-    font-size: 17pt;
+    font-size: 14pt;
     font-weight: 800;
     letter-spacing: 0.15em;
     color: #fff;
     background: linear-gradient(180deg, #F0871A, #C75B00);
     border: 0.4mm solid var(--gold-lt);
     border-radius: 99mm;
-    padding: 1.6mm 0;
+    padding: 1.1mm 0;
     text-shadow: 0.4mm 0.4mm 0 rgba(70, 15, 0, 0.5);
   }
   /* セット枠の中は見出しも一覧も左揃え。中央寄せの見出しと左揃えの一覧が混ざると、品名の短い段が左に偏って見える。
-     見出しは24ptの数字で行が膨らむので行高を詰め、間隔は上に取って自分の一覧に寄せる */
-  .setbox-lead { font-size: 12.5pt; font-weight: 800; margin-top: 1.6mm; }
-  .setbox-plus { font-size: 12.5pt; font-weight: 800; line-height: 1.1; margin: 1.4mm 0 0.4mm; }
+     見出しは数字で行が膨らむので行高を詰め、間隔は上に取って自分の一覧に寄せる。
+     枠は「大きすぎる」との担当者指示で一回り小さくした（2026-09-14。見出し17→14pt・数字24→18pt・一覧11→10.5pt・「得」14→11mm。4案比較で③を採用） */
+  .setbox-lead { font-size: 11pt; font-weight: 800; margin-top: 1.6mm; }
+  .setbox-plus { font-size: 11pt; font-weight: 800; line-height: 1.1; margin: 1.4mm 0 0.4mm; }
   .setbox-tier + .setbox-tier { border-top: 0.35mm dashed rgba(181, 87, 10, 0.55); margin-top: 1.6mm; padding-top: 0.2mm; }
-  /* セット価格の数字は「赤・白い縁・外側の赤線」の袋文字。白い縁だけだとクリーム地に溶ける。
-     HTML文字の縁取り（-webkit-text-stroke）は角を丸くできず「4」の鋭い角で外側の赤線が尖って飛び出すので、
-     数字だけSVGで角を丸めて描く。SVGの大きさと縦位置は描画後に fitSetNumbers() が文字の実寸から合わせる */
+  /* セット価格の数字は縁取りなしの赤の太字（2026-09-14）。枠を小さくした際、mm固定の袋文字の縁が字に対して太くなり
+     にじんで見えたため、4案（今／縁を細く／縁なし／赤い札に白抜き）を印刷用PDFから高解像度で描いて比較し、縁なしを採用。
+     数字はSVGで描いたまま（大きさと縦位置は描画後に fitSetNumbers() が文字の実寸から合わせる）。外側の線（.outer）は描かない */
   .setnum { display: inline-block; overflow: visible; }
-  .setnum text { font-family: inherit; font-weight: 800; font-size: 24pt; stroke-linejoin: round; }
-  /* 線幅は全幅。白は半分が数字の下に隠れる。太いと「0」の穴や「5」のすき間が埋まってごちゃつくので細めにしている */
-  .setnum .outer { fill: none; stroke: var(--crimson); stroke-width: 0.7mm; }
-  .setnum .inner { fill: var(--crimson); stroke: #fff; stroke-width: 0.3mm; paint-order: stroke fill; }
-  .setbox ul { list-style: none; font-size: 11pt; font-weight: 600; line-height: 1.6; }
+  .setnum text { font-family: inherit; font-weight: 800; font-size: 18pt; }
+  .setnum .outer { display: none; }
+  .setnum .inner { fill: var(--crimson); stroke: none; }
+  .setbox ul { list-style: none; font-size: 10.5pt; font-weight: 600; line-height: 1.5; }
   .setbox ul b { color: #B5570A; }
   .setbox .note { font-size: 8pt; margin-top: 1.6mm; color: #6b4a2a; }
 
@@ -1000,8 +1000,8 @@ const PAGES = [
     cols: [
       ['ラーメン（醤油）'],
       ['ラーメン（味噌）', 'ラーメン（塩）'],
-      ['麺類（焼きそば・冷やし）', '@set'],
-      ['トッピング', '@solo:替え玉|ラーメン替え玉', '@oomori-men'],
+      ['トッピング', '@solo:替え玉'],
+      ['麺類（焼きそば・冷やし）', '@set', '@oomori-men'],
     ] },
   { day: 'weekday', face: 'ご飯の部',
     cols: [
@@ -1014,8 +1014,8 @@ const PAGES = [
     cols: [
       ['ラーメン（醤油）'],
       ['ラーメン（味噌）', 'ラーメン（塩）'],
-      ['麺類（焼きそば）', '@set'],
-      ['トッピング', '@solo:替え玉|ラーメン替え玉', '@oomori-men'],
+      ['トッピング', '@solo:替え玉'],
+      ['麺類（焼きそば）', '@set', '@oomori-men'],
     ] },
   { day: 'weekend', face: 'ご飯の部', tune: 'tune-gohan',
     cols: [
