@@ -456,9 +456,11 @@
     padding: 1.6mm 0;
     text-shadow: 0.4mm 0.4mm 0 rgba(70, 15, 0, 0.5);
   }
-  .setbox-lead { text-align: center; font-size: 12.5pt; font-weight: 800; margin-top: 1.6mm; }
-  .setbox-plus { text-align: center; font-size: 12.5pt; font-weight: 800; margin: 0.4mm 0 0.6mm; }
-  .setbox-tier + .setbox-tier { border-top: 0.35mm dashed rgba(181, 87, 10, 0.55); margin-top: 1.2mm; padding-top: 0.8mm; }
+  /* セット枠の中は見出しも一覧も左揃え。中央寄せの見出しと左揃えの一覧が混ざると、品名の短い段が左に偏って見える。
+     見出しは24ptの数字で行が膨らむので行高を詰め、間隔は上に取って自分の一覧に寄せる */
+  .setbox-lead { font-size: 12.5pt; font-weight: 800; margin-top: 1.6mm; }
+  .setbox-plus { font-size: 12.5pt; font-weight: 800; line-height: 1.1; margin: 1.4mm 0 0.4mm; }
+  .setbox-tier + .setbox-tier { border-top: 0.35mm dashed rgba(181, 87, 10, 0.55); margin-top: 1.6mm; padding-top: 0.2mm; }
   .setbox-plus b {
     font-size: 24pt;
     color: var(--crimson);
@@ -467,7 +469,7 @@
   }
   .setbox ul { list-style: none; font-size: 11pt; font-weight: 600; line-height: 1.6; }
   .setbox ul b { color: #B5570A; }
-  .setbox .note { font-size: 8pt; margin-top: 1mm; color: #6b4a2a; }
+  .setbox .note { font-size: 8pt; margin-top: 1.6mm; color: #6b4a2a; }
 
   /* 一覧から抜いた品を単独で見せる小さな枠（@solo:品名） */
   .solo-box {
