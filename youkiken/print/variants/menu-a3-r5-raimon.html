@@ -444,8 +444,23 @@
   .setbox-plus b {
     font-size: 24pt;
     color: var(--crimson);
-    -webkit-text-stroke: 0.55mm rgba(200, 155, 60, 0.95);
+    -webkit-text-stroke: 0.6mm #fff;
     paint-order: stroke fill;
+    position: relative;
+    z-index: 0;
+    display: inline-block;
+    line-height: 1;
+  }
+  /* 白い縁だけだとクリーム地に溶けるので、同じ数字を太い赤の縁で真後ろに重ねて白の外側に赤線を出す。
+     text-shadow で外線を作ると白い縁まで塗りつぶされるので使わない。
+     親をインラインのままにすると重ねた数字が上下にずれるので inline-block＋line-height:1 にしている */
+  .setbox-plus b::before {
+    content: attr(data-n);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    -webkit-text-stroke: 1.3mm var(--crimson);
   }
   .setbox ul { list-style: none; font-size: 11pt; font-weight: 600; line-height: 1.6; }
   .setbox ul b { color: #B5570A; }
@@ -1153,7 +1168,7 @@ function setBlock() {
   }).join('');
   /* 枠は1つのまま、価格帯ごとに段を分ける（A〜C＝＋350円／D・E＝＋450円） */
   const tiers = s.tiers.map((t) => `<div class="setbox-tier">
-      <div class="setbox-plus">プラス <b>${t.price}</b> 円</div>
+      <div class="setbox-plus">プラス <b data-n="${t.price}">${t.price}</b> 円</div>
       <ul>${optList(t.options)}</ul>
     </div>`).join('');
   return `<section class="setbox">
