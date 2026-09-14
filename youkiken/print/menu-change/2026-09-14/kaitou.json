@@ -1,0 +1,456 @@
+{
+ "date": "2026-09-14",
+ "note": "確認シートの要確認28件への担当者の回答（プランモードで質問）。ops は menu.json への反映内容。day: both=平日と土日祝、weekday=平日、weekend=土日祝",
+ "rest_of_cards": "削除28・価格変更49・新規追加2（温泉玉子100円／土日祝ニラ玉600円）・不採用19は判定どおりでOK。海鮮あんかけチャーハン（平日・確信度中）も削除で確定",
+ "answers": [
+  {
+   "no": 1,
+   "item": "ニンニクラーメン",
+   "answer": "850円にする",
+   "ops": [
+    {
+     "op": "price",
+     "day": "both",
+     "name": "ニンニクラーメン",
+     "price": 850
+    }
+   ]
+  },
+  {
+   "no": 2,
+   "item": "かつ丼（玉子とじ）",
+   "answer": "700円にする",
+   "ops": [
+    {
+     "op": "price",
+     "day": "both",
+     "name": "かつ丼（玉子とじ）",
+     "price": 700
+    }
+   ]
+  },
+  {
+   "no": 3,
+   "item": "親子丼",
+   "answer": "両日750円",
+   "ops": [
+    {
+     "op": "price",
+     "day": "both",
+     "name": "親子丼",
+     "price": 750
+    }
+   ]
+  },
+  {
+   "no": 4,
+   "item": "中華丼",
+   "answer": "両日830円",
+   "ops": [
+    {
+     "op": "price",
+     "day": "both",
+     "name": "中華丼",
+     "price": 830
+    }
+   ]
+  },
+  {
+   "no": 5,
+   "item": "ソース焼きそば",
+   "answer": "土日祝も700円",
+   "ops": [
+    {
+     "op": "price",
+     "day": "both",
+     "name": "ソース焼きそば",
+     "price": 700
+    }
+   ]
+  },
+  {
+   "no": 6,
+   "item": "塩焼きそば・醤油焼きそば",
+   "answer": "両日とも削除",
+   "ops": [
+    {
+     "op": "delete",
+     "day": "both",
+     "name": "塩焼きそば"
+    },
+    {
+     "op": "delete",
+     "day": "both",
+     "name": "醤油焼きそば"
+    }
+   ]
+  },
+  {
+   "no": 7,
+   "item": "ご飯類大盛り",
+   "answer": "土日祝も続けるがメニュー表に行は載せない（右下の案内で足りる）。平日も行を消す",
+   "ops": [
+    {
+     "op": "delete",
+     "day": "both",
+     "name": "ご飯類大盛り"
+    },
+    {
+     "op": "global_note_add",
+     "text": "ご飯類の大盛りは＋¥200です。",
+     "after": "ラーメン大盛りは平日無料／土日祝は＋¥200です。"
+    }
+   ]
+  },
+  {
+   "no": 8,
+   "item": "焼酎ロック・水割り",
+   "answer": "両日400円のまま",
+   "ops": []
+  },
+  {
+   "no": 9,
+   "item": "チューハイ",
+   "answer": "チューハイはレモンサワー等をまとめる見出し。値段はいらない",
+   "ops": [
+    {
+     "op": "delete",
+     "day": "both",
+     "name": "チューハイ"
+    }
+   ]
+  },
+  {
+   "no": 10,
+   "item": "ハイボール〜ウーロンハイの「ジョッキ」",
+   "answer": "品名に「（ジョッキ）」",
+   "ops": [
+    {
+     "op": "rename",
+     "day": "both",
+     "name": "サントリー角ハイボール",
+     "to": "サントリー角ハイボール（ジョッキ）"
+    },
+    {
+     "op": "rename",
+     "day": "both",
+     "name": "レモンサワー",
+     "to": "レモンサワー（ジョッキ）"
+    },
+    {
+     "op": "rename",
+     "day": "both",
+     "name": "グレープフルーツサワー",
+     "to": "グレープフルーツサワー（ジョッキ）"
+    },
+    {
+     "op": "rename",
+     "day": "both",
+     "name": "ウーロンハイ",
+     "to": "ウーロンハイ（ジョッキ）"
+    }
+   ]
+  },
+  {
+   "no": 11,
+   "item": "ざる中華の括弧",
+   "answer": "ざる中華も5〜10月",
+   "ops": [
+    {
+     "op": "rename",
+     "day": "weekday",
+     "name": "ざる中華",
+     "to": "ざる中華（5月〜10月）"
+    }
+   ]
+  },
+  {
+   "no": 12,
+   "item": "チャーシューメン「(8枚)」",
+   "answer": "付けない",
+   "ops": []
+  },
+  {
+   "no": 13,
+   "item": "玉子あんかけラーメン",
+   "answer": "650円でのせる",
+   "ops": [
+    {
+     "op": "insert",
+     "day": "both",
+     "category": "ラーメン（塩）",
+     "name": "玉子あんかけラーメン",
+     "price": 650,
+     "after": "タンメン"
+    }
+   ]
+  },
+  {
+   "no": 14,
+   "item": "ラーメンセットの「半分」",
+   "answer": "何もしない",
+   "ops": []
+  },
+  {
+   "no": 15,
+   "item": "定食の「ごはん・スープ・つけもの」",
+   "answer": "見出しに付け足す",
+   "ops": [
+    {
+     "op": "cat_note",
+     "day": "weekday",
+     "category": "定食",
+     "note": "ごはん・スープ・つけ物付"
+    }
+   ]
+  },
+  {
+   "no": 16,
+   "item": "定食欄のジャンボギョーザ3個",
+   "answer": "定食欄に700円で載せる",
+   "ops": [
+    {
+     "op": "insert",
+     "day": "weekday",
+     "category": "定食",
+     "name": "ジャンボギョーザ3個",
+     "price": 700,
+     "before": "ジャンボギョーザ定食"
+    }
+   ]
+  },
+  {
+   "no": 17,
+   "item": "まんぷく定食の丸囲み",
+   "answer": "今のまま",
+   "ops": []
+  },
+  {
+   "no": 18,
+   "item": "テイクアウトのマーク",
+   "answer": "今の文章のまま",
+   "ops": []
+  },
+  {
+   "no": 19,
+   "item": "定食の新メニュー6品",
+   "answer": "平日に6品とも追加。朝定食は中身も書く。「…（温泉玉子・納豆・ぎょーざ1ケ）」は印刷で「…」と切れたため、担当者の指示で「（温玉・納豆・餃子1ケ）」に短縮",
+   "ops": [
+    {
+     "op": "insert",
+     "day": "weekday",
+     "category": "定食",
+     "name": "ホイコーロー定食",
+     "price": 980,
+     "after": "揚げギョーザ5個"
+    },
+    {
+     "op": "insert",
+     "day": "weekday",
+     "category": "定食",
+     "name": "昼だけど朝定食（温玉・納豆・餃子1ケ）",
+     "price": 500,
+     "after": "ホイコーロー定食"
+    },
+    {
+     "op": "insert",
+     "day": "weekday",
+     "category": "定食",
+     "name": "ニラ玉定食",
+     "price": 850,
+     "after": "昼だけど朝定食（温玉・納豆・餃子1ケ）"
+    },
+    {
+     "op": "insert",
+     "day": "weekday",
+     "category": "定食",
+     "name": "焼肉定食",
+     "price": 950,
+     "after": "ニラ玉定食"
+    },
+    {
+     "op": "insert",
+     "day": "weekday",
+     "category": "定食",
+     "name": "しょうが焼き定食",
+     "price": 980,
+     "after": "焼肉定食"
+    },
+    {
+     "op": "insert",
+     "day": "weekday",
+     "category": "定食",
+     "name": "春巻定食（5本）",
+     "price": 750,
+     "after": "しょうが焼き定食"
+    }
+   ]
+  },
+  {
+   "no": 20,
+   "item": "陽気定食",
+   "answer": "平日のみ。値段は店主に確認（今回は載せない）",
+   "ops": [],
+   "hold": true
+  },
+  {
+   "no": 21,
+   "item": "ミニ丼定食",
+   "answer": "取りやめ",
+   "ops": []
+  },
+  {
+   "no": 22,
+   "item": "ごはんの新メニュー",
+   "answer": "5品目はオムレツごはん。5品を400円で両日、ライス欄を「ごはん」に改名",
+   "ops": [
+    {
+     "op": "cat_rename",
+     "day": "both",
+     "from": "ライス",
+     "to": "ごはん"
+    },
+    {
+     "op": "insert",
+     "day": "both",
+     "category": "ごはん",
+     "name": "のり玉ごはん",
+     "price": 400,
+     "end": true
+    },
+    {
+     "op": "insert",
+     "day": "both",
+     "category": "ごはん",
+     "name": "ぎょーざごはん",
+     "price": 400,
+     "end": true
+    },
+    {
+     "op": "insert",
+     "day": "both",
+     "category": "ごはん",
+     "name": "鳥玉ごはん",
+     "price": 400,
+     "end": true
+    },
+    {
+     "op": "insert",
+     "day": "both",
+     "category": "ごはん",
+     "name": "しゃけごはん",
+     "price": 400,
+     "end": true
+    },
+    {
+     "op": "insert",
+     "day": "both",
+     "category": "ごはん",
+     "name": "オムレツごはん",
+     "price": 400,
+     "end": true
+    }
+   ]
+  },
+  {
+   "no": 23,
+   "item": "チャーハンの新メニュー3品",
+   "answer": "店主に聞く（今回は載せない）",
+   "ops": [],
+   "hold": true
+  },
+  {
+   "no": 24,
+   "item": "肉カレー",
+   "answer": "店主に聞く（今回は載せない）",
+   "ops": [],
+   "hold": true
+  },
+  {
+   "no": 25,
+   "item": "五目ラーメン・もやしあんかけラーメン",
+   "answer": "2品とも両日に追加",
+   "ops": [
+    {
+     "op": "insert",
+     "day": "both",
+     "category": "ラーメン（塩）",
+     "name": "五目ラーメン",
+     "price": 850,
+     "end": true
+    },
+    {
+     "op": "insert",
+     "day": "both",
+     "category": "ラーメン（塩）",
+     "name": "もやしあんかけラーメン",
+     "price": 880,
+     "end": true
+    }
+   ]
+  },
+  {
+   "no": 26,
+   "item": "陽気丼",
+   "answer": "両日のどんぶり欄に追加",
+   "ops": [
+    {
+     "op": "insert",
+     "day": "both",
+     "category": "どんぶり",
+     "name": "陽気丼（豚バラあまから煮・温泉玉子）",
+     "price": 700,
+     "end": true
+    }
+   ]
+  },
+  {
+   "no": 27,
+   "item": "チャーシュー盛り",
+   "answer": "別の品として追加",
+   "ops": [
+    {
+     "op": "insert",
+     "day": "weekend",
+     "category": "単品",
+     "name": "チャーシュー盛り",
+     "price": 600,
+     "end": true
+    }
+   ]
+  },
+  {
+   "no": 28,
+   "item": "春巻（5本）",
+   "answer": "500円",
+   "ops": [
+    {
+     "op": "insert",
+     "day": "weekend",
+     "category": "単品",
+     "name": "春巻（5本）",
+     "price": 500,
+     "end": true
+    }
+   ]
+  }
+ ],
+ "new_from_cards": [
+  {
+   "op": "insert",
+   "day": "both",
+   "category": "トッピング",
+   "name": "温泉玉子",
+   "price": 100,
+   "end": true
+  },
+  {
+   "op": "insert",
+   "day": "weekend",
+   "category": "単品",
+   "name": "ニラ玉",
+   "price": 600,
+   "end": true
+  }
+ ]
+}
