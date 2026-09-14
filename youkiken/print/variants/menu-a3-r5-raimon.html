@@ -334,7 +334,7 @@
      tune-men＝麺類2面（品名13pt・行間1.5）。13.5ptはトッピングの長い品名が「…」で切れるため不可
      （品名12pt以上・省略なし、を両立できる上限が13pt）
      tune-gohan＝土日祝ご飯面（品数が少ないぶん行間1.65でさらに広げる。品名は12.5ptのまま） */
-  .page.tune-men .item { font-size: 13pt; line-height: 1.5; padding: 3.2mm 0; }
+  .page.tune-men .item { font-size: 13pt; line-height: 1.5; padding: 2.6mm 0; }
   .page.tune-men .item .pr { font-size: 14pt; }
   .page.tune-men .col { gap: 7mm; }
   .page.tune-men .cat-body { padding: 2mm 3mm 2.4mm; }
@@ -436,14 +436,16 @@
     padding: 1.6mm 0;
     text-shadow: 0.4mm 0.4mm 0 rgba(70, 15, 0, 0.5);
   }
-  .setbox-plus { text-align: center; font-size: 12.5pt; font-weight: 800; margin: 1.6mm 0; }
+  .setbox-lead { text-align: center; font-size: 12.5pt; font-weight: 800; margin-top: 1.6mm; }
+  .setbox-plus { text-align: center; font-size: 12.5pt; font-weight: 800; margin: 0.4mm 0 0.6mm; }
+  .setbox-tier + .setbox-tier { border-top: 0.35mm dashed rgba(181, 87, 10, 0.55); margin-top: 1.2mm; padding-top: 0.8mm; }
   .setbox-plus b {
     font-size: 24pt;
     color: var(--crimson);
     -webkit-text-stroke: 0.55mm rgba(200, 155, 60, 0.95);
     paint-order: stroke fill;
   }
-  .setbox ul { list-style: none; font-size: 11pt; font-weight: 600; line-height: 1.75; }
+  .setbox ul { list-style: none; font-size: 11pt; font-weight: 600; line-height: 1.6; }
   .setbox ul b { color: #B5570A; }
   .setbox .note { font-size: 8pt; margin-top: 1mm; color: #6b4a2a; }
 
@@ -556,8 +558,11 @@ const MENU = {
   ],
   "setInfo": {
     "name": "ラーメンセット",
-    "note": "お好きな麺類に プラス350円（※Bセットは揚げ餃子は出来ません）",
-    "options": ["Aセット：半チャーハン", "Bセット：ジャンボ餃子3ケ", "Cセット：半カレー", "Dセット：ミニチャーシュー丼", "Eセット：ミニあぶり焼きチャーシュー丼"]
+    "note": "※Bセットは揚げ餃子は出来ません",
+    "tiers": [
+      { "price": 350, "options": ["Aセット：半チャーハン", "Bセット：ジャンボ餃子3ケ", "Cセット：半カレー"] },
+      { "price": 450, "options": ["Dセット：ミニチャーシュー丼", "Eセット：ミニあぶり焼きチャーシュー丼"] }
+    ]
   },
   "days": {
     "weekday": {
@@ -1140,16 +1145,21 @@ function featureBlock(key, day) {
 
 function setBlock() {
   const s = MENU.setInfo;
-  const opts = s.options.map((o) => {
+  const optList = (opts) => opts.map((o) => {
     const m = o.match(/^(.*?セット)：(.*)$/);
     return m ? `<li><b>${esc(m[1])}</b>　${esc(m[2])}</li>` : `<li>${esc(o)}</li>`;
   }).join('');
+  /* 枠は1つのまま、価格帯ごとに段を分ける（A〜C＝＋350円／D・E＝＋450円） */
+  const tiers = s.tiers.map((t) => `<div class="setbox-tier">
+      <div class="setbox-plus">プラス <b>${t.price}</b> 円</div>
+      <ul>${optList(t.options)}</ul>
+    </div>`).join('');
   return `<section class="setbox">
     <div class="toku-circle">得</div>
     <div class="setbox-title">ラーメンセット</div>
-    <div class="setbox-plus">お好きな麺類に プラス <b>350</b> 円</div>
-    <ul>${opts}</ul>
-    <div class="note">※Bセットは揚げ餃子は出来ません</div>
+    <div class="setbox-lead">お好きな麺類に</div>
+    ${tiers}
+    <div class="note">${esc(s.note)}</div>
   </section>`;
 }
 

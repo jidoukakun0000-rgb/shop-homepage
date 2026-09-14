@@ -290,6 +290,8 @@
     .cat-chip.active { background: var(--red); color: #fff; }
     .menu-day-note { text-align: center; color: var(--red); font-weight: 700; font-size: 0.95rem; margin: 0 0 1.2rem; }
     .menu-cat-note { font-size: 0.85rem; color: var(--muted); font-weight: 600; margin: -0.6rem 0 0.8rem; }
+    /* 上の負マージンは見出し直下用。行の後に続く注記（セットの価格帯見出し・末尾の注意書き）は間を空ける */
+    .menu-row + .menu-cat-note { margin-top: 0.9rem; }
     .menu-foot-note { font-size: 0.92rem; color: var(--muted); text-align: center; margin-top: 1.2rem; line-height: 1.7; }
 
     /* ========= 店主より ========= */
@@ -580,11 +582,13 @@
 
     function setBlockHtml(s, id) {
       if (!s) return '';
-      const rows = s.options.map(o =>
-        `<div class="menu-row"><span class="menu-row-name">${esc(o)}</span></div>`
-      ).join('');
+      const row = o => `<div class="menu-row"><span class="menu-row-name">${esc(o)}</span></div>`;
+      // 価格帯ごとに見出しを付ける（tiers の無い古い形式は options をそのまま並べる）
+      const rows = s.tiers
+        ? s.tiers.map(t => `<p class="menu-cat-note">お好きな麺類に プラス${t.price}円</p>${t.options.map(row).join('')}`).join('')
+        : (s.options || []).map(row).join('');
       const note = s.note ? `<p class="menu-cat-note">${esc(s.note)}</p>` : '';
-      return `<div class="menu-block fade" id="${id}"><div class="menu-block-title">${esc(s.name)}</div>${note}${rows}</div>`;
+      return `<div class="menu-block fade" id="${id}"><div class="menu-block-title">${esc(s.name)}</div>${rows}${note}</div>`;
     }
 
     // スクロール連動で現在カテゴリのチップをハイライト（A-2）
