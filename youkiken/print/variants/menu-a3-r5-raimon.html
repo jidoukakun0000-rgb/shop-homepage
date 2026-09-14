@@ -441,27 +441,13 @@
   .setbox-lead { font-size: 12.5pt; font-weight: 800; margin-top: 1.6mm; }
   .setbox-plus { font-size: 12.5pt; font-weight: 800; line-height: 1.1; margin: 1.4mm 0 0.4mm; }
   .setbox-tier + .setbox-tier { border-top: 0.35mm dashed rgba(181, 87, 10, 0.55); margin-top: 1.6mm; padding-top: 0.2mm; }
-  .setbox-plus b {
-    font-size: 24pt;
-    color: var(--crimson);
-    -webkit-text-stroke: 0.6mm #fff;
-    paint-order: stroke fill;
-    position: relative;
-    z-index: 0;
-    display: inline-block;
-    line-height: 1;
-  }
-  /* 白い縁だけだとクリーム地に溶けるので、同じ数字を太い赤の縁で真後ろに重ねて白の外側に赤線を出す。
-     text-shadow で外線を作ると白い縁まで塗りつぶされるので使わない。
-     親をインラインのままにすると重ねた数字が上下にずれるので inline-block＋line-height:1 にしている */
-  .setbox-plus b::before {
-    content: attr(data-n);
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: -1;
-    -webkit-text-stroke: 1.3mm var(--crimson);
-  }
+  /* セット価格の数字は「赤・白い縁・外側の赤線」の袋文字。白い縁だけだとクリーム地に溶ける。
+     HTML文字の縁取り（-webkit-text-stroke）は角を丸くできず「4」の鋭い角で外側の赤線が尖って飛び出すので、
+     数字だけSVGで角を丸めて描く。SVGの大きさと縦位置は描画後に fitSetNumbers() が文字の実寸から合わせる */
+  .setnum { display: inline-block; overflow: visible; }
+  .setnum text { font-family: inherit; font-weight: 800; font-size: 24pt; stroke-linejoin: round; }
+  .setnum .outer { fill: none; stroke: var(--crimson); stroke-width: 1.3mm; }
+  .setnum .inner { fill: var(--crimson); stroke: #fff; stroke-width: 0.6mm; paint-order: stroke fill; }
   .setbox ul { list-style: none; font-size: 11pt; font-weight: 600; line-height: 1.6; }
   .setbox ul b { color: #B5570A; }
   .setbox .note { font-size: 8pt; margin-top: 1.6mm; color: #6b4a2a; }
@@ -1168,7 +1154,7 @@ function setBlock() {
   }).join('');
   /* 枠は1つのまま、価格帯ごとに段を分ける（A〜C＝＋350円／D・E＝＋450円） */
   const tiers = s.tiers.map((t) => `<div class="setbox-tier">
-      <div class="setbox-plus">プラス <b data-n="${t.price}">${t.price}</b> 円</div>
+      <div class="setbox-plus">プラス <svg class="setnum" role="img" aria-label="${t.price}"><text class="outer">${t.price}</text><text class="inner">${t.price}</text></svg> 円</div>
       <ul>${optList(t.options)}</ul>
     </div>`).join('');
   return `<section class="setbox">
@@ -1178,6 +1164,21 @@ function setBlock() {
     ${tiers}
     <div class="note">${esc(s.note)}</div>
   </section>`;
+}
+
+/* セット価格のSVG数字を文字の実寸に合わせる（SVGは中身に合わせて自動では広がらないため） */
+function fitSetNumbers() {
+  const PAD = 4; // 外側の赤線の半分（1.3mm÷2≒2.5px）より少し広く取る
+  document.querySelectorAll('svg.setnum').forEach((svg) => {
+    const box = svg.querySelector('text.inner').getBBox();
+    const w = box.width + PAD * 2, h = box.height + PAD * 2;
+    svg.setAttribute('viewBox', `${box.x - PAD} ${box.y - PAD} ${w} ${h}`);
+    svg.setAttribute('width', w);
+    svg.setAttribute('height', h);
+    // インラインのSVGは下端が行の基準線に乗るので、文字の基準線（y=0）が周りの文字と揃うよう下げる
+    svg.style.verticalAlign = `${-(box.y + box.height + PAD)}px`;
+    svg.style.margin = `0 ${-PAD}px`;
+  });
 }
 
 function legendBlock(day) {
@@ -1334,6 +1335,7 @@ const html = PAGES.map((p) => renderPage(p, qaMessages)).join('');
 const banner = qaMessages.length
   ? `<div class="qa-banner">要修正：${qaMessages.map(esc).join('／')}</div>` : '';
 document.getElementById('app').innerHTML = banner + html;
+fitSetNumbers();
 qaOverflow();
 </script>
 </body>
