@@ -375,6 +375,11 @@
   .page.tune-gohan .item .pr { font-size: 13.5pt; }
   .page.tune-gohan .col { gap: 8.5mm; }
   .page.tune-gohan .cat-body { padding: 2mm 3mm 2.4mm; }
+  /* 土日祝の2面は品目を後から足せるよう詰める（2026-09-15・担当者が3案からAを採用）。
+     品名12pt（依頼主の下限）・値段13pt。どの列にもあと4行以上入る。tune-men / tune-gohan より後に置いて上書きする */
+  .page.tune-we .item { font-size: 12pt; line-height: 1.45; padding: 2mm 0; }
+  .page.tune-we .item .pr { font-size: 13pt; }
+  .page.tune-we .col { gap: 5mm; }
 
   /* まんぷく定食枠のキャラクター（旧メニューにいた満腹の男の子・2026-09-11復活。
      元画像とフル解像度の切り抜きは reference/manpuku-boy.png） */
@@ -1022,14 +1027,14 @@ const PAGES = [
       ['ご飯類', 'ごはん', 'スープ'],
       ['@feature:まんぷく定食（ねぎラーメン＋半チャーハン＋餃子2個）', 'お飲み物', '@oomori-gohan'],
     ] },
-  { day: 'weekend', face: '麺類の部', tune: 'tune-men',
+  { day: 'weekend', face: '麺類の部', tune: 'tune-men tune-we',
     cols: [
       ['ラーメン（醤油）'],
       ['ラーメン（味噌）', 'ラーメン（塩）'],
       ['トッピング', '@solo:替え玉|ラーメン替え玉'],
       ['麺類（焼きそば）', '@set', '@oomori-men'],
     ] },
-  { day: 'weekend', face: 'ご飯の部', tune: 'tune-gohan',
+  { day: 'weekend', face: 'ご飯の部', tune: 'tune-gohan tune-we',
     cols: [
       ['単品', 'チャーハン'],
       ['どんぶり', 'ご飯類', 'ギョーザ'],
