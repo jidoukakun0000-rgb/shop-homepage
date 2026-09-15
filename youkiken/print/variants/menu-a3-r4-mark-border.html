@@ -354,9 +354,21 @@
   .item .nm .paren { font-size: 8.5pt; }
   .item .dots {
     flex: 1;
-    border-bottom: 0.3mm dotted rgba(58, 36, 16, 0.4);
-    transform: translateY(-1mm);
+    /* 点線は border の dotted をやめ、中黒「・」の文字を右端から並べる（2026-09-15）。
+       dotted は Chrome がPDFで行ごとに長さの違う細い破線に変えるため、表示の縮尺によって行ごとに
+       点・線とばらばらに見えた。背景画像の点は PDF で画像化されてぼやけたので不採用。
+       文字ならベクターのまま全行同じ間隔で、direction: rtl で右端（値段側）から詰めてはみ出しを左で切る */
+    overflow: hidden;
+    white-space: nowrap;
+    direction: rtl;
+    font-size: 7pt;
+    font-weight: 400;
+    letter-spacing: -0.25em;
+    color: rgba(58, 36, 16, 0.55);
     min-width: 2mm; /* 4mm だと「（ジョッキ）」付きの品名が2〜4px足りず「…」で切れる（2026-09-14） */
+  }
+  .item .dots::before {
+    content: "・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・";
   }
   .item .pr {
     font-weight: 800;
