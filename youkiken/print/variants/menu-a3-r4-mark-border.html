@@ -400,6 +400,8 @@
   .page.tune-we .item { font-size: 12pt; line-height: 1.45; padding: 2mm 0; }
   .page.tune-we .item .pr { font-size: 13pt; }
   .page.tune-we .col { gap: 5mm; }
+  /* 平日ご飯面：チャーハン3品（玉子・温玉・ザーサイ）を足して2列目が3pxあふれたので行の上下を1.15→1.1mmに詰めた（2026-09-15） */
+  .page.tune-wd-gohan .item { padding: 1.1mm 0; }
 
   /* まんぷく定食枠のキャラクター（旧メニューにいた満腹の男の子・2026-09-11復活。
      元画像とフル解像度の切り抜きは reference/manpuku-boy.png） */
@@ -720,7 +722,8 @@ const MENU = {
             { "name": "にんにくチャーハン", "price": 730 },
             { "name": "スタミナチャーハン", "price": 770 },
             { "name": "玉子チャーハン", "price": 500 },
-            { "name": "温玉チャーハン", "price": 580 }
+            { "name": "温玉チャーハン", "price": 580 },
+            { "name": "ザーサイチャーハン", "price": 650 }
           ]
         },
         {
@@ -728,6 +731,7 @@ const MENU = {
           "note": "スープ付",
           "items": [
             { "name": "カレーライス", "price": 680 },
+            { "name": "肉カレー", "price": 880 },
             { "name": "カツカレー", "price": 1000 },
             { "name": "オムライス", "price": 900 }
           ]
@@ -888,14 +892,16 @@ const MENU = {
             { "name": "にんにくチャーハン", "price": 730 },
             { "name": "スタミナチャーハン", "price": 770 },
             { "name": "玉子チャーハン", "price": 500 },
-            { "name": "温玉チャーハン", "price": 580 }
+            { "name": "温玉チャーハン", "price": 580 },
+            { "name": "ザーサイチャーハン", "price": 650 }
           ]
         },
         {
           "name": "ご飯類",
           "note": "スープ付",
           "items": [
-            { "name": "カレーライス", "price": 680 }
+            { "name": "カレーライス", "price": 680 },
+            { "name": "肉カレー", "price": 880 }
           ]
         },
         {
@@ -1044,7 +1050,7 @@ const PAGES = [
       ['トッピング', '@solo:替え玉|ラーメン替え玉'],
       ['麺類（焼きそば・冷やし）', '@set', '@oomori-men'],
     ] },
-  { day: 'weekday', face: 'ご飯の部',
+  { day: 'weekday', face: 'ご飯の部', tune: 'tune-wd-gohan',
     cols: [
       ['定食', '@teishoku-oomori', '@solo:半ねぎラーメン'],
       ['どんぶり', 'チャーハン', 'ギョーザ'],
