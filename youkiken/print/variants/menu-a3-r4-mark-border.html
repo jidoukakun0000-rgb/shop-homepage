@@ -339,7 +339,7 @@
   .item {
     display: flex;
     align-items: baseline;
-    gap: 1.5mm;
+    gap: 1.2mm; /* 1.5mm だと麺類面のスープ欄「たっぷり野菜の肉ワンタンスープ」が4px足りず切れる（2026-09-24） */
     padding: 1.15mm 0;
     font-size: 12.5pt;
     font-weight: 600;
@@ -352,6 +352,15 @@
     letter-spacing: 0.01em;
   }
   .item .nm .paren { font-size: 8.5pt; }
+  /* 欄の中の最後に出す注記（menu.json の footNote）。2026-09-24に定食欄の「単品価格は店員にお尋ねください」で追加 */
+  .cat-foot {
+    margin-top: 1.2mm;
+    padding-top: 1.2mm;
+    border-top: 0.25mm dotted rgba(180, 130, 55, 0.7);
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #6b4a2a;
+  }
   .item .dots {
     flex: 1;
     /* 点線は border の dotted をやめ、中黒「・」の文字を右端から並べる（2026-09-15）。
@@ -365,7 +374,7 @@
     font-weight: 400;
     letter-spacing: -0.25em;
     color: rgba(58, 36, 16, 0.55);
-    min-width: 2mm; /* 4mm だと「（ジョッキ）」付きの品名が2〜4px足りず「…」で切れる（2026-09-14） */
+    min-width: 1.5mm; /* 4mm だと「（ジョッキ）」付きの品名が2〜4px足りず「…」で切れる（2026-09-14。09-24にさらに詰めた） */
   }
   .item .dots::before {
     content: "・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・";
@@ -687,8 +696,8 @@ const MENU = {
             { "name": "レバニラ炒め", "price": 980 },
             { "name": "肉のかたまり", "price": 980 },
             { "name": "ジャンボギョーザ3個", "price": 700 },
-            { "name": "ジャンボギョーザ5個", "price": 950 },
-            { "name": "揚げギョーザ5個", "price": 1000 },
+            { "name": "ジャンボギョーザ5個", "price": 920 },
+            { "name": "揚げギョーザ5個", "price": 980 },
             { "name": "ホイコーロー定食", "price": 980 },
             { "name": "昼だけど朝定食（温玉・納豆・餃子1ケ）", "price": 500 },
             { "name": "ニラ玉定食", "price": 850 },
@@ -698,7 +707,8 @@ const MENU = {
             { "name": "半ねぎラーメン", "price": 200 },
             { "name": "まんぷく定食（ねぎラーメン＋半チャーハン＋餃子2個）", "price": 980 }
           ],
-          "note": "ごはん・スープ・つけ物付"
+          "note": "ごはん・スープ・つけ物付",
+          "footNote": "定食の単品は、店員にお尋ねください"
         },
         {
           "name": "どんぶり",
@@ -743,8 +753,8 @@ const MENU = {
             { "name": "ソース焼きそば", "price": 700 },
             { "name": "揚げ焼きそば", "price": 950 },
             { "name": "五目あんかけ焼きそば", "price": 980 },
-            { "name": "ざる中華（5月〜10月）", "price": 500 },
-            { "name": "冷やし中華（5月〜10月）", "price": 800 },
+            { "name": "ざる中華（5月〜9月）", "price": 500 },
+            { "name": "冷やし中華（5月〜9月）", "price": 800 },
             { "name": "替え玉", "price": 200 }
           ]
         },
@@ -764,9 +774,9 @@ const MENU = {
             { "name": "半ライス", "price": 250 },
             { "name": "小ライス", "price": 200 },
             { "name": "のり玉ごはん", "price": 400 },
-            { "name": "ぎょーざごはん", "price": 400 },
+            { "name": "ぎょーざごはん（ギョーザ1ケ）", "price": 400 },
             { "name": "鳥玉ごはん", "price": 400 },
-            { "name": "しゃけごはん", "price": 400 },
+            { "name": "しゃけ玉ごはん", "price": 400 },
             { "name": "オムレツごはん", "price": 400 }
           ]
         },
@@ -785,7 +795,7 @@ const MENU = {
             { "name": "昔ながらのチャーシュー3枚", "price": 250 },
             { "name": "あぶり焼きチャーシュー1枚", "price": 200 },
             { "name": "特製チャーシュー1枚", "price": 200 },
-            { "name": "コーン", "price": 150 },
+            { "name": "コーン", "price": 100 },
             { "name": "バター", "price": 150 },
             { "name": "メンマ", "price": 150 },
             { "name": "煮玉子", "price": 150 },
@@ -805,7 +815,7 @@ const MENU = {
             { "name": "グレープフルーツサワー（ジョッキ）", "price": 550 },
             { "name": "ウーロンハイ（ジョッキ）", "price": 550 },
             { "name": "焼酎（甲類）ロック（グラス）", "price": 400 },
-            { "name": "焼酎（甲類）水割り（グラス）", "price": 400 },
+            { "name": "焼酎（甲類）水割り（ジョッキ）", "price": 400 },
             { "name": "日本酒 聖徳（1合）", "price": 500 }
           ]
         }
@@ -866,9 +876,10 @@ const MENU = {
             { "name": "肉野菜炒め", "price": 750 },
             { "name": "レバニラ炒め", "price": 780 },
             { "name": "若鶏から揚げ", "price": 750 },
-            { "name": "ニラ玉", "price": 600 },
-            { "name": "チャーシュー盛り", "price": 600 },
-            { "name": "春巻（5本）", "price": 500 }
+            { "name": "ニラ玉", "price": 650 },
+            { "name": "チャーシュー盛り", "price": 700 },
+            { "name": "春巻（5本）", "price": 600 },
+            { "name": "しじみ酒むし", "price": 500 }
           ]
         },
         {
@@ -906,9 +917,12 @@ const MENU = {
           ]
         },
         {
-          "name": "麺類（焼きそば）",
+          "name": "麺類（焼きそば・冷やし）",
           "items": [
             { "name": "ソース焼きそば", "price": 700 },
+            { "name": "五目あんかけ焼きそば", "price": 980 },
+            { "name": "ざる中華（5月〜9月）", "price": 500 },
+            { "name": "冷やし中華（5月〜9月）", "price": 800 },
             { "name": "替え玉", "price": 200 }
           ]
         },
@@ -928,9 +942,9 @@ const MENU = {
             { "name": "半ライス", "price": 250 },
             { "name": "小ライス", "price": 200 },
             { "name": "のり玉ごはん", "price": 400 },
-            { "name": "ぎょーざごはん", "price": 400 },
+            { "name": "ぎょーざごはん（ギョーザ1ケ）", "price": 400 },
             { "name": "鳥玉ごはん", "price": 400 },
-            { "name": "しゃけごはん", "price": 400 },
+            { "name": "しゃけ玉ごはん", "price": 400 },
             { "name": "オムレツごはん", "price": 400 }
           ]
         },
@@ -948,7 +962,7 @@ const MENU = {
             { "name": "昔ながらのチャーシュー3枚", "price": 250 },
             { "name": "あぶり焼きチャーシュー1枚", "price": 200 },
             { "name": "特製チャーシュー1枚", "price": 200 },
-            { "name": "コーン", "price": 150 },
+            { "name": "コーン", "price": 100 },
             { "name": "バター", "price": 150 },
             { "name": "メンマ", "price": 150 },
             { "name": "煮玉子", "price": 150 },
@@ -968,7 +982,7 @@ const MENU = {
             { "name": "グレープフルーツサワー（ジョッキ）", "price": 550 },
             { "name": "ウーロンハイ（ジョッキ）", "price": 550 },
             { "name": "焼酎（甲類）ロック（グラス）", "price": 400 },
-            { "name": "焼酎（甲類）水割り（グラス）", "price": 400 },
+            { "name": "焼酎（甲類）水割り（ジョッキ）", "price": 400 },
             { "name": "日本酒 聖徳（1合）", "price": 500 }
           ]
         }
@@ -1047,28 +1061,28 @@ const PAGES = [
     cols: [
       ['ラーメン（醤油）'],
       ['ラーメン（味噌）', 'ラーメン（塩）'],
-      ['トッピング', '@solo:替え玉|ラーメン替え玉'],
+      ['トッピング', '@solo:替え玉|ラーメン替え玉', 'スープ'],
       ['麺類（焼きそば・冷やし）', '@set', '@oomori-men'],
     ] },
   { day: 'weekday', face: 'ご飯の部', tune: 'tune-wd-gohan',
     cols: [
       ['定食', '@teishoku-oomori', '@solo:半ねぎラーメン'],
       ['どんぶり', 'チャーハン', 'ギョーザ'],
-      ['ご飯類', 'ごはん', 'スープ'],
+      ['ご飯類', 'ごはん'],
       ['@feature:まんぷく定食（ねぎラーメン＋半チャーハン＋餃子2個）', 'お飲み物', '@oomori-gohan'],
     ] },
   { day: 'weekend', face: '麺類の部', tune: 'tune-men tune-we',
     cols: [
       ['ラーメン（醤油）'],
       ['ラーメン（味噌）', 'ラーメン（塩）'],
-      ['トッピング', '@solo:替え玉|ラーメン替え玉'],
-      ['麺類（焼きそば）', '@set', '@oomori-men'],
+      ['トッピング', '@solo:替え玉|ラーメン替え玉', 'スープ'],
+      ['麺類（焼きそば・冷やし）', '@set', '@oomori-men'],
     ] },
   { day: 'weekend', face: 'ご飯の部', tune: 'tune-gohan tune-we',
     cols: [
       ['単品', 'チャーハン'],
       ['どんぶり', 'ご飯類', 'ギョーザ'],
-      ['ごはん', 'スープ', '@oomori-gohan'],
+      ['ごはん', '@oomori-gohan'],
       ['お飲み物'],
     ] },
 ];
@@ -1201,7 +1215,7 @@ function catBlock(cat, omit) {
   const note = cat.note ? `<small>${esc(cat.note)}</small>` : '';
   return `<section class="cat">
     <div class="cat-head ${bandOf(cat.name)}"><span class="cat-nm">${esc(catDisplayName(cat.name))}</span>${note}</div>
-    <div class="cat-body">${items.map(itemRow).join('')}</div>
+    <div class="cat-body">${items.map(itemRow).join('')}${cat.footNote ? `<div class="cat-foot">${esc(cat.footNote)}</div>` : ''}</div>
   </section>`;
 }
 
@@ -1277,7 +1291,8 @@ function specialBlock(token, day) {
     return `<section class="banner-oomori">${t}</section>`;
   }
   if (token === '@oomori-gohan') {
-    return `<section class="infobox">ご飯類の大盛りは<b>＋200円</b>にて承ります。</section>`;
+    /* 2026-09-24 店主指示「大きく」。麺類面の赤バナーと同じ見せ方にして目立たせる */
+    return `<section class="banner-oomori">ご飯類 <span class="big">大盛り ＋200円</span></section>`;
   }
   if (token === '@teishoku-oomori') {
     /* 定食枠の直下に置く注記（依頼主指示 2026-09-12） */
