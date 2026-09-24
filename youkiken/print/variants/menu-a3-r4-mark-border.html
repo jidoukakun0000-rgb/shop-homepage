@@ -1089,9 +1089,15 @@ let MARK_SEQ = 0;
    （担当者「気に食わん」→ 8案から「箸と麺」を選択） */
 function ramenMarkLarge() {
   const uid = 'bowl' + (++MARK_SEQ);
-  // 雷文（らいもん）のひとコマ。丼の胴に金で並べる
-  const key = (x) => `<path transform="translate(${x} 92)" d="M-5 4 V-4 H5 V4 H-0.5 V-0.5 H2.5"/>`;
-  const keys = [22, 38, 54, 70, 86, 102].map(key).join('');
+  // 雷文（らいもん）。縁の枠と同じ折れ線データ（tools/raimon-frame.py の PAIR、渦2つで1組）を
+  // 0.42倍で2組、丼の胴に赤線で並べる（2026-09-24 担当者「枠と同じ形に」）
+  const PAIR = [[11,14],[25,14],[25,25],[3,25],[3,3],[36,3],[36,25],[69,25],[69,3],[47,3],[47,14],[61,14]];
+  const RS = 0.42, RTOP = 83, RN = 2, RPERIOD = 77, RGAP = 5;
+  const rx0 = 60 - (RN * RPERIOD - RGAP) * RS / 2;
+  const keys = Array.from({length: RN}, (_, i) => {
+    const ox = rx0 + i * RPERIOD * RS;
+    return '<path d="M' + PAIR.map(([x, y]) => `${(ox + x*RS).toFixed(2)} ${(RTOP + y*RS).toFixed(2)}`).join('L') + '"/>';
+  }).join('');
   const bowl = 'M18 72 C18 94 36 106 60 106 C84 106 102 94 102 72';
   return `<svg class="mark-lg" viewBox="0 0 120 120" role="img" aria-label="陽気軒 箸で麺を持ち上げるマーク">
   <defs>
@@ -1107,8 +1113,7 @@ function ramenMarkLarge() {
   <!-- 丼の胴 -->
   <path d="${bowl} Z" fill="#FFFDF4" stroke="#9E2208" stroke-width="3.4" stroke-linejoin="round"/>
   <g clip-path="url(#${uid})">
-    <rect x="12" y="85" width="96" height="14" fill="#9E2208"/>
-    <g fill="none" stroke="#C89B3C" stroke-width="2.4" stroke-linejoin="miter" stroke-linecap="butt">${keys}</g>
+    <g fill="none" stroke="#9E2208" stroke-width="${(6*RS).toFixed(2)}" stroke-linejoin="miter" stroke-linecap="butt">${keys}</g>
   </g>
   <path d="${bowl}" fill="none" stroke="#9E2208" stroke-width="3.4" stroke-linejoin="round"/>
   <!-- 丼の口（縁） -->
