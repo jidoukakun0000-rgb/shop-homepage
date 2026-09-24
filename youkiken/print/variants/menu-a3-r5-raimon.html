@@ -1070,14 +1070,38 @@ let MARK_SEQ = 0;
 function ramenMarkLarge() {
   const uid = 'bowl' + (++MARK_SEQ);
   // 雷文（らいもん）。縁の枠と同じ折れ線データ（tools/raimon-frame.py の PAIR、渦2つで1組）を
-  // 0.42倍で2組、丼の胴に赤線で並べる（2026-09-24 担当者「枠と同じ形に」）
+  // 0.36倍で3組、器の胴に巻き付けて赤線で描く（2026-09-24 担当者「枠と同じ形に」「器の曲線に合わせて」）。
+  // 巻き付け: 横は円筒に巻く（端ほど詰まる）、縦は口の楕円と平行な弧の分だけ下げる
   const PAIR = [[11,14],[25,14],[25,25],[3,25],[3,3],[36,3],[36,25],[69,25],[69,3],[47,3],[47,14],[61,14]];
-  const RS = 0.42, RTOP = 83, RN = 2, RPERIOD = 77, RGAP = 5;
+  const RS = 0.36, RTOP = 79, RN = 3, RPERIOD = 77, RGAP = 5, RW = 40, RX = 42, RY = 9.5;
+  const wrap = (x, y) => {
+    const u = Math.max(-1.5, Math.min(1.5, (x - 60) / RW));
+    const xx = 60 + RW * Math.sin(u);
+    const t = (xx - 60) / RX;
+    return [xx, y + RY * Math.sqrt(Math.max(0, 1 - t * t))];
+  };
+  const pt = ([x, y]) => `${x.toFixed(2)} ${y.toFixed(2)}`;
   const rx0 = 60 - (RN * RPERIOD - RGAP) * RS / 2;
   const keys = Array.from({length: RN}, (_, i) => {
     const ox = rx0 + i * RPERIOD * RS;
-    return '<path d="M' + PAIR.map(([x, y]) => `${(ox + x*RS).toFixed(2)} ${(RTOP + y*RS).toFixed(2)}`).join('L') + '"/>';
+    const pts = [];
+    for (let k = 0; k < PAIR.length - 1; k++) {
+      const [ax, ay] = PAIR[k], [bx, by] = PAIR[k + 1];
+      for (let j = 0; j < 6; j++) {
+        const f = j / 6;
+        pts.push(wrap(ox + (ax + (bx - ax) * f) * RS, RTOP + (ay + (by - ay) * f) * RS));
+      }
+    }
+    pts.push(wrap(ox + PAIR[PAIR.length - 1][0] * RS, RTOP + PAIR[PAIR.length - 1][1] * RS));
+    return '<path d="M' + pts.map(pt).join('L') + '"/>';
   }).join('');
+  // 帯の上下の細い罫（同じ弧）
+  const rule = (y) => {
+    const pts = [];
+    for (let x = 10; x <= 110; x += 2) pts.push(wrap(x, y));
+    return `<path d="M${pts.map(pt).join('L')}" fill="none" stroke="#9E2208" stroke-width="1"/>`;
+  };
+  const rules = rule(RTOP - 1.5) + rule(RTOP + 28 * RS + 1.5);
   const bowl = 'M18 72 C18 94 36 106 60 106 C84 106 102 94 102 72';
   return `<svg class="mark-lg" viewBox="0 0 120 120" role="img" aria-label="陽気軒 箸で麺を持ち上げるマーク">
   <defs>
@@ -1093,6 +1117,7 @@ function ramenMarkLarge() {
   <!-- 丼の胴 -->
   <path d="${bowl} Z" fill="#FFFDF4" stroke="#9E2208" stroke-width="3.4" stroke-linejoin="round"/>
   <g clip-path="url(#${uid})">
+    ${rules}
     <g fill="none" stroke="#9E2208" stroke-width="${(6*RS).toFixed(2)}" stroke-linejoin="miter" stroke-linecap="butt">${keys}</g>
   </g>
   <path d="${bowl}" fill="none" stroke="#9E2208" stroke-width="3.4" stroke-linejoin="round"/>
