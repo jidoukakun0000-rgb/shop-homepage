@@ -543,6 +543,9 @@
     box-shadow: 0.7mm 0.7mm 0 rgba(110, 50, 10, 0.2);
   }
   .infobox b { color: #C1170C; }
+  /* ご飯類の大盛り案内（店主「大きく」）。赤ベタの帯は主張が強すぎたので、元の細枠の文章のまま字だけ大きくした（2026-09-24） */
+  .infobox-lg { font-size: 13pt; padding: 3.2mm 4mm; line-height: 1.55; text-align: center; }
+  .infobox-lg b { font-size: 15pt; }
   .banner-oomori {
     background: linear-gradient(180deg, #D3301A, #9E1808);
     color: #fff;
@@ -1290,8 +1293,8 @@ function specialBlock(token, day) {
     return `<section class="banner-oomori">${t}</section>`;
   }
   if (token === '@oomori-gohan') {
-    /* 2026-09-24 店主指示「大きく」。麺類面の赤バナーと同じ見せ方にして目立たせる */
-    return `<section class="banner-oomori">ご飯類 <span class="big">大盛り ＋200円</span></section>`;
+    /* 2026-09-24 店主指示「大きく」。赤バナーは主張が強すぎたので、元の細枠の文章のまま字を大きくする */
+    return `<section class="infobox infobox-lg">ご飯類の大盛りは<br><b>＋200円</b>にて承ります。</section>`;
   }
   if (token === '@teishoku-oomori') {
     /* 定食枠の直下に置く注記（依頼主指示 2026-09-12） */
