@@ -1080,13 +1080,6 @@ function ramenMarkLarge() {
   <circle cx="60" cy="60" r="60" fill="#9E2208"/>
   <circle cx="60" cy="60" r="54" fill="none" stroke="#C89B3C" stroke-width="2.2"/>
   <circle cx="60" cy="60" r="47" fill="#FCF5E3"/>
-  <!-- 麺4本（箸先から丼へ。縁の後ろに隠れて丼に入って見える） -->
-  <g fill="none" stroke="#C89B3C" stroke-width="3.4" stroke-linecap="round">
-    <path d="M58 44 C52 52 56 62 48 76"/>
-    <path d="M60 44 C56 54 60 64 55 78"/>
-    <path d="M62 44 C66 54 63 64 68 78"/>
-    <path d="M63 44 C71 52 70 62 75 76"/>
-  </g>
   <!-- 箸（枠の内側に収める） -->
   <g stroke="#9E2208" stroke-linecap="round" stroke-width="5">
     <path d="M80 19 L58 42"/><path d="M90 27 L63 44"/>
@@ -1101,6 +1094,13 @@ function ramenMarkLarge() {
   <!-- 丼の口（縁） -->
   <ellipse cx="60" cy="72" rx="42" ry="9.5" fill="#FCF5E3" stroke="#9E2208" stroke-width="3.2"/>
   <ellipse cx="60" cy="72" rx="33" ry="5.6" fill="#9E2208"/>
+  <!-- 麺4本（箸先からスープの中へ。縁より手前に描き、スープの楕円の中で終える） -->
+  <g fill="none" stroke="#C89B3C" stroke-width="3.4" stroke-linecap="round">
+    <path d="M58 44 C52 52 56 62 50 73"/>
+    <path d="M60 44 C56 54 60 64 56 74"/>
+    <path d="M62 44 C66 54 63 64 66 74"/>
+    <path d="M63 44 C71 52 70 62 72 73"/>
+  </g>
 </svg>`;
 }
 
@@ -1110,13 +1110,13 @@ function ramenMarkSmall() {
   <circle cx="60" cy="60" r="60" fill="#9E2208"/>
   <circle cx="60" cy="60" r="53" fill="none" stroke="#FFE9A8" stroke-width="6"/>
   <circle cx="60" cy="60" r="46" fill="#FCF5E3"/>
-  <g fill="none" stroke="#C89B3C" stroke-width="7" stroke-linecap="round">
-    <path d="M56 44 C52 54 56 64 52 74"/><path d="M64 44 C68 54 64 64 68 74"/>
-  </g>
   <g stroke="#9E2208" stroke-linecap="round" stroke-width="8"><path d="M82 20 L58 42"/><path d="M92 30 L64 44"/></g>
   <path d="M23 71 C23 92 40 101 60 101 C80 101 97 92 97 71 Z" fill="#9E2208"/>
   <ellipse cx="60" cy="71" rx="38" ry="9" fill="#9E2208"/>
   <ellipse cx="60" cy="71" rx="28" ry="5" fill="#FCF5E3"/>
+  <g fill="none" stroke="#C89B3C" stroke-width="7" stroke-linecap="round">
+    <path d="M56 44 C52 54 56 64 54 72"/><path d="M64 44 C68 54 64 64 66 72"/>
+  </g>
 </svg>`;
 }
 
