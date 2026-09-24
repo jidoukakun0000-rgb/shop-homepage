@@ -376,7 +376,7 @@
      tune-men＝麺類2面（品名13pt・行間1.5）。13.5ptはトッピングの長い品名が「…」で切れるため不可
      （品名12pt以上・省略なし、を両立できる上限が13pt）
      tune-gohan＝土日祝ご飯面（品数が少ないぶん行間1.65でさらに広げる。品名は12.5ptのまま） */
-  .page.tune-men .item { font-size: 13pt; line-height: 1.5; padding: 2.6mm 0; }
+  .page.tune-men .item { font-size: 13pt; line-height: 1.5; padding: 2.2mm 0; } /* しじみラーメン追加で塩の列が36pxあふれたため2.6→2.2mm（2026-09-24） */
   .page.tune-men .item .pr { font-size: 14pt; }
   .page.tune-men .col { gap: 7mm; }
   .page.tune-men .cat-body { padding: 2mm 3mm 2.4mm; }
@@ -663,13 +663,13 @@ const MENU = {
             { "name": "えびそば（ラーメン）", "price": 980 },
             { "name": "ギョーザラーメン", "price": 900 },
             { "name": "五目ラーメン", "price": 850 },
-            { "name": "もやしあんかけラーメン", "price": 880 }
+            { "name": "もやしあんかけラーメン", "price": 880 },
+            { "name": "しじみラーメン", "price": 780 }
           ]
         },
         {
           "name": "定食",
           "items": [
-            { "name": "陽気定食", "price": 880 },
             { "name": "チャーシューエッグ", "price": 980 },
             { "name": "野菜炒め", "price": 850 },
             { "name": "肉野菜炒め", "price": 950 },
@@ -754,7 +754,7 @@ const MENU = {
             { "name": "半ライス", "price": 250 },
             { "name": "小ライス", "price": 200 },
             { "name": "のり玉ごはん", "price": 400 },
-            { "name": "ぎょーざごはん（ギョーザ1ケ）", "price": 400 },
+            { "name": "ギョーザごはん（ギョーザ1ケ）", "price": 400 },
             { "name": "鳥玉ごはん", "price": 400 },
             { "name": "しゃけ玉ごはん", "price": 400 },
             { "name": "オムレツごはん", "price": 400 }
@@ -844,7 +844,8 @@ const MENU = {
             { "name": "えびそば（ラーメン）", "price": 980 },
             { "name": "ギョーザラーメン", "price": 900 },
             { "name": "五目ラーメン", "price": 850 },
-            { "name": "もやしあんかけラーメン", "price": 880 }
+            { "name": "もやしあんかけラーメン", "price": 880 },
+            { "name": "しじみラーメン", "price": 780 }
           ]
         },
         {
@@ -922,7 +923,7 @@ const MENU = {
             { "name": "半ライス", "price": 250 },
             { "name": "小ライス", "price": 200 },
             { "name": "のり玉ごはん", "price": 400 },
-            { "name": "ぎょーざごはん（ギョーザ1ケ）", "price": 400 },
+            { "name": "ギョーザごはん（ギョーザ1ケ）", "price": 400 },
             { "name": "鳥玉ごはん", "price": 400 },
             { "name": "しゃけ玉ごはん", "price": 400 },
             { "name": "オムレツごはん", "price": 400 }
