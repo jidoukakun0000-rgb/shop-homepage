@@ -1268,7 +1268,7 @@ function specialBlock(token, day) {
   if (token === '@oomori-men') {
     /* シートは日別なので、他日の言及は一切載せない（依頼主指示 2026-09-12〜13） */
     const t = day === 'weekday'
-      ? '麺類 <span class="big">大盛り無料</span>！'
+      ? '麺類 <span class="big">大盛り無料</span>'
       : '麺類大盛り <span class="big">＋200円</span>';
     return `<section class="banner-oomori">${t}</section>`;
   }
