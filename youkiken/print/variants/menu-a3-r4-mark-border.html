@@ -352,15 +352,6 @@
     letter-spacing: 0.01em;
   }
   .item .nm .paren { font-size: 8.5pt; }
-  /* 欄の中の最後に出す注記（menu.json の footNote）。2026-09-24に定食欄の「単品価格は店員にお尋ねください」で追加 */
-  .cat-foot {
-    margin-top: 1.2mm;
-    padding-top: 1.2mm;
-    border-top: 0.25mm dotted rgba(180, 130, 55, 0.7);
-    font-size: 9.5pt;
-    font-weight: 700;
-    color: #6b4a2a;
-  }
   .item .dots {
     flex: 1;
     /* 点線は border の dotted をやめ、中黒「・」の文字を右端から並べる（2026-09-15）。
@@ -709,8 +700,7 @@ const MENU = {
             { "name": "半ねぎラーメン", "price": 200 },
             { "name": "まんぷく定食（ねぎラーメン＋半チャーハン＋餃子2個）", "price": 980 }
           ],
-          "note": "ごはん・スープ・つけ物付",
-          "footNote": "定食の単品は、店員にお尋ねください"
+          "note": "ごはん・スープ・つけ物付"
         },
         {
           "name": "どんぶり",
@@ -1066,7 +1056,7 @@ const PAGES = [
     ] },
   { day: 'weekday', face: 'ご飯の部', tune: 'tune-wd-gohan',
     cols: [
-      ['定食', '@teishoku-oomori', '@solo:半ねぎラーメン'],
+      ['定食', '@teishoku-oomori', '@teishoku-tanpin', '@solo:半ねぎラーメン'],
       ['どんぶり', 'チャーハン'],
       ['ご飯類', 'ごはん', '@oomori-gohan'],
       ['ギョーザ', '@feature:まんぷく定食（ねぎラーメン＋半チャーハン＋餃子2個）', 'お飲み物'],
@@ -1215,7 +1205,7 @@ function catBlock(cat, omit) {
   const note = cat.note ? `<small>${esc(cat.note)}</small>` : '';
   return `<section class="cat">
     <div class="cat-head ${bandOf(cat.name)}"><span class="cat-nm">${esc(catDisplayName(cat.name))}</span>${note}</div>
-    <div class="cat-body">${items.map(itemRow).join('')}${cat.footNote ? `<div class="cat-foot">${esc(cat.footNote)}</div>` : ''}</div>
+    <div class="cat-body">${items.map(itemRow).join('')}</div>
   </section>`;
 }
 
@@ -1293,6 +1283,10 @@ function specialBlock(token, day) {
   if (token === '@oomori-gohan') {
     /* 2026-09-24 店主指示「大きく」。赤バナーは主張が強すぎたので、元の細枠の文章のまま字を大きくする */
     return `<section class="infobox infobox-lg">ご飯類の大盛り　<b>＋200円</b></section>`;
+  }
+  if (token === '@teishoku-tanpin') {
+    /* 2026-09-24 担当者指示。定食欄の中ではなく、大盛り注記の下に独立した枠で出す */
+    return `<section class="infobox">定食の単品注文は、店員にお尋ねください</section>`;
   }
   if (token === '@teishoku-oomori') {
     /* 定食枠の直下に置く注記（依頼主指示 2026-09-12） */
