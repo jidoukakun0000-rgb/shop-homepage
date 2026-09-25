@@ -41,7 +41,7 @@
 - **本番: `variants/menu-a3-r5-raimon.html`**（＝ r4 に雷文の枠を差し込んだもの）
 - **ベース: `variants/menu-a3-r4-mark-border.html`。枠以外の変更は必ずこちらに入れる**（r5に直接書いても再生成で消える）
 - `tools/raimon-frame.py` … r5に雷文の枠をインラインSVGで書き込む。`variants/` 内で実行
-- `tools/render.sh` … HTML→PDF→確認用PNG（4面・約216dpi）。必ず `--headless=old`（新ヘッドレスは1ページしか出ない）
+- `tools/render.sh` … HTML→PDF→確認用PNG（4面・約216dpi）。必ず `--headless=old`（新ヘッドレスは1ページしか出ない）。2026-09-25から、平日だけ（`*-heijitsu.pdf`＝p1-2）と土日祝だけ（`*-donichi.pdf`＝p3-4）に分けたPDFも同時に出す（コンビニで日ごとに刷るため。pypdf を使う）
 - `reference/raimon-sample.png` … 雷文の見本画像。`reference/manpuku-boy.png` … キャラの切り抜き原本
 - 再生成手順:
   ```

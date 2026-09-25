@@ -2,5 +2,7 @@
 *.pdf
 *-p[0-9].png
 
-# 本番の入稿用PDFだけは追跡する
+# 本番の入稿用PDFだけは追跡する（平日・土日祝に分けたものも）
 !variants/menu-a3-r5-raimon.pdf
+!variants/menu-a3-r5-raimon-heijitsu.pdf
+!variants/menu-a3-r5-raimon-donichi.pdf

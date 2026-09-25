@@ -24,3 +24,16 @@ for i in range(1, n+1):
     Quartz.CGImageDestinationAddImage(d, img, None); Quartz.CGImageDestinationFinalize(d)
 print('pages', n)
 PY
+# 平日（p1-2）と土日祝（p3-4）に分けたPDFも出す（コンビニで日ごとに刷るため。2026-09-25）
+python3 - "$OUT" <<'PY'
+import sys
+from pypdf import PdfReader, PdfWriter
+src = sys.argv[1]; prefix = src[:-4]
+r = PdfReader(src)
+if len(r.pages) == 4:
+    for tag, idx in (('heijitsu', (0, 1)), ('donichi', (2, 3))):
+        w = PdfWriter()
+        for i in idx: w.add_page(r.pages[i])
+        w.write(f'{prefix}-{tag}.pdf')
+    print('split ok')
+PY
