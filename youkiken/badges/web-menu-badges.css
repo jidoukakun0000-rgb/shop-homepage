@@ -1,0 +1,58 @@
+:root {
+  --badge-takeout: #c2410c;
+  --badge-extra-large: #7a4a18;
+  --badge-text: #fff;
+}
+
+.menu-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.menu-heading__name {
+  margin-inline-end: 0.1rem;
+}
+
+.menu-badge {
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  block-size: 2rem;
+  color: var(--badge-text);
+  font: 700 0.875rem/1 -apple-system, BlinkMacSystemFont, "Hiragino Sans",
+    "Yu Gothic", sans-serif;
+  white-space: nowrap;
+}
+
+.menu-badge--extra-large {
+  min-inline-size: 4.75rem;
+  padding-inline: 0.65rem;
+  border-radius: 0.5rem;
+  background: var(--badge-extra-large);
+}
+
+.menu-badge--takeout {
+  inline-size: 2rem;
+  border-radius: 0.45rem;
+  background: var(--badge-takeout);
+  font-size: 0.6875rem;
+  letter-spacing: -0.06em;
+}
+
+.menu-heading__price {
+  margin-inline-start: auto;
+}
+
+.menu-badge-legend--web {
+  position: sticky;
+  z-index: 10;
+  top: var(--site-header-height, 0);
+}
+
+@media print {
+  .menu-badge-legend--web {
+    display: none;
+  }
+}

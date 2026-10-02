@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>陽気軒 メニュー表 A3｜r3 囲み罫・見出しリッチ案</title>
+<!--
+  陽気軒 紙メニュー改訂 A3版下の叩き台
+  - A3横（420×297mm）× 表裏。表＝麺類の部、裏＝ご飯の部（平日・土日祝の計4面）
+  - データはこのファイル内に埋め込んだ menu.json（2026-06版）のコピー。確定後に差し替える
+  - 塗り足し3mmは業者仕様確定後に付ける（現状は仕上がり寸のみ）
+  - あふれ検出：カラムが縦にあふれると赤い「あふれ」タグが付く。未配置カテゴリは上部に赤帯で警告
+  出力例: chrome --headless --print-to-pdf=menu-a3-draft.pdf --no-pdf-header-footer menu-a3-draft.html
+-->
+<style>
+  :root {
+    --paper: #FCF5E3;
+    --paper-deep: #F7E9C8;
+    --ink: #3A2410;
+    --orange: #E8780A;
+    --orange-deep: #C75B00;
+    --red: #B5442A;
+    --blue: #3F7CB8;
+    --brown: #7A4A18;
+    --takeout: #C2410C;
+    --frame: #8C3A12;
+    --corner-tl: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2244%22%20height%3D%2244%22%20viewBox%3D%220%200%2044%2044%22%3E%3Cg%20transform%3D%22rotate%280%2022%2022%29%22%3E%3Cpath%20d%3D%22M4%2040%20V4%20H40%20M4%2028%20V16%20H28%20M16%204%20H28%20M16%2016%20H16%22%20fill%3D%22none%22%20stroke%3D%22%23B8862B%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22square%22%2F%3E%3Cpath%20d%3D%22M10%2034%20V10%20H34%22%20fill%3D%22none%22%20stroke%3D%22%238C3A12%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    --corner-tr: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2244%22%20height%3D%2244%22%20viewBox%3D%220%200%2044%2044%22%3E%3Cg%20transform%3D%22rotate%2890%2022%2022%29%22%3E%3Cpath%20d%3D%22M4%2040%20V4%20H40%20M4%2028%20V16%20H28%20M16%204%20H28%20M16%2016%20H16%22%20fill%3D%22none%22%20stroke%3D%22%23B8862B%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22square%22%2F%3E%3Cpath%20d%3D%22M10%2034%20V10%20H34%22%20fill%3D%22none%22%20stroke%3D%22%238C3A12%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    --corner-br: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2244%22%20height%3D%2244%22%20viewBox%3D%220%200%2044%2044%22%3E%3Cg%20transform%3D%22rotate%28180%2022%2022%29%22%3E%3Cpath%20d%3D%22M4%2040%20V4%20H40%20M4%2028%20V16%20H28%20M16%204%20H28%20M16%2016%20H16%22%20fill%3D%22none%22%20stroke%3D%22%23B8862B%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22square%22%2F%3E%3Cpath%20d%3D%22M10%2034%20V10%20H34%22%20fill%3D%22none%22%20stroke%3D%22%238C3A12%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    --corner-bl: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2244%22%20height%3D%2244%22%20viewBox%3D%220%200%2044%2044%22%3E%3Cg%20transform%3D%22rotate%28270%2022%2022%29%22%3E%3Cpath%20d%3D%22M4%2040%20V4%20H40%20M4%2028%20V16%20H28%20M16%204%20H28%20M16%2016%20H16%22%20fill%3D%22none%22%20stroke%3D%22%23B8862B%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22square%22%2F%3E%3Cpath%20d%3D%22M10%2034%20V10%20H34%22%20fill%3D%22none%22%20stroke%3D%22%238C3A12%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22square%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #888; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+    color: var(--ink);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @page { size: 420mm 297mm; margin: 0; }
+
+  .page {
+    position: relative;
+    width: 420mm;
+    height: 297mm;
+    background: radial-gradient(ellipse 120% 100% at 50% 40%, #FDF8EA 0%, var(--paper) 55%, #F5E6C0 100%);
+    overflow: hidden;
+    page-break-after: always;
+    margin: 0 auto 10px;
+  }
+  @media print { .page { margin: 0; } }
+
+  /* ── 雷文（らいもん）の縁：深紅の帯に金の雷文 ─────── */
+  /* 現物メニュー同様、縁はオレンジの太帯。四隅にだけ雷文の飾りを置く */
+  .raimon {
+    position: absolute;
+    inset: 5mm;
+    border: 1mm solid #E8780A;
+    border-radius: 2mm;
+    pointer-events: none;
+  }
+  /* 内側にもう一本細いオレンジ罫を回して二重枠にする（現物の帯の雰囲気） */
+  .raimon::before {
+    content: '';
+    position: absolute;
+    inset: 1.6mm;
+    border: 0.35mm solid rgba(232, 120, 10, 0.55);
+    border-radius: 1.2mm;
+  }
+  /* 四隅にだけ雷文の角飾りを置く（全周に回すのは不採用） */
+  .raimon::after {
+    content: '';
+    position: absolute;
+    inset: 2.6mm;
+    background-image: var(--corner-tl), var(--corner-tr), var(--corner-br), var(--corner-bl);
+    background-position: left top, right top, right bottom, left bottom;
+    background-repeat: no-repeat;
+    background-size: 11mm 11mm;
+    pointer-events: none;
+  }
+  .page-inner {
+    position: absolute;
+    inset: 12mm 12mm 11mm;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── ヘッダー ─────────────────────────── */
+  .head {
+    display: flex;
+    align-items: stretch;
+    gap: 6mm;
+    margin-bottom: 4mm;
+  }
+  .shop {
+    display: flex;
+    align-items: center;
+    gap: 4mm;
+  }
+  .hanko {
+    width: 16mm;
+    height: 18mm;
+    background: linear-gradient(160deg, #D3301A, #9E1808);
+    color: #fff;
+    font-family: "Hiragino Mincho ProN", serif;
+    font-size: 9pt;
+    font-weight: 700;
+    writing-mode: vertical-rl;
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.5mm;
+    box-shadow: 0.6mm 0.6mm 0 rgba(90, 30, 5, 0.3);
+  }
+  /* 店名は袋文字（クリームの縁取り＋ハードな影）で大きく */
+  .shop-name {
+    font-family: "Hiragino Mincho ProN", serif;
+    font-size: 55pt;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    color: #96170A;
+    white-space: nowrap;
+    /* 二重の縁取り：内側にクリーム、外側に金茶。最後にハードシャドウ
+       （角が尖らないよう斜め方向は半径を 1/√2 に落として円形に近づける） */
+    text-shadow:
+      -0.5mm 0 0 #FFF7E4, 0.5mm 0 0 #FFF7E4, 0 -0.5mm 0 #FFF7E4, 0 0.5mm 0 #FFF7E4,
+      -0.35mm -0.35mm 0 #FFF7E4, 0.35mm -0.35mm 0 #FFF7E4,
+      -0.35mm 0.35mm 0 #FFF7E4, 0.35mm 0.35mm 0 #FFF7E4,
+      -0.95mm 0 0 #C8912F, 0.95mm 0 0 #C8912F, 0 -0.95mm 0 #C8912F, 0 0.95mm 0 #C8912F,
+      -0.88mm -0.36mm 0 #C8912F, 0.88mm -0.36mm 0 #C8912F,
+      -0.88mm 0.36mm 0 #C8912F, 0.88mm 0.36mm 0 #C8912F,
+      -0.36mm -0.88mm 0 #C8912F, 0.36mm -0.88mm 0 #C8912F,
+      -0.36mm 0.88mm 0 #C8912F, 0.36mm 0.88mm 0 #C8912F,
+      -0.67mm -0.67mm 0 #C8912F, 0.67mm -0.67mm 0 #C8912F,
+      -0.67mm 0.67mm 0 #C8912F, 0.67mm 0.67mm 0 #C8912F,
+      1.7mm 1.7mm 0 rgba(140, 58, 18, 0.38);
+  }
+  .shop-sub {
+    font-family: "Hiragino Mincho ProN", serif;
+    font-size: 12pt;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: #6B3A16;
+    writing-mode: vertical-rl;
+  }
+  /* 面タイトル：両端を斜めにカットしたリボン形。左右に◆の飾り罫を添える */
+  .face-title {
+    position: relative;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    gap: 4mm;
+    background: linear-gradient(180deg, #C13A1E, #8C1E08);
+    color: #fff;
+    font-size: 27pt;
+    font-weight: 800;
+    letter-spacing: 0.28em;
+    padding: 3mm 8mm;
+    white-space: nowrap;
+    clip-path: polygon(4mm 0, 100% 0, calc(100% - 4mm) 100%, 0 100%);
+    text-shadow:
+      -0.3mm -0.3mm 0 #6B1004, 0.3mm -0.3mm 0 #6B1004,
+      -0.3mm 0.3mm 0 #6B1004, 0.3mm 0.3mm 0 #6B1004,
+      0.8mm 0.8mm 0 rgba(0, 0, 0, 0.3);
+  }
+  .face-title::before,
+  .face-title::after {
+    content: '◆';
+    font-size: 10pt;
+    letter-spacing: 0;
+    color: #FFD98A;
+    text-shadow: none;
+    line-height: 1;
+    transform: translateY(-0.6mm);
+  }
+  .face-title .ft-txt { display: inline-block; }
+  /* リボンの落ち影（ハードシャドウ）を別レイヤーで敷く */
+  .face-wrap { position: relative; align-self: center; display: inline-flex; }
+  .face-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translate(0.8mm, 0.8mm);
+    background: rgba(90, 30, 5, 0.34);
+    clip-path: polygon(4mm 0, 100% 0, calc(100% - 4mm) 100%, 0 100%);
+  }
+  .day-tag {
+    align-self: center;
+    background: linear-gradient(180deg, #F0A21E, #D97B06);
+    color: #fff;
+    font-size: 16pt;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    padding: 2.5mm 6mm;
+    border-radius: 99mm;
+    white-space: nowrap;
+    border: 0.5mm solid #FFF1CF;
+    box-shadow: 0.7mm 0.7mm 0 rgba(90, 30, 5, 0.35);
+    text-shadow:
+      -0.25mm -0.25mm 0 #A24E00, 0.25mm -0.25mm 0 #A24E00,
+      -0.25mm 0.25mm 0 #A24E00, 0.25mm 0.25mm 0 #A24E00;
+  }
+  .head-spacer { flex: 1; }
+
+  /* ── 凡例（各ページ右上） ─────────────────── */
+  .legend {
+    position: relative;
+    border: 0.7mm solid var(--brown);
+    border-radius: 2mm;
+    background: #fff;
+    padding: 3.2mm 4.6mm;
+    font-size: 9pt;
+    line-height: 1.55;
+    max-width: 150mm;
+    box-shadow: 0.7mm 0.7mm 0 rgba(110, 50, 10, 0.2);
+  }
+  /* 額縁のような内側の細罫 */
+  .legend::before {
+    content: '';
+    position: absolute;
+    inset: 1.1mm;
+    border: 0.22mm solid rgba(122, 74, 24, 0.42);
+    border-radius: 1.2mm;
+    pointer-events: none;
+  }
+  .legend-title { font-weight: 700; font-size: 9.5pt; margin-bottom: 1mm; }
+  .legend .row-note { color: var(--ink); }
+
+  /* ── バッジ（v2仕様：塗り＝注文オプション、枠＝おすすめ） ── */
+  .badge {
+    display: inline-block;
+    font-size: 8pt;
+    font-weight: 700;
+    line-height: 1;
+    padding: 1.1mm 1.6mm;
+    border-radius: 1.2mm;
+    vertical-align: 0.2mm;
+    white-space: nowrap;
+  }
+  .badge-ninki { border: 0.5mm solid var(--red); color: var(--red); background: #fff; }
+  .badge-meibutsu { border: 0.5mm solid var(--orange-deep); color: var(--orange-deep); background: #fff; }
+  /* 1文字バッジ「特」「持」（行内で潰れないサイズ。意味は右上凡例で説明） */
+  .kbadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 5mm;
+    height: 5mm;
+    border-radius: 1.1mm;
+    color: #fff;
+    font-size: 10.5pt;
+    font-weight: 800;
+    line-height: 1;
+    vertical-align: -1.2mm;
+  }
+  .kbadge-toku { background: var(--brown); }
+  .kbadge-mochi { background: var(--takeout); }
+  .legend .kbadge { width: 6.5mm; height: 6.5mm; font-size: 13pt; vertical-align: -1.8mm; }
+
+  /* ── 本体：4カラム ───────────────────── */
+  .cols {
+    flex: 1;
+    display: flex;
+    gap: 6mm;
+    min-height: 0;
+  }
+  .col {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4mm;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── カテゴリブロック：リボン形の見出し帯＋額縁の本文枠 ───── */
+  .cat { break-inside: avoid; position: relative; }
+  /* 見出し帯：右端を斜めにカットしたリボン。左には濃色の台形タブ */
+  .cat-head {
+    position: relative;
+    color: #fff;
+    font-size: 15.5pt;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    padding: 0 4mm 0 0;
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 4.5mm) 100%, 0 100%);
+    filter: drop-shadow(0.7mm 0.7mm 0 rgba(140, 60, 20, 0.22));
+  }
+  /* 左の台形タブ（濃色）＋白の袋文字 */
+  .cat-head { align-items: stretch; }
+  .cat-head .cat-nm {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    letter-spacing: 0.1em;
+    padding: 1.9mm 5.5mm 1.9mm 4mm;
+    background: rgba(74, 26, 4, 0.28);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 3.2mm) 100%, 0 100%);
+    text-shadow:
+      -0.3mm -0.3mm 0 var(--cc-ink), 0 -0.3mm 0 var(--cc-ink), 0.3mm -0.3mm 0 var(--cc-ink),
+      -0.3mm 0 0 var(--cc-ink), 0.3mm 0 0 var(--cc-ink),
+      -0.3mm 0.3mm 0 var(--cc-ink), 0 0.3mm 0 var(--cc-ink), 0.3mm 0.3mm 0 var(--cc-ink);
+  }
+  .cat-head small {
+    align-self: center;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+    text-shadow: 0.3mm 0.3mm 0 rgba(74, 26, 4, 0.45);
+  }
+  /* 本文枠：外に濃色、内に淡色の二重罫で額縁のような品を出す */
+  .cat-body {
+    position: relative;
+    border: 0.5mm solid var(--cc-ink);
+    border-top: none;
+    background: #FFFDF4;
+    padding: 2.4mm 2.8mm 2.2mm;
+    box-shadow: 0.7mm 0.7mm 0 rgba(140, 60, 20, 0.18);
+  }
+  .cat-body::before {
+    content: '';
+    position: absolute;
+    inset: 1.1mm 1.1mm 1.1mm 1.1mm;
+    border: 0.25mm solid var(--cc-lite);
+    pointer-events: none;
+  }
+  .item {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 1.4mm;
+    padding: 1.4mm 0;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.18;
+  }
+  /* 品名は左寄せ・素直な字間（均等割り付けは判読性を損なうため不採用） */
+  .item .nm {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.01em;
+  }
+  .item .nm .paren { font-size: 8.5pt; }
+  .item .dots {
+    flex: 1;
+    border-bottom: 0.3mm dotted rgba(58, 36, 16, 0.4);
+    transform: translateY(-1mm);
+    min-width: 3mm;
+  }
+  /* 価格は特大太字で階層強調（数字だけ大きく、「円」は小さく） */
+  .item .pr {
+    font-weight: 800;
+    font-size: 15pt;
+    color: #8C1E08;
+    white-space: nowrap;
+    font-feature-settings: "tnum";
+    letter-spacing: -0.01em;
+    min-width: 16.5mm;
+    text-align: right;
+  }
+  .item .pr small { font-size: 8.5pt; font-weight: 700; color: #6B4527; letter-spacing: 0; }
+
+  /* カテゴリ色帯（現行メニューの色分けを踏襲・縦グラデで艶感） */
+  .band-shoyu   { background: linear-gradient(180deg, #F5941E, #C75B00); }
+  .band-miso    { background: linear-gradient(180deg, #D4553A, #9E2312); }
+  .band-shio    { background: linear-gradient(180deg, #5B93C9, #2A5F98); }
+  .band-yakisoba{ background: linear-gradient(180deg, #C09A38, #8C6A1D); }
+  .band-rice    { background: linear-gradient(180deg, #DC6828, #A93B1C); }
+  .band-drink   { background: linear-gradient(180deg, #8A6B4A, #55422E); }
+
+  /* 各カテゴリの罫色（--cc-ink＝濃色の外罫／--cc-lite＝淡色の内罫） */
+  .cat            { --cc-ink: #A93B1C; --cc-lite: #EEC49E; }
+  .cv-shoyu       { --cc-ink: #A54A00; --cc-lite: #F0CA96; }
+  .cv-miso        { --cc-ink: #8E1F10; --cc-lite: #EBB6A6; }
+  .cv-shio        { --cc-ink: #24558B; --cc-lite: #AEC8E2; }
+  .cv-yakisoba    { --cc-ink: #7C5C16; --cc-lite: #DFCB94; }
+  .cv-rice        { --cc-ink: #99331A; --cc-lite: #EDBF9F; }
+  .cv-drink       { --cc-ink: #4B3927; --cc-lite: #CBB79E; }
+
+  /* ── おすすめ・セットの特設枠 ───────────── */
+  .feature {
+    position: relative;
+    border: 1.1mm solid #C13A1E;
+    border-radius: 2.5mm;
+    background: linear-gradient(180deg, #FFFDF4, #FFF3D8);
+    padding: 3.4mm 3.4mm 3mm;
+    break-inside: avoid;
+    box-shadow: 0.7mm 0.7mm 0 rgba(110, 50, 10, 0.25);
+  }
+  .feature::before {
+    content: '';
+    position: absolute;
+    inset: 1.1mm;
+    border: 0.25mm solid rgba(193, 58, 30, 0.45);
+    border-radius: 1.4mm;
+    pointer-events: none;
+  }
+  .feature.orange { border-color: var(--orange-deep); }
+  .feature.orange::before { border-color: rgba(199, 91, 0, 0.45); }
+  .feature-label {
+    display: inline-block;
+    background: linear-gradient(180deg, #D3301A, #9E1808);
+    color: #fff;
+    font-size: 10pt;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    padding: 1.2mm 3.5mm;
+    border-radius: 99mm;
+    margin-bottom: 1.5mm;
+    border: 0.4mm solid #FFF1CF;
+    text-shadow:
+      -0.25mm -0.25mm 0 #7A1004, 0.25mm -0.25mm 0 #7A1004,
+      -0.25mm 0.25mm 0 #7A1004, 0.25mm 0.25mm 0 #7A1004;
+  }
+  .feature.orange .feature-label { background: linear-gradient(180deg, #E8780A, #B5570A); }
+  .feature.orange .feature-label {
+    text-shadow:
+      -0.25mm -0.25mm 0 #96490A, 0.25mm -0.25mm 0 #96490A,
+      -0.25mm 0.25mm 0 #96490A, 0.25mm 0.25mm 0 #96490A;
+  }
+  /* 品名は袋文字、価格は右端で特大 */
+  .feature-name {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0 1.6mm;
+    font-size: 16.5pt;
+    font-weight: 800;
+    color: #7A1A06;
+    text-shadow: 0.5mm 0.5mm 0 rgba(255, 244, 218, 0.95);
+  }
+  .feature-name .fn-nm { text-shadow: inherit; }
+  .feature-name .pr {
+    color: #C1170C;
+    margin-left: auto;
+    font-size: 23pt;
+    letter-spacing: -0.02em;
+    text-shadow:
+      -0.35mm 0 0 #FFF4DA, 0.35mm 0 0 #FFF4DA, 0 -0.35mm 0 #FFF4DA, 0 0.35mm 0 #FFF4DA,
+      -0.25mm -0.25mm 0 #FFF4DA, 0.25mm -0.25mm 0 #FFF4DA,
+      -0.25mm 0.25mm 0 #FFF4DA, 0.25mm 0.25mm 0 #FFF4DA,
+      0.9mm 0.9mm 0 rgba(140, 60, 20, 0.3);
+  }
+  .feature-name .pr small { font-size: 10pt; color: #6B4527; text-shadow: none; }
+  .feature-desc { font-size: 9.5pt; font-weight: 600; margin-top: 1.2mm; line-height: 1.5; }
+  /* セット枠：赤丸「得」付き */
+  .setbox {
+    position: relative;
+    border: 1.1mm solid var(--orange-deep);
+    border-radius: 2.5mm;
+    background: linear-gradient(180deg, #FFFDF4, #FFF0CE);
+    padding: 3.4mm;
+    box-shadow: 0.7mm 0.7mm 0 rgba(110, 50, 10, 0.25);
+  }
+  .setbox::before {
+    content: '';
+    position: absolute;
+    inset: 1.1mm;
+    border: 0.25mm solid rgba(199, 91, 0, 0.45);
+    border-radius: 1.4mm;
+    pointer-events: none;
+  }
+  .toku-circle {
+    position: absolute;
+    top: -4.5mm;
+    left: -4.5mm;
+    width: 14mm;
+    height: 14mm;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #E8503A, #A50F02);
+    color: #FFE9A8;
+    font-size: 15pt;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.7mm solid #FFE9A8;
+    box-shadow: 0.7mm 0.7mm 0 rgba(90, 30, 5, 0.4);
+    z-index: 2;
+  }
+  /* セット見出しも両端斜めカットのリボン＋白の袋文字 */
+  .setbox-title {
+    position: relative;
+    text-align: center;
+    font-size: 17pt;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #fff;
+    background: linear-gradient(180deg, #F0871A, #C75B00);
+    padding: 2mm 0;
+    clip-path: polygon(3.5mm 0, 100% 0, calc(100% - 3.5mm) 100%, 0 100%);
+    text-shadow:
+      -0.3mm -0.3mm 0 #8A3E00, 0 -0.3mm 0 #8A3E00, 0.3mm -0.3mm 0 #8A3E00,
+      -0.3mm 0 0 #8A3E00, 0.3mm 0 0 #8A3E00,
+      -0.3mm 0.3mm 0 #8A3E00, 0 0.3mm 0 #8A3E00, 0.3mm 0.3mm 0 #8A3E00;
+  }
+  .setbox-plus { text-align: center; font-size: 12.5pt; font-weight: 800; margin: 1.8mm 0; }
+  .setbox-plus b {
+    font-size: 26pt;
+    color: #C1170C;
+    letter-spacing: -0.02em;
+    text-shadow:
+      -0.35mm 0 0 #FFF4DA, 0.35mm 0 0 #FFF4DA, 0 -0.35mm 0 #FFF4DA, 0 0.35mm 0 #FFF4DA,
+      -0.25mm -0.25mm 0 #FFF4DA, 0.25mm -0.25mm 0 #FFF4DA,
+      -0.25mm 0.25mm 0 #FFF4DA, 0.25mm 0.25mm 0 #FFF4DA,
+      0.9mm 0.9mm 0 rgba(140, 60, 20, 0.3);
+  }
+  .setbox ul { list-style: none; font-size: 11pt; font-weight: 600; line-height: 1.75; }
+  .setbox ul b { color: #B5570A; }
+  .setbox .note { font-size: 8pt; margin-top: 1mm; color: #6b4a2a; }
+
+  /* お知らせ枠・大盛り訴求バナー */
+  .infobox {
+    position: relative;
+    border: 0.6mm solid var(--brown);
+    border-radius: 2mm;
+    background: #FFFDF4;
+    padding: 3.2mm 4mm;
+    font-size: 10pt;
+    font-weight: 600;
+    line-height: 1.6;
+    box-shadow: 0.7mm 0.7mm 0 rgba(110, 50, 10, 0.2);
+  }
+  .infobox::before {
+    content: '';
+    position: absolute;
+    inset: 1.1mm;
+    border: 0.22mm solid rgba(122, 74, 24, 0.4);
+    border-radius: 1.2mm;
+    pointer-events: none;
+  }
+  .infobox b { color: #C1170C; }
+  .banner-oomori {
+    position: relative;
+    background: linear-gradient(180deg, #D3301A, #9E1808);
+    color: #fff;
+    text-align: center;
+    font-size: 15pt;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 3.2mm 3mm;
+    border-radius: 2mm;
+    box-shadow: 0.7mm 0.7mm 0 rgba(90, 30, 5, 0.35);
+    text-shadow:
+      -0.28mm -0.28mm 0 #6B1004, 0.28mm -0.28mm 0 #6B1004,
+      -0.28mm 0.28mm 0 #6B1004, 0.28mm 0.28mm 0 #6B1004;
+    line-height: 1.45;
+  }
+  .banner-oomori::before {
+    content: '';
+    position: absolute;
+    inset: 1.2mm;
+    border: 0.25mm solid rgba(255, 233, 168, 0.75);
+    border-radius: 1.2mm;
+    pointer-events: none;
+  }
+  .banner-oomori small { display: block; font-size: 9.5pt; font-weight: 700; letter-spacing: 0.05em; }
+  .banner-oomori .big {
+    font-size: 21pt;
+    color: #FFE9A8;
+    text-shadow:
+      -0.3mm -0.3mm 0 #6B1004, 0 -0.3mm 0 #6B1004, 0.3mm -0.3mm 0 #6B1004,
+      -0.3mm 0 0 #6B1004, 0.3mm 0 0 #6B1004,
+      -0.3mm 0.3mm 0 #6B1004, 0 0.3mm 0 #6B1004, 0.3mm 0.3mm 0 #6B1004;
+  }
+
+  /* ── フッター帯 ─────────────────────── */
+  .foot {
+    position: relative;
+    margin-top: 3.5mm;
+    background: linear-gradient(180deg, #E8780A, #C75B00);
+    color: #fff;
+    border-radius: 99mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.4mm 8mm;
+    font-size: 11.5pt;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    box-shadow: 0.7mm 0.7mm 0 rgba(110, 50, 10, 0.25);
+    text-shadow:
+      -0.25mm -0.25mm 0 #9C4600, 0.25mm -0.25mm 0 #9C4600,
+      -0.25mm 0.25mm 0 #9C4600, 0.25mm 0.25mm 0 #9C4600;
+  }
+  .foot::before {
+    content: '';
+    position: absolute;
+    inset: 0.9mm;
+    border: 0.25mm solid rgba(255, 241, 207, 0.8);
+    border-radius: 99mm;
+    pointer-events: none;
+  }
+  .foot small { font-weight: 700; font-size: 9.5pt; text-shadow: none; }
+
+  /* ── 叩き台メモ・QA表示 ───────────────── */
+  .draft-note {
+    text-align: right;
+    font-size: 6.5pt;
+    color: #9b6a3a;
+    margin-top: 1.2mm;
+  }
+  .overflow-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #D40000;
+    color: #fff;
+    font-size: 9pt;
+    font-weight: 700;
+    padding: 1mm 2.5mm;
+    border-radius: 1mm;
+    z-index: 10;
+  }
+  .qa-banner {
+    background: #D40000;
+    color: #fff;
+    font-size: 10pt;
+    font-weight: 700;
+    padding: 2mm 4mm;
+    margin-bottom: 2mm;
+    border-radius: 1mm;
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   メニューデータ（menu.json 2026-06版の埋め込みコピー）
+   確定版が出たら youkiken/menu.json から再同期すること
+   ============================================================ */
+const MENU = {
+  "updated": "2026-06",
+  "globalNotes": [
+    "ラーメン大盛りは平日無料／土日祝は＋¥200です。",
+    "価格はすべて税込です。",
+    "価格・メニューは変更になる場合があります。詳しくはお電話でご確認ください。"
+  ],
+  "setInfo": {
+    "name": "ラーメンセット",
+    "note": "お好きな麺類に プラス350円（※Bセットは揚げ餃子は出来ません）",
+    "options": ["Aセット：半チャーハン", "Bセット：ジャンボ餃子3ケ", "Cセット：半カレー"]
+  },
+  "days": {
+    "weekday": {
+      "label": "平日",
+      "categories": [
+        {
+          "name": "ラーメン（醤油）",
+          "note": "麺類大盛り無料",
+          "items": [
+            { "name": "ねぎラーメン", "price": 500 },
+            { "name": "中華そば", "price": 600 },
+            { "name": "陽気ラーメン", "price": 700, "tags": ["人気"] },
+            { "name": "チャーシューメン", "price": 900 },
+            { "name": "特製チャーシューメン", "price": 950 },
+            { "name": "あぶり焼きチャーシューメン", "price": 980 },
+            { "name": "全部のせラーメン", "price": 980 },
+            { "name": "ワンタンメン", "price": 750 },
+            { "name": "スタミナラーメン", "price": 950 },
+            { "name": "ニンニクラーメン", "price": 950 },
+            { "name": "チャーシュー3種ラーメン", "price": 980 },
+            { "name": "カレーラーメン", "price": 800 },
+            { "name": "マヨラーメン", "price": 800 },
+            { "name": "こくうまラーメン", "price": 750 }
+          ]
+        },
+        {
+          "name": "ラーメン（味噌）",
+          "items": [
+            { "name": "味噌ラーメン", "price": 850 },
+            { "name": "辛味噌ラーメン", "price": 900 },
+            { "name": "味噌チャーシューメン", "price": 980 },
+            { "name": "味噌トマトチーズラーメン", "price": 950 }
+          ]
+        },
+        {
+          "name": "ラーメン（塩）",
+          "items": [
+            { "name": "塩ねぎラーメン", "price": 550 },
+            { "name": "塩ラーメン", "price": 650 },
+            { "name": "タンメン", "price": 700 },
+            { "name": "野菜あんかけラーメン", "price": 850 },
+            { "name": "海鮮チャンポン", "price": 950 },
+            { "name": "えびそば（ラーメン）", "price": 950 },
+            { "name": "ギョーザラーメン", "price": 850 },
+            { "name": "玉子魚具あんかけラーメン", "price": 950 }
+          ]
+        },
+        {
+          "name": "定食",
+          "items": [
+            { "name": "チャーシューエッグ", "price": 980 },
+            { "name": "チャーシュー玉子炒め", "price": 980 },
+            { "name": "野菜炒め", "price": 800 },
+            { "name": "肉野菜炒め", "price": 900 },
+            { "name": "レバニラ炒め", "price": 900 },
+            { "name": "玉子レバニラ炒め", "price": 880 },
+            { "name": "野菜レバニラ炒め", "price": 880 },
+            { "name": "スタミナ炒め", "price": 980 },
+            { "name": "ネギ玉炒め", "price": 750 },
+            { "name": "玉子きくらげ炒め（もつ）", "price": 750 },
+            { "name": "若鶏のから揚げ", "price": 980 },
+            { "name": "肉のかたまり", "price": 980 },
+            { "name": "豚かつ", "price": 980 },
+            { "name": "豚キムチ", "price": 980 },
+            { "name": "麻婆豆腐", "price": 900 },
+            { "name": "麻婆茄子", "price": 900 },
+            { "name": "カツ煮", "price": 900 },
+            { "name": "ジャンボギョーザ定食", "price": 950 },
+            { "name": "揚げギョーザ5個", "price": 980 },
+            { "name": "半ねぎラーメン", "price": 200 },
+            { "name": "まんぷく定食（ねぎラーメン＋半チャーハン＋餃子2個）", "price": 980 }
+          ]
+        },
+        {
+          "name": "どんぶり",
+          "note": "スープ・つけ物付",
+          "items": [
+            { "name": "玉子丼", "price": 500 },
+            { "name": "チャーシュー丼", "price": 800 },
+            { "name": "あぶり焼きチャーシュー丼", "price": 850 },
+            { "name": "中華丼", "price": 800 },
+            { "name": "かつ丼（玉子とじ）", "price": 800 },
+            { "name": "親子丼", "price": 800 }
+          ]
+        },
+        {
+          "name": "チャーハン",
+          "note": "スープ付",
+          "items": [
+            { "name": "チャーハン", "price": 650 },
+            { "name": "ネギ玉子チャーハン", "price": 500 },
+            { "name": "高菜チャーハン", "price": 600 },
+            { "name": "にんにくチャーハン", "price": 700 },
+            { "name": "スタミナチャーハン", "price": 750 },
+            { "name": "肉あんかけチャーハン", "price": 850 },
+            { "name": "ギョーザチャーハン", "price": 750 },
+            { "name": "海鮮あんかけチャーハン", "price": 850 }
+          ]
+        },
+        {
+          "name": "ご飯類",
+          "note": "スープ付",
+          "items": [
+            { "name": "カレーライス", "price": 650 },
+            { "name": "カツカレー", "price": 1000 },
+            { "name": "オムライス", "price": 900 },
+            { "name": "オムカレー", "price": 950 },
+            { "name": "ご飯類大盛り", "price": 200 }
+          ]
+        },
+        {
+          "name": "麺類（焼きそば・冷やし）",
+          "items": [
+            { "name": "ソース焼きそば", "price": 650 },
+            { "name": "揚げ焼きそば", "price": 900 },
+            { "name": "塩焼きそば", "price": 650 },
+            { "name": "醤油焼きそば", "price": 650 },
+            { "name": "五目あんかけ焼きそば", "price": 950 },
+            { "name": "ざる中華", "price": 500 },
+            { "name": "冷やし中華（5月〜10月）", "price": 800 },
+            { "name": "冷やしラーメン", "price": 800 },
+            { "name": "替え玉", "price": 200 }
+          ]
+        },
+        {
+          "name": "スープ",
+          "items": [
+            { "name": "玉子スープ", "price": 450 },
+            { "name": "にんにく玉子スープ", "price": 600 },
+            { "name": "ワンタンスープ", "price": 600 },
+            { "name": "たっぷり野菜の肉ワンタンスープ", "price": 650 },
+            { "name": "スープ大盛り", "price": 200 }
+          ]
+        },
+        {
+          "name": "ライス",
+          "note": "スープ・つけ物付",
+          "items": [
+            { "name": "ライス", "price": 350 },
+            { "name": "半ライス", "price": 250 },
+            { "name": "小ライス", "price": 200 },
+            { "name": "ニンニクライス", "price": 350 },
+            { "name": "バターライス", "price": 350 },
+            { "name": "鳥そぼろライス", "price": 350 }
+          ]
+        },
+        {
+          "name": "ギョーザ",
+          "note": "当店名物",
+          "items": [
+            { "name": "ジャンボギョーザ3個", "price": 360, "tags": ["名物"] },
+            { "name": "ジャンボギョーザ5個", "price": 600 }
+          ]
+        },
+        {
+          "name": "トッピング",
+          "items": [
+            { "name": "昔ながらのチャーシュー3枚", "price": 250 },
+            { "name": "あぶり焼きチャーシュー1枚", "price": 200 },
+            { "name": "特製チャーシュー1枚", "price": 200 },
+            { "name": "コーン", "price": 150 },
+            { "name": "バター", "price": 150 },
+            { "name": "メンマ", "price": 150 },
+            { "name": "煮玉子", "price": 150 },
+            { "name": "生玉子", "price": 100 }
+          ]
+        },
+        {
+          "name": "お飲み物",
+          "note": "ソフトドリンクは店舗前の自動販売機をご利用ください",
+          "items": [
+            { "name": "ノンアルコールビール", "price": 450 },
+            { "name": "ビール（中ビン・キリン一番搾り）", "price": 650 },
+            { "name": "ビール（アサヒスーパードライ）", "price": 650 },
+            { "name": "サントリー角ハイボール", "price": 500 },
+            { "name": "チューハイ", "price": 450 },
+            { "name": "レモンサワー", "price": 450 },
+            { "name": "グレープフルーツサワー", "price": 450 },
+            { "name": "ウーロンハイ", "price": 450 },
+            { "name": "焼酎（甲類）ロック（グラス）", "price": 400 },
+            { "name": "焼酎（甲類）水割り（グラス）", "price": 400 },
+            { "name": "日本酒 聖徳（1合）", "price": 500 }
+          ]
+        }
+      ]
+    },
+    "weekend": {
+      "label": "土日祝",
+      "note": "土日祝は一部メニューを簡略してご提供しています。",
+      "categories": [
+        {
+          "name": "ラーメン（醤油）",
+          "note": "麺類大盛り＋¥200（土日祝）",
+          "items": [
+            { "name": "中華そば", "price": 600 },
+            { "name": "陽気ラーメン", "price": 700, "tags": ["人気"] },
+            { "name": "チャーシューメン", "price": 900 },
+            { "name": "特製チャーシューメン", "price": 950 },
+            { "name": "あぶり焼きチャーシューメン", "price": 980 },
+            { "name": "全部のせラーメン", "price": 980 },
+            { "name": "ワンタンメン", "price": 750 },
+            { "name": "スタミナラーメン", "price": 950 },
+            { "name": "ニンニクラーメン", "price": 950 },
+            { "name": "チャーシュー3種ラーメン", "price": 980 },
+            { "name": "カレーラーメン", "price": 800 },
+            { "name": "マヨラーメン", "price": 800 },
+            { "name": "こくうまラーメン", "price": 750 }
+          ]
+        },
+        {
+          "name": "ラーメン（味噌）",
+          "items": [
+            { "name": "味噌ラーメン", "price": 850 },
+            { "name": "辛味噌ラーメン", "price": 900 },
+            { "name": "味噌チャーシューメン", "price": 980 },
+            { "name": "味噌トマトチーズラーメン", "price": 950 }
+          ]
+        },
+        {
+          "name": "ラーメン（塩）",
+          "items": [
+            { "name": "塩ラーメン", "price": 650 },
+            { "name": "タンメン", "price": 700 },
+            { "name": "野菜あんかけラーメン", "price": 850 },
+            { "name": "海鮮チャンポン", "price": 950 },
+            { "name": "えびそば（ラーメン）", "price": 950 },
+            { "name": "ギョーザラーメン", "price": 850 },
+            { "name": "玉子魚具あんかけラーメン", "price": 950 }
+          ]
+        },
+        {
+          "name": "単品",
+          "items": [
+            { "name": "おつまみチャーシュー", "price": 550 },
+            { "name": "チャーシューメンマ", "price": 450 },
+            { "name": "野菜炒め", "price": 550 },
+            { "name": "肉野菜炒め", "price": 700 },
+            { "name": "レバニラ炒め", "price": 700 },
+            { "name": "若鶏から揚げ", "price": 750 }
+          ]
+        },
+        {
+          "name": "どんぶり",
+          "note": "スープ・つけ物付",
+          "items": [
+            { "name": "玉子丼", "price": 500 },
+            { "name": "チャーシュー丼", "price": 800 },
+            { "name": "あぶり焼きチャーシュー丼", "price": 850 },
+            { "name": "中華丼", "price": 800 },
+            { "name": "かつ丼（玉子とじ）", "price": 800 },
+            { "name": "親子丼", "price": 800 }
+          ]
+        },
+        {
+          "name": "チャーハン",
+          "note": "スープ付",
+          "items": [
+            { "name": "チャーハン", "price": 650 },
+            { "name": "高菜チャーハン", "price": 600 },
+            { "name": "にんにくチャーハン", "price": 700 },
+            { "name": "スタミナチャーハン", "price": 750 }
+          ]
+        },
+        {
+          "name": "ご飯類",
+          "note": "スープ付",
+          "items": [
+            { "name": "カレーライス", "price": 650 },
+            { "name": "ご飯類大盛り", "price": 200 }
+          ]
+        },
+        {
+          "name": "麺類（焼きそば）",
+          "items": [
+            { "name": "ソース焼きそば", "price": 650 },
+            { "name": "塩焼きそば", "price": 650 },
+            { "name": "醤油焼きそば", "price": 650 },
+            { "name": "替え玉", "price": 200 }
+          ]
+        },
+        {
+          "name": "スープ",
+          "items": [
+            { "name": "玉子スープ", "price": 450 },
+            { "name": "にんにく玉子スープ", "price": 600 },
+            { "name": "ワンタンスープ", "price": 600 },
+            { "name": "たっぷり野菜の肉ワンタンスープ", "price": 650 },
+            { "name": "スープ大盛り", "price": 200 }
+          ]
+        },
+        {
+          "name": "ライス",
+          "note": "スープ・つけ物付",
+          "items": [
+            { "name": "ライス", "price": 350 },
+            { "name": "半ライス", "price": 250 },
+            { "name": "小ライス", "price": 200 },
+            { "name": "ニンニクライス", "price": 350 },
+            { "name": "バターライス", "price": 350 },
+            { "name": "鳥そぼろライス", "price": 350 }
+          ]
+        },
+        {
+          "name": "ギョーザ",
+          "note": "当店名物",
+          "items": [
+            { "name": "ジャンボギョーザ3個", "price": 360, "tags": ["名物"] },
+            { "name": "ジャンボギョーザ5個", "price": 600 }
+          ]
+        },
+        {
+          "name": "トッピング",
+          "items": [
+            { "name": "昔ながらのチャーシュー3枚", "price": 250 },
+            { "name": "あぶり焼きチャーシュー1枚", "price": 200 },
+            { "name": "特製チャーシュー1枚", "price": 200 },
+            { "name": "コーン", "price": 150 },
+            { "name": "バター", "price": 150 },
+            { "name": "メンマ", "price": 150 },
+            { "name": "煮玉子", "price": 150 },
+            { "name": "生玉子", "price": 100 }
+          ]
+        },
+        {
+          "name": "お飲み物",
+          "note": "ソフトドリンクは店舗前の自動販売機をご利用ください",
+          "items": [
+            { "name": "ノンアルコールビール", "price": 450 },
+            { "name": "ビール（中ビン・キリン一番搾り）", "price": 650 },
+            { "name": "ビール（アサヒスーパードライ）", "price": 650 },
+            { "name": "サントリー角ハイボール", "price": 500 },
+            { "name": "チューハイ", "price": 450 },
+            { "name": "レモンサワー", "price": 450 },
+            { "name": "グレープフルーツサワー", "price": 450 },
+            { "name": "ウーロンハイ", "price": 450 },
+            { "name": "焼酎（甲類）ロック（グラス）", "price": 400 },
+            { "name": "焼酎（甲類）水割り（グラス）", "price": 400 },
+            { "name": "日本酒 聖徳（1合）", "price": 500 }
+          ]
+        }
+      ]
+    }
+  }
+};
+
+/* ============================================================
+   面構成の設定：表＝麺類の部、裏＝ご飯の部
+   ============================================================ */
+const BAND = {
+  'ラーメン（醤油）': 'band-shoyu',
+  'ラーメン（味噌）': 'band-miso',
+  'ラーメン（塩）': 'band-shio',
+  '麺類（焼きそば・冷やし）': 'band-yakisoba',
+  '麺類（焼きそば）': 'band-yakisoba',
+  'トッピング': 'band-yakisoba',
+  'ギョーザ': 'band-miso',
+  'お飲み物': 'band-drink',
+};
+const bandOf = (name) => BAND[name] || 'band-rice';
+
+/* 現物メニューの見出し表記（しょうゆ・しお・みそ）に合わせる */
+const CAT_DISPLAY = {
+  'ラーメン（醤油）': '醤油ラーメン',
+  'ラーメン（味噌）': '味噌ラーメン',
+  'ラーメン（塩）': '塩ラーメン',
+  '麺類（焼きそば・冷やし）': '焼きそば・冷やし',
+  '麺類（焼きそば）': '焼きそば',
+};
+const catDisplayName = (name) => CAT_DISPLAY[name] || name;
+
+/* 特設枠に抜き出す品（一覧の行からは除外して二重掲載を防ぐ） */
+const FEATURES = {
+  '陽気ラーメン': { label: '当店人気 No.1', cls: '', desc: '陽気軒いちばんの看板ラーメン。まずはこの一杯から。' },
+  'ジャンボギョーザ3個': { label: '当店名物', cls: 'orange', desc: '手づくりの大ぶり餃子。ラーメンのお供にどうぞ。（5個 600円）', omitAlso: ['ジャンボギョーザ5個'] },
+  'まんぷく定食（ねぎラーメン＋半チャーハン＋餃子2個）': { label: 'いちばん得', cls: '', rename: 'まんぷく定食', desc: 'ねぎラーメン＋半チャーハン＋餃子2個のおトクなセット。' },
+};
+
+/* 持帰・特盛可の仮付与（★サンプル★ 対象品はスプシ検討で確定後に menu.json の tags へ移す。
+   持帰は現行メニュー表のお持ち帰りマーク（焼きそば・トッピング・餃子など）を手がかりにした仮案 */
+const SAMPLE_TAGS = {
+  'ソース焼きそば': ['持帰'],
+  '揚げ焼きそば': ['持帰'],
+  '塩焼きそば': ['持帰'],
+  '醤油焼きそば': ['持帰'],
+  'ジャンボギョーザ3個': ['持帰'],
+  'ジャンボギョーザ5個': ['持帰'],
+  '昔ながらのチャーシュー3枚': ['持帰'],
+  'あぶり焼きチャーシュー1枚': ['持帰'],
+  '特製チャーシュー1枚': ['持帰'],
+  'コーン': ['持帰'],
+  'バター': ['持帰'],
+  'メンマ': ['持帰'],
+  '煮玉子': ['持帰'],
+  '若鶏のから揚げ': ['持帰'],
+  '若鶏から揚げ': ['持帰'],
+  'チャーハン': ['特盛可', '持帰'],
+  '高菜チャーハン': ['特盛可'],
+  'にんにくチャーハン': ['特盛可'],
+  'カレーライス': ['特盛可', '持帰'],
+  'カツカレー': ['特盛可'],
+  '中華そば': ['特盛可'],
+  '陽気ラーメン': ['特盛可'],
+  'チャーシューメン': ['特盛可'],
+  '味噌ラーメン': ['特盛可'],
+  '塩ラーメン': ['特盛可'],
+};
+
+const PAGES = [
+  { day: 'weekday', face: '麺類の部',
+    cols: [
+      ['@feature:陽気ラーメン', 'ラーメン（醤油）'],
+      ['ラーメン（味噌）', 'ラーメン（塩）'],
+      ['麺類（焼きそば・冷やし）', 'トッピング'],
+      ['@set', '@feature:ジャンボギョーザ3個', '@oomori-men'],
+    ] },
+  { day: 'weekday', face: 'ご飯の部',
+    cols: [
+      ['定食'],
+      ['どんぶり', 'チャーハン'],
+      ['ご飯類', 'ライス', 'スープ'],
+      ['@feature:まんぷく定食（ねぎラーメン＋半チャーハン＋餃子2個）', 'お飲み物', '@oomori-gohan'],
+    ] },
+  { day: 'weekend', face: '麺類の部',
+    cols: [
+      ['@feature:陽気ラーメン', 'ラーメン（醤油）'],
+      ['ラーメン（味噌）', 'ラーメン（塩）'],
+      ['麺類（焼きそば）', 'トッピング', '@feature:ジャンボギョーザ3個'],
+      ['@set', '@weekend-note', '@oomori-men'],
+    ] },
+  { day: 'weekend', face: 'ご飯の部',
+    cols: [
+      ['単品', 'どんぶり'],
+      ['チャーハン', 'ご飯類', 'ライス'],
+      ['スープ', '@oomori-gohan'],
+      ['お飲み物'],
+    ] },
+];
+
+/* ============================================================
+   描画
+   ============================================================ */
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const yen = (p) => `${p.toLocaleString()}<small> 円</small>`;
+
+function nameHtml(name) {
+  // （）内は小さく表示して行を詰める
+  return esc(name).replace(/（([^）]*)）/g, '<span class="paren">（$1）</span>');
+}
+
+/* v2印刷用バッジSVG（badges/print-badge-*.svg の埋め込み。凡例横の大サイズ表示等で利用可。
+   行内は判読性優先で1文字CSSバッジ「特」「持」に変更（2026-09-09） */
+const SVG_TAKEOUT ="<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12mm\" height=\"12mm\" viewBox=\"0 0 48 48\" role=\"img\" aria-labelledby=\"title desc\">\n  <title id=\"title\">持ち帰り可</title>\n  <desc id=\"desc\">印刷用・文字アウトライン済み。背景色 #C2410C、CMYK C0 M66 Y94 K24</desc>\n  <metadata>\n    <print-color rgb=\"#C2410C\" cmyk=\"C0 M66 Y94 K24\" profile=\"Japan Color 2011 Coated\"/>\n    <typeface source=\"Hiragino Sans W8\" text-outlined=\"true\"/>\n  </metadata>\n  <rect x=\"0\" y=\"0\" width=\"48\" height=\"48\" rx=\"10\" fill=\"#C2410C\" data-color-space=\"CMYK\" data-cmyk=\"C0 M66 Y94 K24\"/>\n  <path d=\"M13.15 27.8325C14.1475 28.9 14.620000000000001 29.5475 15.285 30.737499999999997L16.317500000000003 29.967499999999998C16.5975 30.6325 16.7375 31.209999999999997 16.86 32.155C17.945 32.19 18.19 32.19 18.4175 32.19C19.712500000000002 32.19 20.465000000000003 32.0325 20.92 31.647499999999997C21.2875 31.349999999999998 21.480000000000004 30.842499999999998 21.480000000000004 30.16V26.694999999999997C22.285000000000004 26.694999999999997 22.6875 26.7125 23.265 26.799999999999997V24.2625C22.6875 24.314999999999998 22.267500000000002 24.332499999999996 21.480000000000004 24.332499999999996V23.264999999999997C22.67 23.2825 22.8975 23.299999999999997 23.352500000000003 23.334999999999997V20.832499999999996C22.8275 20.902499999999996 22.005000000000003 20.9375 21.1825 20.9375H19.240000000000002V19.799999999999997H20.762500000000003C21.6725 19.799999999999997 22.145000000000003 19.817499999999995 22.635 19.869999999999997V17.332499999999996C22.0925 17.402499999999996 21.585 17.437499999999996 20.7275 17.437499999999996H19.240000000000002V17.052499999999995C19.240000000000002 16.562499999999996 19.2575 16.247499999999995 19.3275 15.862499999999997H16.4925C16.5625 16.229999999999997 16.580000000000002 16.58 16.580000000000002 17.069999999999997V17.437499999999996H15.39C14.55 17.437499999999996 14.0425 17.402499999999996 13.5 17.332499999999996V19.869999999999997C14.0075 19.817499999999995 14.48 19.799999999999997 15.39 19.799999999999997H16.580000000000002V20.9375H14.865C14.182500000000001 20.9375 13.36 20.902499999999996 12.9575 20.8675V18.7675C12.6775 18.802499999999995 12.485 18.819999999999997 12.1875 18.819999999999997H11.627500000000001V17.612499999999997C11.627500000000001 16.72 11.645 16.334999999999997 11.715 15.827499999999997H8.95C9.02 16.404999999999998 9.0375 16.702499999999997 9.0375 17.629999999999995V18.819999999999997H8.5125C8.005 18.819999999999997 7.69 18.802499999999995 7.235 18.732499999999998V21.305C7.7075 21.252499999999998 8.04 21.235 8.477500000000001 21.235H9.0375V23.79C7.9875 24.0525 7.48 24.1575 7.1125 24.174999999999997L7.3575 26.869999999999997C7.515000000000001 26.799999999999997 7.9 26.694999999999997 8.04 26.659999999999997C8.3725 26.555 8.3725 26.555 8.6875 26.467499999999998C8.7575 26.45 8.88 26.415 9.0375 26.362499999999997V29.215C9.0375 29.6875 8.932500000000001 29.792499999999997 8.5125 29.792499999999997C8.11 29.792499999999997 7.725 29.775 7.1475 29.705C7.4975000000000005 30.6325 7.62 31.139999999999997 7.725 32.19C8.3025 32.225 8.5825 32.2425 8.915 32.2425C11.085 32.2425 11.627500000000001 31.805 11.627500000000001 30.037499999999998V25.557499999999997C12.1875 25.347499999999997 12.1875 25.347499999999997 12.8175 25.119999999999997V26.7825C13.447500000000002 26.7125 13.8325 26.694999999999997 14.865 26.694999999999997ZM18.82 26.694999999999997V29.3375C18.82 29.669999999999998 18.6625 29.7575 18.12 29.7575C17.770000000000003 29.7575 17.192500000000003 29.7225 16.7025 29.669999999999998L17.5425 29.04C16.825000000000003 28.0075 16.3 27.36 15.617500000000001 26.694999999999997ZM18.82 23.264999999999997V24.332499999999996H14.97C14.0425 24.332499999999996 13.342500000000001 24.314999999999998 12.8175 24.2625V23.3175C12.9925 23.299999999999997 13.6925 23.2825 14.9 23.264999999999997ZM12.73 22.757499999999997C12.0475 22.985 11.995000000000001 23.002499999999998 11.627500000000001 23.107499999999998V21.235H12.1875C12.3975 21.235 12.537500000000001 21.235 12.73 21.252499999999998Z M30.317500000000003 26.974999999999998V29.354999999999997C30.317500000000003 30.1425 30.2825 30.772499999999997 30.23 31.349999999999998H32.925C32.8725 30.772499999999997 32.855000000000004 30.3875 32.855000000000004 29.669999999999998V27.9025H33.870000000000005V30.2475C33.870000000000005 31.4025 33.8525 31.7 33.8 32.277499999999996H36.46C36.4075 31.752499999999998 36.39 31.174999999999997 36.39 30.264999999999997V27.9025H37.5625V28.97C37.5625 29.197499999999998 37.510000000000005 29.232499999999998 37.212500000000006 29.232499999999998C37.072500000000005 29.232499999999998 36.88 29.215 36.5125 29.162499999999998C36.845 29.897499999999997 36.95 30.369999999999997 37.02 31.2625C37.195 31.2625 37.3525 31.2625 37.44 31.2625C39.4525 31.2625 40.03 30.86 40.03 29.494999999999997V26.974999999999998H40.9225C40.870000000000005 26.45 40.852500000000006 26.152499999999996 40.852500000000006 25.714999999999996V24.0875C40.852500000000006 23.632499999999997 40.870000000000005 23.264999999999997 40.905 22.88C40.45 22.932499999999997 40.11750000000001 22.949999999999996 39.347500000000004 22.949999999999996H31.21C30.5625 22.949999999999996 30.125 22.932499999999997 29.7575 22.897499999999997C29.845 21.637499999999996 29.8625 20.744999999999997 29.8625 19.309999999999995V18.084999999999997C29.8625 16.894999999999996 29.880000000000003 16.439999999999998 29.95 15.879999999999997H27.2375C27.3425 16.562499999999996 27.3775 17.244999999999997 27.3775 19.6425C27.3775 23.002499999999998 27.22 24.752499999999998 26.8175 26.205C26.38 27.7275 25.75 28.794999999999998 24.525 30.055C25.365000000000002 30.772499999999997 25.7675 31.2625 26.345 32.295C27.5 31.035 28.1125 30.002499999999998 28.7425 28.305C29.302500000000002 26.8525 29.5475 25.61 29.7225 23.3525C29.740000000000002 23.5625 29.740000000000002 23.72 29.740000000000002 24.1575V25.732499999999998C29.740000000000002 26.38 29.7225 26.607499999999998 29.6875 26.974999999999998ZM32.1375 25.82V25.119999999999997H33.870000000000005V25.82ZM36.39 25.82V25.119999999999997H38.2975V25.82ZM37.335 18.644999999999996H32.4C31.5075 18.644999999999996 31.2975 18.644999999999996 30.8425 18.61V20.307499999999997C31.5075 20.29 31.945 20.272499999999997 32.4525 20.272499999999997H37.335V20.744999999999997H32.33C31.4025 20.744999999999997 31.1575 20.744999999999997 30.5625 20.692499999999995V22.512499999999996C31.0875 22.4775 31.875 22.459999999999997 32.3825 22.459999999999997H38.7C39.260000000000005 22.459999999999997 39.68 22.4775 39.9775 22.494999999999997C39.925 22.004999999999995 39.925 21.8125 39.925 21.165V17.717499999999998C39.925 16.947499999999998 39.9425 16.667499999999997 39.9775 16.177499999999995C39.3825 16.229999999999997 39.0675 16.247499999999995 38.245000000000005 16.247499999999995H32.4525C31.700000000000003 16.247499999999995 31.14 16.229999999999997 30.5625 16.177499999999995V18.207499999999996C31.0 18.1725 31.892500000000002 18.154999999999998 32.4 18.154999999999998H37.335ZM26.7825 25.417499999999997C26.7475 25.049999999999997 26.73 24.7 26.73 23.964999999999996V19.082499999999996C26.73 18.4 26.7475 17.979999999999997 26.8175 17.577499999999997H24.5425C24.6125 18.049999999999997 24.6475 18.54 24.6475 19.1875V23.79C24.6475 24.49 24.6125 24.979999999999997 24.56 25.417499999999997Z\" fill=\"#FFFFFF\" fill-rule=\"nonzero\"/>\n</svg>";
+const SVG_TOKUMORI = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"19mm\" height=\"12mm\" viewBox=\"0 0 76 48\" role=\"img\" aria-labelledby=\"title desc\">\n  <title id=\"title\">特盛可</title>\n  <desc id=\"desc\">印刷用・文字アウトライン済み。背景色 #7A4A18、CMYK C0 M39 Y80 K52</desc>\n  <metadata>\n    <print-color rgb=\"#7A4A18\" cmyk=\"C0 M39 Y80 K52\" profile=\"Japan Color 2011 Coated\"/>\n    <typeface source=\"Hiragino Sans W8\" text-outlined=\"true\"/>\n  </metadata>\n  <rect x=\"0\" y=\"0\" width=\"76\" height=\"48\" rx=\"10\" fill=\"#7A4A18\" data-color-space=\"CMYK\" data-cmyk=\"C0 M39 Y80 K52\"/>\n  <path d=\"M20.692500000000003 26.555 19.03 27.534999999999997C19.957500000000003 28.514999999999997 20.465000000000003 29.215 21.1125 30.404999999999998L21.8825 29.81C22.145000000000003 30.474999999999998 22.285 31.0525 22.39 32.085C22.950000000000003 32.12 23.475 32.137499999999996 23.8425 32.137499999999996C26.152500000000003 32.137499999999996 26.94 31.63 26.94 30.107499999999998V26.555C27.64 26.555 27.990000000000002 26.589999999999996 28.55 26.659999999999997V24.069999999999997C28.1825 24.1225 27.85 24.139999999999997 26.94 24.139999999999997V23.2125C27.5 23.2125 28.165000000000003 23.2475 28.655 23.299999999999997V20.762499999999996C28.235000000000003 20.814999999999998 27.43 20.849999999999998 26.5025 20.849999999999998H24.770000000000003V19.799999999999997H26.17C26.9925 19.799999999999997 27.6575 19.834999999999997 28.165000000000003 19.887499999999996V17.279999999999998C27.587500000000002 17.349999999999998 27.01 17.384999999999998 26.17 17.384999999999998H24.770000000000003V16.999999999999996C24.770000000000003 16.4925 24.7875 16.159999999999997 24.8575 15.792499999999997H22.0925C22.145000000000003 16.1425 22.18 16.527499999999996 22.18 17.0175V17.384999999999998H21.165C20.3425 17.384999999999998 19.8 17.349999999999998 19.2225 17.279999999999998V19.887499999999996C19.73 19.834999999999997 20.3775 19.799999999999997 21.165 19.799999999999997H22.18V20.849999999999998H20.815C20.0975 20.849999999999998 19.5375 20.832499999999996 18.925 20.7975V18.9775C18.575000000000003 19.0475 18.2775 19.064999999999998 17.6825 19.064999999999998V17.209999999999997C17.6825 16.65 17.7175 16.229999999999997 17.7875 15.774999999999997H15.0225C15.092500000000001 16.247499999999995 15.127500000000001 16.684999999999995 15.127500000000001 17.209999999999997V19.064999999999998H14.655000000000001C14.655000000000001 18.889999999999997 14.655000000000001 18.802499999999995 14.655000000000001 18.662499999999998C14.6725 17.839999999999996 14.6725 17.735 14.7075 17.489999999999995L12.66 17.262499999999996C12.695 17.559999999999995 12.7125 17.735 12.7125 18.067499999999995C12.7125 19.869999999999997 12.4675 21.619999999999997 12.03 23.037499999999998C12.765 23.3175 13.115 23.509999999999998 13.9375 24.034999999999997C14.235 22.985 14.3225 22.5475 14.445 21.514999999999997H15.127500000000001V24.822499999999998C13.57 25.224999999999998 13.0275 25.33 12.2575 25.417499999999997L12.73 28.165C13.2025 27.972499999999997 13.2025 27.972499999999997 14.1475 27.709999999999997C14.4625 27.604999999999997 14.655000000000001 27.5525 15.127500000000001 27.395V30.072499999999998C15.127500000000001 30.895 15.092500000000001 31.735 15.0225 32.277499999999996H17.7875C17.7175 31.595 17.6825 30.93 17.6825 30.072499999999998V26.502499999999998C18.12 26.345 18.1725 26.327499999999997 18.75 26.082499999999996V26.659999999999997C19.3625 26.572499999999998 19.73 26.555 20.465000000000003 26.555ZM24.3675 26.555V29.25C24.3675 29.634999999999998 24.245 29.7225 23.685000000000002 29.7225C23.405 29.7225 22.915 29.6875 22.1625 29.599999999999998L23.265 28.759999999999998C22.722500000000004 27.884999999999998 22.1975 27.237499999999997 21.48 26.555ZM17.6825 21.514999999999997C18.085 21.514999999999997 18.085 21.514999999999997 18.645 21.549999999999997V23.299999999999997C19.17 23.229999999999997 19.73 23.2125 20.815 23.2125H24.3675V24.139999999999997H20.85C19.9225 24.139999999999997 19.3975 24.1225 18.925 24.069999999999997V23.597499999999997C18.1025 23.894999999999996 18.1025 23.894999999999996 17.6825 24.0525Z M42.7075 19.589999999999996C42.3575 20.132499999999997 41.9375 20.5875 41.3775 21.095C41.185 20.5525 41.08 20.202499999999997 40.94 19.519999999999996H43.67C44.5275 19.519999999999996 45.2625 19.555 45.8575 19.607499999999998V17.122499999999995C45.4375 17.174999999999997 45.1925 17.192499999999995 44.58 17.2275C44.195 16.544999999999995 44.02 16.247499999999995 43.5475 15.652499999999996L41.395 16.159999999999997C41.6925 16.544999999999995 41.745000000000005 16.614999999999995 42.13 17.2275H40.660000000000004C40.625 16.58 40.625 16.544999999999995 40.625 16.369999999999997C40.625 16.159999999999997 40.625 16.037499999999998 40.660000000000004 15.757499999999997H37.965C38.0 15.967499999999998 38.035 16.299999999999997 38.07 16.702499999999997C38.07 16.86 38.0875 16.982499999999998 38.105000000000004 17.2275H33.275C32.3825 17.2275 31.5425 17.192499999999995 31.035 17.139999999999997C31.105 17.752499999999998 31.14 18.3125 31.14 18.959999999999997C31.14 21.83 30.72 23.474999999999998 29.6 25.014999999999997C30.475 25.68 30.8775 26.0475 31.595 26.869999999999997V29.459999999999997H31.1225C30.65 29.459999999999997 30.44 29.4425 30.0375 29.4075V31.91C30.6675 31.84 31.42 31.805 32.2775 31.805H43.775000000000006C44.650000000000006 31.805 45.36750000000001 31.84 45.9975 31.91V29.4075C45.595 29.459999999999997 45.35 29.4775 44.895 29.4775H44.4225V27.167499999999997C44.4225 26.869999999999997 44.4225 26.7125 44.44 26.397499999999997C45.36750000000001 26.099999999999998 45.945 25.207499999999996 46.365 23.4225C45.56 22.967499999999998 45.21 22.722499999999997 44.510000000000005 22.144999999999996C44.2475 23.3525 44.02 23.947499999999998 43.845 23.947499999999998C43.635000000000005 23.947499999999998 43.145 23.58 42.620000000000005 23.037499999999998C43.4425 22.3375 43.4425 22.3375 44.9125 20.762499999999996ZM33.66 20.324999999999996C33.6775 20.044999999999998 33.695 19.904999999999998 33.695 19.519999999999996H38.4375C38.665 20.639999999999997 39.015 21.6725 39.417500000000004 22.494999999999997C38.875 22.81 38.2975 23.089999999999996 37.667500000000004 23.3525C37.72 23.055 37.86 21.445 37.895 20.814999999999998C37.9125 20.569999999999997 37.9125 20.569999999999997 37.93 20.412499999999998C37.93 20.394999999999996 37.947500000000005 20.342499999999998 37.947500000000005 20.29C37.5975 20.324999999999996 37.335 20.324999999999996 36.705 20.324999999999996ZM32.7325 25.784999999999997H32.4525C32.89 24.909999999999997 33.1 24.279999999999998 33.292500000000004 23.334999999999997C33.555 24.0525 33.6425 24.419999999999998 33.7475 25.224999999999998C34.2375 25.2425 34.5 25.259999999999998 34.78 25.259999999999998C36.6175 25.259999999999998 37.1775 25.014999999999997 37.4925 24.0525C37.9125 24.56 38.1575 24.8925 38.6125 25.627499999999998C39.4525 25.224999999999998 39.96 24.9275 40.6775 24.49C41.1325 24.9975 41.5525 25.3825 42.13 25.784999999999997ZM35.3575 22.3375C35.2875 23.229999999999997 35.235 23.299999999999997 34.5 23.299999999999997C34.2025 23.299999999999997 33.765 23.264999999999997 33.31 23.2125C33.38 22.88 33.3975 22.775 33.4675 22.3375ZM34.0975 27.9375H35.165V29.459999999999997H34.0975ZM37.4575 27.9375H38.525V29.459999999999997H37.4575ZM40.8175 27.9375H41.9025V29.459999999999997H40.8175Z M59.105000000000004 18.889999999999997V28.987499999999997C59.105000000000004 29.459999999999997 58.965 29.564999999999998 58.3 29.564999999999998C57.635000000000005 29.564999999999998 56.8125 29.5125 55.815 29.4075C56.165 30.125 56.3925 30.965 56.515 32.085C57.3025 32.1025 57.67 32.12 58.195 32.12C61.222500000000004 32.12 61.8175 31.717499999999998 61.8175 29.634999999999998V18.9075C62.5525 18.924999999999997 62.9725 18.942499999999995 63.620000000000005 18.994999999999997V16.2825C62.815 16.3525 62.0625 16.387499999999996 61.17 16.387499999999996H49.9875C49.042500000000004 16.387499999999996 48.3425 16.3525 47.5725 16.2825V18.994999999999997C48.4475 18.924999999999997 49.1825 18.889999999999997 50.0225 18.889999999999997ZM57.5125 21.654999999999998C57.5125 20.902499999999996 57.53 20.622499999999995 57.5825 20.132499999999997C57.0925 20.184999999999995 56.585 20.202499999999997 55.885000000000005 20.202499999999997H50.7575C50.04 20.202499999999997 49.5675 20.184999999999995 49.13 20.132499999999997C49.2 20.674999999999997 49.2175 21.147499999999997 49.2175 21.83V27.342499999999998C49.2175 27.9025 49.1825 28.479999999999997 49.1125 29.075H51.825V27.779999999999998H55.955C56.3575 27.779999999999998 57.1275 27.814999999999998 57.5825 27.849999999999998C57.53 27.29 57.5125 26.869999999999997 57.5125 26.327499999999997ZM51.8075 22.599999999999998H54.905V25.3825H51.8075Z\" fill=\"#FFFFFF\" fill-rule=\"nonzero\"/>\n</svg>";
+const svgUri = (svg) => 'data:image/svg+xml,' + encodeURIComponent(svg);
+const BADGE_IMG = {
+  '持帰': '<span class="kbadge kbadge-mochi">持</span>',
+  '特盛可': '<span class="kbadge kbadge-toku">特</span>',
+};
+
+function tagBadges(tags) {
+  if (!tags || !tags.length) return '';
+  const map = {
+    '人気': '<span class="badge badge-ninki">人気</span>',
+    '名物': '<span class="badge badge-meibutsu">名物</span>',
+    '特盛可': BADGE_IMG['特盛可'],
+    '持ち帰り可': BADGE_IMG['持帰'],
+    '持帰': BADGE_IMG['持帰'],
+  };
+  // 並び順ルール：名物/人気 → 特盛可 → 持帰
+  const order = ['名物', '人気', '特盛可', '持ち帰り可', '持帰'];
+  return [...tags].sort((a, b) => order.indexOf(a) - order.indexOf(b)).map((t) => map[t] || '').join('');
+}
+
+function itemRow(it) {
+  const tags = [...(it.tags || []), ...(SAMPLE_TAGS[it.name] || [])];
+  return `<div class="item"><span class="nm">${nameHtml(it.name)}</span>${tagBadges(tags)}<span class="dots"></span><span class="pr">${yen(it.price)}</span></div>`;
+}
+
+function catBlock(cat, omit) {
+  const items = cat.items.filter((it) => !omit.has(it.name));
+  if (!items.length) return '';
+  const note = cat.note ? `<small>${esc(cat.note)}</small>` : '';
+  const band = bandOf(cat.name);
+  // 罫色用のクラス（band-xxx → cv-xxx）。見出し帯の色と本文枠の二重罫を連動させる
+  const cv = band.replace('band-', 'cv-');
+  return `<section class="cat ${cv}">
+    <div class="cat-head ${band}"><span class="cat-nm">${esc(catDisplayName(cat.name))}</span>${note}</div>
+    <div class="cat-body">${items.map(itemRow).join('')}</div>
+  </section>`;
+}
+
+function featureBlock(key, day) {
+  const f = FEATURES[key];
+  const item = findItem(day, key);
+  if (!item) return '';
+  const name = f.rename || item.name;
+  const tags = [...(SAMPLE_TAGS[key] || [])];
+  return `<section class="feature ${f.cls}">
+    <span class="feature-label">${esc(f.label)}</span>
+    <div class="feature-name"><span class="fn-nm">${esc(name)}</span>${tagBadges(tags)}<span class="pr">${yen(item.price)}</span></div>
+    <div class="feature-desc">${esc(f.desc)}</div>
+  </section>`;
+}
+
+function setBlock() {
+  const s = MENU.setInfo;
+  const opts = s.options.map((o) => {
+    const m = o.match(/^(.*?セット)：(.*)$/);
+    return m ? `<li><b>${esc(m[1])}</b>　${esc(m[2])}</li>` : `<li>${esc(o)}</li>`;
+  }).join('');
+  return `<section class="setbox">
+    <div class="toku-circle">得</div>
+    <div class="setbox-title">ラーメンセット</div>
+    <div class="setbox-plus">お好きな麺類に プラス <b>350</b> 円</div>
+    <ul>${opts}</ul>
+    <div class="note">※Bセットは揚げ餃子は出来ません</div>
+  </section>`;
+}
+
+function legendBlock(day) {
+  const oomori = day === 'weekday' ? '麺類大盛り：平日は無料（土日祝＋200円）' : '麺類大盛り：土日祝＋200円（平日は無料）';
+  return `<div class="legend">
+    <div class="legend-title">マークのご案内</div>
+    <div>${BADGE_IMG['特盛可']} … <b>特盛</b>にできます（別途追加料金）　${BADGE_IMG['持帰']} … <b>お持ち帰り</b>できます</div>
+    <div><span class="badge badge-ninki">人気</span> <span class="badge badge-meibutsu">名物</span> … 当店のおすすめです</div>
+    <div class="row-note">※${oomori}／ご飯類・スープ大盛り＋200円</div>
+  </div>`;
+}
+
+function specialBlock(token, day) {
+  if (token === '@set') return setBlock();
+  if (token === '@oomori-men') {
+    const t = day === 'weekday'
+      ? '麺類 <span class="big">大盛り無料</span>！<small>（平日）土日祝は＋200円にて承ります</small>'
+      : '麺類大盛り <span class="big">＋200円</span><small>平日は大盛り無料！</small>';
+    return `<section class="banner-oomori">${t}</section>`;
+  }
+  if (token === '@oomori-gohan') {
+    return `<section class="infobox">ご飯類・スープの大盛りは<b>＋200円</b>にて承ります。</section>`;
+  }
+  if (token === '@weekend-note') {
+    return `<section class="infobox">${esc(MENU.days.weekend.note || '')}</section>`;
+  }
+  if (token.startsWith('@feature:')) return featureBlock(token.slice(9), day);
+  return '';
+}
+
+function findItem(day, name) {
+  for (const cat of MENU.days[day].categories) {
+    const hit = cat.items.find((it) => it.name === name);
+    if (hit) return hit;
+  }
+  return null;
+}
+
+function omitSetFor(page) {
+  const omit = new Set();
+  for (const col of page.cols) for (const token of col) {
+    if (token.startsWith('@feature:')) {
+      const key = token.slice(9);
+      omit.add(key);
+      (FEATURES[key]?.omitAlso || []).forEach((n) => omit.add(n));
+    }
+  }
+  return omit;
+}
+
+function renderPage(page, qaMessages) {
+  const dayLabel = MENU.days[page.day].label;
+  const omit = omitSetFor(page);
+  const catsByName = Object.fromEntries(MENU.days[page.day].categories.map((c) => [c.name, c]));
+
+  const colsHtml = page.cols.map((col) => {
+    const blocks = col.map((token) => {
+      if (token.startsWith('@')) return specialBlock(token, page.day);
+      const cat = catsByName[token];
+      if (!cat) { qaMessages.push(`【${dayLabel}・${page.face}】カテゴリ「${token}」がmenu.jsonに見つかりません`); return ''; }
+      return catBlock(cat, omit);
+    }).join('');
+    return `<div class="col">${blocks}</div>`;
+  }).join('');
+
+  return `<div class="page" data-label="${dayLabel}・${page.face}">
+    <div class="raimon"></div>
+    <div class="page-inner">
+      <div class="head">
+        <div class="shop">
+          <span class="shop-name">陽気軒</span>
+        </div>
+        <span class="face-wrap"><span class="face-title"><span class="ft-txt">${esc(page.face)}</span></span></span>
+        <span class="day-tag">${esc(dayLabel)}</span>
+        <div class="head-spacer"></div>
+        ${legendBlock(page.day)}
+      </div>
+      <div class="cols">${colsHtml}</div>
+      <div class="foot">
+        <span>陽気軒　営業時間：AM11:00〜PM8:00（ラストオーダー PM7:30）</span>
+        <small>価格はすべて税込です。メニュー・価格は変更になる場合があります。</small>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   QAチェック：未配置カテゴリ・カラムあふれの検出
+   ============================================================ */
+function qaUnplacedCategories(qaMessages) {
+  for (const dayKey of ['weekday', 'weekend']) {
+    const placed = new Set();
+    const featured = new Set();
+    PAGES.filter((p) => p.day === dayKey).forEach((p) => p.cols.flat().forEach((t) => {
+      if (t.startsWith('@feature:')) {
+        const key = t.slice(9);
+        featured.add(key);
+        (FEATURES[key]?.omitAlso || []).forEach((n) => featured.add(n));
+      } else if (!t.startsWith('@')) {
+        placed.add(t);
+      }
+    }));
+    for (const cat of MENU.days[dayKey].categories) {
+      if (placed.has(cat.name)) continue;
+      // 全品が特設枠（＋説明内掲載）でカバーされていれば配置済み扱い
+      if (cat.items.every((it) => featured.has(it.name))) continue;
+      qaMessages.push(`【${MENU.days[dayKey].label}】カテゴリ「${cat.name}」（${cat.items.length}品）がどの面にも配置されていません`);
+    }
+  }
+}
+
+function qaOverflow() {
+  document.querySelectorAll('.page').forEach((pageEl) => {
+    pageEl.querySelectorAll('.col').forEach((colEl, i) => {
+      if (colEl.scrollHeight > colEl.clientHeight + 1) {
+        const tag = document.createElement('div');
+        tag.className = 'overflow-tag';
+        tag.textContent = `あふれ：${colEl.scrollHeight - colEl.clientHeight}px`;
+        colEl.appendChild(tag);
+        console.error(`[overflow] ${pageEl.dataset.label} 第${i + 1}カラム`);
+      }
+    });
+  });
+}
+
+const qaMessages = [];
+qaUnplacedCategories(qaMessages);
+const html = PAGES.map((p) => renderPage(p, qaMessages)).join('');
+const banner = qaMessages.length
+  ? `<div class="qa-banner">要修正：${qaMessages.map(esc).join('／')}</div>` : '';
+document.getElementById('app').innerHTML = banner + html;
+qaOverflow();
+</script>
+</body>
+</html>

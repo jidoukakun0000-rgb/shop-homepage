@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths:
       - 'youkiken/**'
+      - '.github/workflows/deploy-cloudflare.yml'
   pull_request:
     branches: [main]
     paths:
       - 'youkiken/**'
+      - '.github/workflows/deploy-cloudflare.yml'
 
 jobs:
   deploy:
@@ -18,13 +20,34 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+      # 公開するのはホームページが使うファイルだけ。youkiken/ を丸ごと上げると
+      # print/（版下・作業メモ）や shopcard/、内部の調査メモまで URL 直打ちで開けてしまう。
+      # ここに書いたものだけが youkiken.com に載る（許可リスト方式）
+      - name: Build site directory (homepage files only)
+        run: |
+          mkdir -p dist
+          cp youkiken/index.html youkiken/menu.json youkiken/robots.txt youkiken/sitemap.xml dist/
+          cp youkiken/pattern-*.html dist/
+          cp -R youkiken/photos dist/photos
+          find dist -type f | sort
+      # Pages プロジェクトが無ければ作る（2026-10 にアカウントから消えていて
+      # "Project not found" でデプロイが失敗していた）。既にあれば失敗するので無視して進む
+      - name: Ensure Pages project exists
+        continue-on-error: true
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 11e3cdb42515bd0e3557182eaa61e46e
+          command: |
+            pages project create youkiken --production-branch=main
+            pages project list
       - name: Deploy to Cloudflare Pages
         id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 11e3cdb42515bd0e3557182eaa61e46e
-          command: pages deploy youkiken --project-name=youkiken --branch=${{ github.head_ref || 'main' }}
+          command: pages deploy dist --project-name=youkiken --branch=${{ github.head_ref || 'main' }}
       - name: Comment preview URL on PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
