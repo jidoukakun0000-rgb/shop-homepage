@@ -48,6 +48,42 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 11e3cdb42515bd0e3557182eaa61e46e
           command: pages deploy dist --project-name=youkiken --branch=${{ github.head_ref || 'main' }}
+      # youkiken.com を Pages プロジェクトに繋ぐ（無ければ追加。何度走らせても同じ結果になる）。
+      # 1) Pages のカスタムドメインに登録  2) ゾーンに CNAME（@ → youkiken.pages.dev）が無ければ作る
+      # トークンに DNS 編集権限が無い場合は 2) が失敗するだけで、デプロイ自体は止めない
+      - name: Ensure custom domain youkiken.com
+        continue-on-error: true
+        env:
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: 11e3cdb42515bd0e3557182eaa61e46e
+        run: |
+          api() { curl -sS -H "Authorization: Bearer $CF_API_TOKEN" -H "Content-Type: application/json" "$@"; }
+          BASE=https://api.cloudflare.com/client/v4
+          echo "== Pages custom domains (before)"
+          api "$BASE/accounts/$CF_ACCOUNT/pages/projects/youkiken/domains" > /tmp/doms.json
+          jq -c '{success, errors, domains: [.result[]? | {name, status}]}' /tmp/doms.json
+          if [ "$(jq '[.result[]? | select(.name=="youkiken.com")] | length' /tmp/doms.json)" = "0" ]; then
+            echo "== add youkiken.com to Pages"
+            api -X POST "$BASE/accounts/$CF_ACCOUNT/pages/projects/youkiken/domains" --data '{"name":"youkiken.com"}' \
+              | jq -c '{success, errors, name: .result.name, status: .result.status}'
+          fi
+          echo "== zone"
+          api "$BASE/zones?name=youkiken.com" > /tmp/zone.json
+          jq -c '{success, errors, zone: [.result[]? | {name, status}]}' /tmp/zone.json
+          ZONE=$(jq -r '.result[0].id // empty' /tmp/zone.json)
+          if [ -n "$ZONE" ]; then
+            echo "== dns records for youkiken.com"
+            api "$BASE/zones/$ZONE/dns_records?name=youkiken.com" > /tmp/dns.json
+            jq -c '{success, errors, records: [.result[]? | {type, name, content, proxied}]}' /tmp/dns.json
+            if [ "$(jq '[.result[]? | select(.type=="CNAME" or .type=="A" or .type=="AAAA")] | length' /tmp/dns.json)" = "0" ]; then
+              echo "== create CNAME @ -> youkiken.pages.dev"
+              api -X POST "$BASE/zones/$ZONE/dns_records" \
+                --data '{"type":"CNAME","name":"youkiken.com","content":"youkiken.pages.dev","proxied":true,"ttl":1}' \
+                | jq -c '{success, errors, type: .result.type, name: .result.name, content: .result.content, proxied: .result.proxied}'
+            fi
+          else
+            echo "zone not visible to this token (DNS permission missing?)"
+          fi
       - name: Comment preview URL on PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
