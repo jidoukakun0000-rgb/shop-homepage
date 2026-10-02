@@ -36,7 +36,7 @@
 ### ① 準備するもの
 - [ ] 運営用のGoogleアカウント（お店専用が望ましい）
 - [ ] お店の情報（正式名称 / 住所 / 電話番号 / 業種カテゴリ）
-- [ ] サイトURL: https://jidoukakun0000-rgb.github.io/shop-homepage/youkiken/
+- [ ] サイトURL: https://youkiken.com/ （旧URLの github.io は転送のみ。プロフィールに旧URLを入れていたら差し替える）
 
 ### ② 店舗を検索して申請
 1. **https://business.google.com/add** にアクセス（または Googleマップ／Google検索でお店を検索）

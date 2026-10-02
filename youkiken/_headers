@@ -1,0 +1,8 @@
+# Cloudflare Pages のヘッダー設定。
+# 公開するのは youkiken.com だけ。Cloudflare の既定アドレス（*.pages.dev）と
+# PR プレビューのURLは中身が同じなので、検索エンジンに載らないようにする。
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
