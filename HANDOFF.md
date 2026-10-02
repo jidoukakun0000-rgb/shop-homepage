@@ -13,8 +13,11 @@
 
 ## 公開URL
 
-- 陽気軒サイト: https://jidoukakun0000-rgb.github.io/shop-homepage/youkiken/
-- GitHub Pages（main ブランチ / ルート）で公開中
+- 陽気軒サイト（本番）: https://youkiken.com （2026-10-02 公開。Cloudflare Pages プロジェクト `youkiken`＝https://youkiken.pages.dev にカスタムドメインを接続）
+  - main へのマージで GitHub Actions（`.github/workflows/deploy-cloudflare.yml`）が自動デプロイ。PR はプレビューURLが出る
+  - 上げるのはホームページ用のファイルだけ（index.html・menu.json・photos/・robots.txt・sitemap.xml・pattern-*.html）。`print/` や内部メモは載せない
+  - ドメインは Cloudflare Registrar で取得。DNS は CNAME `@` → `youkiken.pages.dev`（プロキシ済み）
+- 旧URL: https://jidoukakun0000-rgb.github.io/shop-homepage/youkiken/ （GitHub Pages、main ブランチ / ルート。まだ生きていて、こちらはリポジトリ全体が配信される）
 - リポジトリは public
 
 ## 陽気軒の実データ
