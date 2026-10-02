@@ -30,15 +30,16 @@ jobs:
           cp youkiken/pattern-*.html dist/
           cp -R youkiken/photos dist/photos
           find dist -type f | sort
-      # 診断用：トークンのアカウントと、そこにある Pages プロジェクトの一覧を出す
-      - name: Diagnose Cloudflare account
+      # Pages プロジェクトが無ければ作る（2026-10 にアカウントから消えていて
+      # "Project not found" でデプロイが失敗していた）。既にあれば失敗するので無視して進む
+      - name: Ensure Pages project exists
         continue-on-error: true
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 11e3cdb42515bd0e3557182eaa61e46e
           command: |
-            whoami
+            pages project create youkiken --production-branch=main
             pages project list
       - name: Deploy to Cloudflare Pages
         id: deploy
