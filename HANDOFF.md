@@ -15,10 +15,11 @@
 
 - 陽気軒サイト（本番）: https://youkiken.com （2026-10-02 公開。Cloudflare Pages プロジェクト `youkiken`＝https://youkiken.pages.dev にカスタムドメインを接続）
   - main へのマージで GitHub Actions（`.github/workflows/deploy-cloudflare.yml`）が自動デプロイ。PR はプレビューURLが出る
-  - 上げるのはホームページ用のファイルだけ（index.html・menu.json・photos/・robots.txt・sitemap.xml・pattern-*.html）。`print/` や内部メモは載せない
+  - 上げるのはホームページ用のファイルだけ（index.html・menu.json・photos/・robots.txt・sitemap.xml・_headers）。`print/` や内部メモ、デザイン検討用の pattern-*.html は載せない
   - ドメインは Cloudflare Registrar で取得。DNS は CNAME `@` → `youkiken.pages.dev`（プロキシ済み）
-- 旧URL: https://jidoukakun0000-rgb.github.io/shop-homepage/youkiken/ （GitHub Pages、main ブランチ / ルート。まだ生きていて、こちらはリポジトリ全体が配信される）
-- リポジトリは public
+  - `youkiken.pages.dev` と PR プレビューのURLは `_headers` で noindex（検索に載せない）
+- 旧URL: https://jidoukakun0000-rgb.github.io/shop-homepage/youkiken/ は **youkiken.com への転送ページだけ**を置いている（2026-10。GitHub Pages の配信元を `gh-pages` ブランチに変更。main の中身は配信されない）
+- リポジトリは public（ソース・版下・メモは GitHub 上で見える。非公開にすると無料プランでは GitHub Pages＝旧URLの転送も止まる）
 
 ## 陽気軒の実データ
 

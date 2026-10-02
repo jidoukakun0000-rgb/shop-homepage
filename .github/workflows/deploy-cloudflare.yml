@@ -22,12 +22,12 @@ jobs:
       - uses: actions/checkout@v4
       # 公開するのはホームページが使うファイルだけ。youkiken/ を丸ごと上げると
       # print/（版下・作業メモ）や shopcard/、内部の調査メモまで URL 直打ちで開けてしまう。
-      # ここに書いたものだけが youkiken.com に載る（許可リスト方式）
+      # ここに書いたものだけが youkiken.com に載る（許可リスト方式）。
+      # デザイン検討用の pattern-*.html は 2026-10 に外した（本番だけを公開する方針）
       - name: Build site directory (homepage files only)
         run: |
           mkdir -p dist
-          cp youkiken/index.html youkiken/menu.json youkiken/robots.txt youkiken/sitemap.xml dist/
-          cp youkiken/pattern-*.html dist/
+          cp youkiken/index.html youkiken/menu.json youkiken/robots.txt youkiken/sitemap.xml youkiken/_headers dist/
           cp -R youkiken/photos dist/photos
           find dist -type f | sort
       # Pages プロジェクトが無ければ作る（2026-10 にアカウントから消えていて
