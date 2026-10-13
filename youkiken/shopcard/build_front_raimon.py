@@ -5,8 +5,10 @@
 - 下部の「陽気軒」ロックアップ（タグライン・笑顔ロゴ・筆文字）を80%にして上下の余白を揃える
 - 笑顔ロゴはトレース済みの print/reference/logo-yohkiken-traced.png があれば差し替える
 
-使い方: python3 youkiken/shopcard/build_front_raimon.py
+使い方: python3 youkiken/shopcard/build_front_raimon.py [枠の色 #RRGGBB] [出力名の接尾辞]
+  例: python3 youkiken/shopcard/build_front_raimon.py "#1A1A1A" black  → front_raimon_black.png
 """
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -17,13 +19,15 @@ YOUKIKEN = HERE.parent
 FRONT = HERE / "front_final_hq.png"
 MENU = YOUKIKEN / "print/variants/menu-a3-r5-raimon-p1.png"
 LOGO = YOUKIKEN / "print/reference/logo-yohkiken-traced.png"
-OUT = HERE / "front_raimon.png"
-OUT_BLEED = HERE / "front_raimon_bleed3mm.png"
+SUFFIX = f"_{sys.argv[2]}" if len(sys.argv) > 2 else ""
+OUT = HERE / f"front_raimon{SUFFIX}.png"
+OUT_BLEED = HERE / f"front_raimon{SUFFIX}_bleed3mm.png"
 
 DPI = 800
 DPMM = DPI / 25.4
 CW, CH = 1732, 2866            # 55×91mm @800dpi
-FRAME_COLOR = (214, 100, 32)   # #D66420
+FRAME_HEX = sys.argv[1] if len(sys.argv) > 1 else "#D66420"
+FRAME_COLOR = tuple(int(FRAME_HEX.lstrip("#")[i:i + 2], 16) for i in (0, 2, 4))
 MOTIF_H_MM = 2.2               # 雷文の帯の高さ
 MOTIF_GAP_MM = 0.37            # 雷文同士の隙間（メニュー表と同じ比率）
 EDGE_MM = 1.3                  # カード端から帯まで
