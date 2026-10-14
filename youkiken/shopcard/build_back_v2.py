@@ -60,19 +60,28 @@ def brush_text(color):
     return Image.fromarray(np.dstack([rgb, alpha.astype(np.uint8)]))
 
 
-def icon_instagram(size, color, bg):
+IG_STOPS = [(0.0, (0xfd, 0xf4, 0x97)), (0.05, (0xfd, 0xf4, 0x97)), (0.45, (0xfd, 0x59, 0x49)),
+            (0.6, (0xd6, 0x24, 0x9f)), (0.9, (0x28, 0x5a, 0xeb))]
+
+
+def icon_instagram_color(size, color=None, bg=None):
+    """メニュー表と同じ、Instagram公式のグラデーションのアプリアイコン(背景透過)。"""
     s = size * 4
-    im = Image.new("RGBA", (s, s), bg + (255,))
+    yy, xx = np.mgrid[0:s, 0:s] / s
+    t = np.clip(np.hypot(xx - 0.3, yy - 1.07) / 1.5, 0, 1)
+    pos = [p for p, _ in IG_STOPS]
+    rgb = np.stack([np.interp(t, pos, [c[i] for _, c in IG_STOPS]) for i in range(3)], axis=-1)
+    im = Image.fromarray(rgb.astype(np.uint8)).convert("RGBA")
+    mask = Image.new("L", (s, s), 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, s - 1, s - 1), radius=round(s * 6.5 / 24), fill=255)
+    im.putalpha(mask)
     d = ImageDraw.Draw(im)
-    w = round(s * 0.09)
-    m = round(s * 0.14)
-    d.rounded_rectangle((m, m, s - m, s - m), radius=round(s * 0.24), outline=color, width=w)
-    r = round(s * 0.18)
-    c = s // 2
-    d.ellipse((c - r, c - r, c + r, c + r), outline=color, width=w)
-    dr = round(s * 0.055)
-    dx, dy = round(s * 0.69), round(s * 0.31)
-    d.ellipse((dx - dr, dy - dr, dx + dr, dy + dr), fill=color)
+    w = round(s * 2 / 24)
+    d.rounded_rectangle((s * 5 / 24, s * 5 / 24, s * 19 / 24, s * 19 / 24), radius=round(s * 4 / 24), outline="white", width=w)
+    r = s * 3.3 / 24
+    d.ellipse((s / 2 - r, s / 2 - r, s / 2 + r, s / 2 + r), outline="white", width=w)
+    r = s * 1.05 / 24
+    d.ellipse((s * 16.3 / 24 - r, s * 7.7 / 24 - r, s * 16.3 / 24 + r, s * 7.7 / 24 + r), fill="white")
     return im.resize((size, size), Image.LANCZOS)
 
 
@@ -98,12 +107,18 @@ def make_qr(url, size, color, icon):
     a = np.asarray(img).astype(float) / 255.0
     lum = a.mean(axis=2, keepdims=True)
     img = Image.fromarray((lum * 255 + (1 - lum) * np.array(color)).astype(np.uint8))
+    # 中央の白い台はQRのマス目に揃えて、切れたドットが細い線で残らないようにする
+    n = qr.modules_count
+    k = max(3, round(n * 0.30))
+    if (n - k) % 2:
+        k += 1
+    m0 = (n - k) // 2
+    ImageDraw.Draw(img).rectangle((m0 * 20, m0 * 20, (m0 + k) * 20 - 1, (m0 + k) * 20 - 1), fill=WHITE)
     img = img.resize((size, size), Image.LANCZOS)
-    ic = round(size * 0.22)
-    pad = round(ic * 0.16)
-    plate = Image.new("RGB", (ic + 2 * pad, ic + 2 * pad), WHITE)
-    plate.paste(icon(ic, color, WHITE), (pad, pad))
-    img.paste(plate, ((size - plate.width) // 2, (size - plate.height) // 2))
+    plate = round(size * k / n)
+    ic = round(plate * 0.74)
+    ico = icon(ic, color, WHITE)
+    img.paste(ico, ((size - ic) // 2, (size - ic) // 2), ico)
     return img
 
 
@@ -199,12 +214,24 @@ def build(variant):
     col_gap = mm(7.0)
     lx = cx - col_gap // 2 - qr_size
     rx = cx + col_gap // 2
-    for x, url, icon, name, handle in ((lx, INSTA_URL, icon_instagram, "Instagram", "@youkiken_"),
+    for x, url, icon, name, handle in ((lx, INSTA_URL, icon_instagram_color, "Instagram", "@youkiken_"),
                                        (rx, HP_URL, icon_home, "ホームページ", "youkiken.com")):
         card.paste(make_qr(url, qr_size, QR_COLOR, icon), (x, qr_top))
         ly = qr_top + qr_size + mm(1.3)
-        h = text_center(draw, x + qr_size // 2, ly, name, gothic(6, mm(1.7)), RED)
-        text_center(draw, x + qr_size // 2, ly + h + mm(0.7), handle, gothic(5, mm(1.6)), fg)
+        qcx = x + qr_size // 2
+        f = gothic(6, mm(1.7))
+        if icon is icon_instagram_color:
+            b = draw.textbbox((0, 0), name, font=f)
+            tw, th = b[2] - b[0], b[3] - b[1]
+            isz, igap = round(th * 1.25), mm(0.8)
+            x0 = qcx - (isz + igap + tw) // 2
+            ig = icon_instagram_color(isz)
+            card.paste(ig, (x0, ly + (th - isz) // 2), ig)
+            draw.text((x0 + isz + igap - b[0], ly - b[1]), name, font=f, fill=RED)
+            h = th
+        else:
+            h = text_center(draw, qcx, ly, name, f, RED)
+        text_center(draw, qcx, ly + h + mm(0.7), handle, gothic(5, mm(1.6)), fg)
 
     out = HERE / f"back_v2_{variant}.png"
     card.save(out, dpi=(DPI, DPI))
