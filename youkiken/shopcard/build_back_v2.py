@@ -4,11 +4,9 @@
 - 中: 電話・営業時間・定休日・住所
 - 下: Instagram とホームページのQRを同じ色・同じ形で並べる(中央にアイコン)
 
-案は2つ:
-  white … 白地に表面と同じ雷文の枠
-  red   … ロゴの臙脂で全面ベタ、文字は白、QRは白いタイルに載せる
+白地・枠なし。住所とQRの間に「まんぷく定食」のキャラ(manpuku-boy.png)を寝かせる。
 
-要 qrcode[pil]。 使い方: python3 youkiken/shopcard/build_back_v2.py [white|red]
+要 qrcode[pil]。 使い方: python3 youkiken/shopcard/build_back_v2.py [chara|plain]
 """
 import sys
 from pathlib import Path
@@ -19,10 +17,9 @@ from PIL import Image, ImageDraw, ImageFont
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
 
-import build_front_raimon as front_kit
-
 HERE = Path(__file__).resolve().parent
 LOGO = HERE.parent / "print/reference/logo-yohkiken-traced.png"
+CHARA = HERE.parent / "print/reference/manpuku-boy.png"
 FRONT = HERE / "front_final_hq.png"
 
 DPI = 800
@@ -30,7 +27,6 @@ DPMM = DPI / 25.4
 CW, CH = 1732, 2866
 
 RED = (172, 29, 32)       # ロゴの臙脂 #AC1D20
-GOLD = (240, 187, 41)     # ロゴの黄金 #F0BB29
 INK = (40, 30, 28)
 WHITE = (255, 255, 255)
 
@@ -127,120 +123,97 @@ def pill(draw, cx, y, text, font, fill, text_fill):
 
 
 def build(variant):
-    on_red = variant == "red"
-    bg = RED if on_red else WHITE
-    fg = WHITE if on_red else INK
-    accent = GOLD if on_red else RED
-    accent_text = RED if on_red else WHITE
-    sub = (250, 228, 200) if on_red else (95, 80, 76)
+    with_chara = variant == "chara"
+    fg, sub = INK, (95, 80, 76)
 
-    card = Image.new("RGB", (CW, CH), bg)
+    card = Image.new("RGB", (CW, CH), WHITE)
     draw = ImageDraw.Draw(card)
     cx = CW // 2
-
-    if on_red:
-        inset = mm(3.2)
-        draw.rectangle((inset, inset, CW - inset, CH - inset), outline=GOLD, width=mm(0.35))
-        top, bottom = mm(6.6), CH - mm(5.8)
-    else:
-        frame, inner = front_kit.build_frame(front_kit.extract_motif(RED))
-        card.paste(frame, (0, 0), frame)
-        top, bottom = inner + mm(2.5), CH - inner - mm(2.0)
+    top, bottom = mm(5.5), CH - mm(4.5)
 
     # ---- 上: ロゴ + 筆文字 ----
     logo_h = mm(8.6)
     logo = Image.open(LOGO).convert("RGB").resize((logo_h, logo_h), Image.LANCZOS)
-    brush = brush_text(WHITE if on_red else INK)
+    brush = brush_text(INK)
     bh = round(logo_h * 0.88)
     brush = brush.resize((round(brush.width * bh / brush.height), bh), Image.LANCZOS)
     gap = mm(2.2)
-    lw = logo_h + gap + brush.width
-    lx = cx - lw // 2
-    if on_red:
-        ring = mm(0.6)
-        draw.rectangle((lx - ring, top - ring, lx + logo_h + ring, top + logo_h + ring), fill=WHITE)
+    lx = cx - (logo_h + gap + brush.width) // 2
     card.paste(logo, (lx, top))
     card.paste(brush, (lx + logo_h + gap, top + (logo_h - bh) // 2), brush)
     y = top + logo_h + mm(1.9)
     y += text_center(draw, cx, y, "昭和三十六年創業　ラーメン・中華食堂", ImageFont.truetype(MINCHO, mm(1.75)), sub)
 
+    # ---- 下から: QR 2つ、その上にキャラ ----
+    qr_size = mm(14.0)
+    qr_top = bottom - mm(4.6) - qr_size
+    chara_h = mm(13.5) if with_chara else 0
+    chara_top = qr_top - mm(1.2) - chara_h
+
     # ---- 中: 店舗情報 ----
     info_top = y + mm(4.0)
-    qr_size = mm(14.0)
-    qr_label_h = mm(4.6)
-    qr_top = bottom - qr_label_h - qr_size
 
-    blocks = []
-
-    def tel(yy, dry=False):
-        d = ImageDraw.Draw(Image.new("RGB", (1, 1))) if dry else draw
-        h = text_center(d, cx, yy, "TEL", gothic(6, mm(1.7)), accent if not on_red else GOLD)
+    def tel(d, yy):
+        h = text_center(d, cx, yy, "TEL", gothic(6, mm(1.7)), RED)
         h += mm(0.9)
         h += text_center(d, cx, yy + h, "027-387-7082", gothic(7, mm(4.3)), fg)
         return h
 
-    def hours(yy, dry=False):
-        d = ImageDraw.Draw(Image.new("RGB", (1, 1))) if dry else draw
-        h = pill(d, cx, yy, "営業時間", gothic(6, mm(1.75)), accent, accent_text)
-        h += mm(1.2)
-        h += text_center(d, cx, yy + h, "11:00 – 20:00", gothic(7, mm(3.9)), fg)
-        h += mm(0.9)
-        h += text_center(d, cx, yy + h, "ラストオーダー 19:30", gothic(5, mm(1.75)), sub)
-        return h
+    col_off = mm(12.0)
 
-    def closed(yy, dry=False):
-        d = ImageDraw.Draw(Image.new("RGB", (1, 1))) if dry else draw
-        h = pill(d, cx, yy, "定休日", gothic(6, mm(1.75)), accent, accent_text)
-        h += mm(1.2)
-        h += text_center(d, cx, yy + h, "毎月 15日・26日", gothic(7, mm(3.4)), fg)
-        h += mm(0.9)
-        h += text_center(d, cx, yy + h, "その他、都合によりお休みする場合があります", gothic(4, mm(1.55)), sub)
-        return h
+    def hours_closed(d, yy):
+        hl = pill(d, cx - col_off, yy, "営業時間", gothic(6, mm(1.65)), RED, WHITE)
+        pill(d, cx + col_off, yy, "定休日", gothic(6, mm(1.65)), RED, WHITE)
+        h = hl + mm(1.2)
+        a = text_center(d, cx - col_off, yy + h, "11:00 – 20:00", gothic(7, mm(2.45)), fg)
+        text_center(d, cx + col_off, yy + h, "毎月15日・26日", gothic(7, mm(2.45)), fg)
+        h += a + mm(0.9)
+        b = text_center(d, cx - col_off, yy + h, "ラストオーダー 19:30", gothic(5, mm(1.5)), sub)
+        text_center(d, cx + col_off, yy + h, "ほか臨時休業あり", gothic(5, mm(1.5)), sub)
+        return h + b
 
-    def address(yy, dry=False):
-        d = ImageDraw.Draw(Image.new("RGB", (1, 1))) if dry else draw
+    def address(d, yy):
         h = text_center(d, cx, yy, "〒370-2134", gothic(5, mm(1.7)), sub)
         h += mm(1.0)
         h += text_center(d, cx, yy + h, "群馬県高崎市吉井町塩川37-4", gothic(6, mm(2.25)), fg)
         return h
 
-    blocks = [tel, hours, closed, address]
-    heights = [b(0, dry=True) for b in blocks]
-    space = qr_top - mm(5.0) - info_top
-    step = (space - sum(heights)) / (len(blocks) - 1)
+    blocks = [tel, hours_closed, address]
+    scratch = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    heights = [b(scratch, 0) for b in blocks]
+    info_bottom = (chara_top if with_chara else qr_top) - mm(3.0 if with_chara else 5.0)
+    step = (info_bottom - info_top - sum(heights)) / (len(blocks) - 1)
     if step < mm(1.5):
         raise SystemExit(f"情報欄が収まりません (行間 {step / DPMM:.1f}mm)")
     yy = info_top
     for b, h in zip(blocks, heights):
-        b(round(yy))
+        b(draw, round(yy))
         yy += h + step
 
-    # ---- 下: QR 2つ ----
-    qr_color = RED
+    if with_chara:
+        boy = Image.open(CHARA).convert("RGBA")
+        boy = boy.resize((round(boy.width * chara_h / boy.height), chara_h), Image.LANCZOS)
+        card.paste(boy, (cx - boy.width // 2, chara_top), boy)
+
     col_gap = mm(7.0)
-    tile_pad = mm(1.6) if on_red else 0
     lx = cx - col_gap // 2 - qr_size
     rx = cx + col_gap // 2
-    for x, url, icon, label in ((lx, INSTA_URL, icon_instagram, "Instagram  @youkiken_"),
-                                (rx, HP_URL, icon_home, "ホームページ  youkiken.com")):
-        if on_red:
-            draw.rounded_rectangle((x - tile_pad, qr_top - tile_pad, x + qr_size + tile_pad, qr_top + qr_size + tile_pad),
-                                   radius=mm(1.6), fill=WHITE)
-        card.paste(make_qr(url, qr_size, qr_color, icon), (x, qr_top))
-        name, handle = label.split("  ")
-        ly = qr_top + qr_size + tile_pad + mm(1.3)
-        h = text_center(draw, x + qr_size // 2, ly, name, gothic(6, mm(1.7)), accent if not on_red else GOLD)
+    for x, url, icon, name, handle in ((lx, INSTA_URL, icon_instagram, "Instagram", "@youkiken_"),
+                                       (rx, HP_URL, icon_home, "ホームページ", "youkiken.com")):
+        card.paste(make_qr(url, qr_size, RED, icon), (x, qr_top))
+        ly = qr_top + qr_size + mm(1.3)
+        h = text_center(draw, x + qr_size // 2, ly, name, gothic(6, mm(1.7)), RED)
         text_center(draw, x + qr_size // 2, ly + h + mm(0.7), handle, gothic(5, mm(1.6)), fg)
 
     out = HERE / f"back_v2_{variant}.png"
     card.save(out, dpi=(DPI, DPI))
     bleed = mm(3)
-    padded = Image.new("RGB", (CW + 2 * bleed, CH + 2 * bleed), bg)
+    padded = Image.new("RGB", (CW + 2 * bleed, CH + 2 * bleed), WHITE)
     padded.paste(card, (bleed, bleed))
     padded.save(HERE / f"back_v2_{variant}_bleed3mm.png", dpi=(DPI, DPI))
-    print("saved", out.name)
+    print("saved", out.name, f"(行間 {step / DPMM:.1f}mm)")
 
 
 if __name__ == "__main__":
-    for v in (sys.argv[1:] or ["white", "red"]):
+    for v in (sys.argv[1:] or ["chara"]):
         build(v)
