@@ -28,6 +28,7 @@ CW, CH = 1732, 2866
 
 RED = (172, 29, 32)       # ロゴの臙脂 #AC1D20
 INK = (40, 30, 28)
+QR_COLOR = INK            # QRは本文と同じ墨色
 WHITE = (255, 255, 255)
 
 GOTHIC = "/System/Library/Fonts/ヒラギノ角ゴシック W{}.ttc"
@@ -200,7 +201,7 @@ def build(variant):
     rx = cx + col_gap // 2
     for x, url, icon, name, handle in ((lx, INSTA_URL, icon_instagram, "Instagram", "@youkiken_"),
                                        (rx, HP_URL, icon_home, "ホームページ", "youkiken.com")):
-        card.paste(make_qr(url, qr_size, RED, icon), (x, qr_top))
+        card.paste(make_qr(url, qr_size, QR_COLOR, icon), (x, qr_top))
         ly = qr_top + qr_size + mm(1.3)
         h = text_center(draw, x + qr_size // 2, ly, name, gothic(6, mm(1.7)), RED)
         text_center(draw, x + qr_size // 2, ly + h + mm(0.7), handle, gothic(5, mm(1.6)), fg)
