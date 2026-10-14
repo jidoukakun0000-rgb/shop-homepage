@@ -42,7 +42,7 @@ HP_URL = "https://youkiken.com/"
 SUBTITLE = "昭和三十六年創業　名物ジャンボ餃子と自家製麺"
 ACCESS = None     # 例: "上信電鉄 吉井駅 徒歩10分"
 PARKING = None    # 例: "駐車場 ◯台"
-BUBBLE = None     # 例: ("ジャンボ餃子は", "お持ち帰りも", "できるよ！")
+BUBBLE = None     # 例: ("汁物以外は", "お持ち帰り", "できるよ！")  ※お持ち帰りは汁物以外OK(お店に確認済み)
 TBD = "◯"
 TBD_COLOR = (0, 120, 255)
 
