@@ -19,15 +19,11 @@ YOUKIKEN = HERE.parent
 FRONT = HERE / "front_final_hq.png"
 MENU = YOUKIKEN / "print/variants/menu-a3-r5-raimon-p1.png"
 LOGO = YOUKIKEN / "print/reference/logo-yohkiken-traced.png"
-SUFFIX = f"_{sys.argv[2]}" if len(sys.argv) > 2 else ""
-OUT = HERE / f"front_raimon{SUFFIX}.png"
-OUT_BLEED = HERE / f"front_raimon{SUFFIX}_bleed3mm.png"
 
 DPI = 800
 DPMM = DPI / 25.4
 CW, CH = 1732, 2866            # 55×91mm @800dpi
-FRAME_HEX = sys.argv[1] if len(sys.argv) > 1 else "#D66420"
-FRAME_COLOR = tuple(int(FRAME_HEX.lstrip("#")[i:i + 2], 16) for i in (0, 2, 4))
+DEFAULT_FRAME_HEX = "#D66420"
 MOTIF_H_MM = 2.2               # 雷文の帯の高さ
 MOTIF_GAP_MM = 0.37            # 雷文同士の隙間（メニュー表と同じ比率）
 EDGE_MM = 1.3                  # カード端から帯まで
@@ -39,7 +35,7 @@ BODY_LOCKUP_GAP_PX = 170
 BLEED_MM = 3
 
 
-def extract_motif():
+def extract_motif(color):
     """メニュー表の上辺の帯から雷文を1つ切り出し、紙色を透明にして返す。"""
     menu = np.asarray(Image.open(MENU).convert("RGB"))
     r, g, b = (menu[..., i].astype(int) for i in range(3))
@@ -63,7 +59,7 @@ def extract_motif():
     paper = menu[y0 - 15, (x0 + x1) // 2].astype(float)
     alpha = np.clip(np.abs(tile - paper).sum(axis=2) * 1.2, 0, 255).astype(np.uint8)
     rgb = np.empty(tile.shape, np.uint8)
-    rgb[...] = FRAME_COLOR
+    rgb[...] = color
     return Image.fromarray(np.dstack([rgb, alpha]))
 
 
@@ -107,7 +103,15 @@ def ink_bbox(arr, thresh):
     return rows[0], rows[-1], cols[0], cols[-1]
 
 
+def hex_to_rgb(h):
+    return tuple(int(h.lstrip("#")[i:i + 2], 16) for i in (0, 2, 4))
+
+
 def main():
+    color = hex_to_rgb(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_FRAME_HEX)
+    suffix = f"_{sys.argv[2]}" if len(sys.argv) > 2 else ""
+    out = HERE / f"front_raimon{suffix}.png"
+    out_bleed = HERE / f"front_raimon{suffix}_bleed3mm.png"
     front = Image.open(FRONT).convert("RGB")
     if LOGO.exists():
         x0, y0, x1, y1 = OLD_LOGO_BOX
@@ -128,7 +132,7 @@ def main():
     r0, r1, c0, c1 = ink_bbox(lk, 250)
     lockup = Image.fromarray(lk[r0 - 3:r1 + 4, c0 - 3:c1 + 4])
 
-    frame, inset = build_frame(extract_motif())
+    frame, inset = build_frame(extract_motif(color))
     inner_w, inner_h = CW - 2 * inset, CH - 2 * inset
 
     sc = inner_w / art.width
@@ -141,13 +145,13 @@ def main():
     card.paste(art.resize((aw, ah), Image.LANCZOS), ((CW - aw) // 2, ay))
     card.paste(lockup.resize((lw, lh), Image.LANCZOS), ((CW - lw) // 2, ay + ah + BODY_LOCKUP_GAP_PX))
     card.paste(frame, (0, 0), frame)
-    card.save(OUT, dpi=(DPI, DPI))
+    card.save(out, dpi=(DPI, DPI))
 
     bleed = round(BLEED_MM * DPMM)
     padded = Image.new("RGB", (CW + 2 * bleed, CH + 2 * bleed), (255, 255, 255))
     padded.paste(card, (bleed, bleed))
-    padded.save(OUT_BLEED, dpi=(DPI, DPI))
-    print(f"saved {OUT.name} / {OUT_BLEED.name}  (logo {'traced' if LOGO.exists() else 'original'})")
+    padded.save(out_bleed, dpi=(DPI, DPI))
+    print(f"saved {out.name} / {out_bleed.name}  (logo {'traced' if LOGO.exists() else 'original'})")
 
 
 if __name__ == "__main__":
