@@ -37,12 +37,12 @@ MINCHO = "/System/Library/Fonts/ヒラギノ明朝 ProN.ttc"
 INSTA_URL = "https://www.instagram.com/youkiken_"
 HP_URL = "https://youkiken.com/"
 
-# ---- お店に確認中の文言(仮置き) ----
-# 「◯」を含む部分は青字で描き、残っていれば警告を出す。確定したらここを書き換える
+# ---- お店に確認中の文言 ----
+# None にすると描かない。「◯」を含む部分は青字で描き、残っていれば警告を出す
 SUBTITLE = "昭和三十六年創業　名物ジャンボ餃子と自家製麺"
-ACCESS = "上信電鉄 吉井駅 徒歩10分"
-PARKING = "駐車場 ◯台"
-BUBBLE = ("ジャンボ餃子は", "お持ち帰りも", "できるよ！")
+ACCESS = None     # 例: "上信電鉄 吉井駅 徒歩10分"
+PARKING = None    # 例: "駐車場 ◯台"
+BUBBLE = None     # 例: ("ジャンボ餃子は", "お持ち帰りも", "できるよ！")
 TBD = "◯"
 TBD_COLOR = (0, 120, 255)
 
@@ -206,7 +206,7 @@ def build(variant):
 
     # ---- 下から: QR 2つ、その上にキャラ ----
     qr_size = mm(14.0)
-    qr_top = bottom - mm(4.6) - qr_size
+    qr_top = bottom - mm(3.2) - qr_size
     chara_h = mm(13.5) if with_chara else 0
     chara_top = qr_top - mm(1.2) - chara_h
 
@@ -228,17 +228,19 @@ def build(variant):
         a = text_center(d, cx - col_off, yy + h, "11:00 – 20:00", gothic(7, mm(2.45)), fg)
         text_center(d, cx + col_off, yy + h, "毎月15日・26日", gothic(7, mm(2.45)), fg)
         h += a + mm(0.9)
-        b = text_center(d, cx - col_off, yy + h, "ラストオーダー 19:30", gothic(5, mm(1.5)), sub)
-        text_center(d, cx + col_off, yy + h, "ほか臨時休業あり", gothic(5, mm(1.5)), sub)
-        return h + b
+        return h + text_center(d, cx - col_off, yy + h, "ラストオーダー 19:30", gothic(5, mm(1.5)), sub)
 
     def address(d, yy):
         h = text_center(d, cx, yy, "〒370-2134", gothic(5, mm(1.7)), sub)
         h += mm(1.0)
         h += text_center(d, cx, yy + h, "群馬県高崎市吉井町塩川37-4", gothic(6, mm(2.25)), fg)
-        h += mm(1.0)
-        h += text_center_parts(d, cx, yy + h, [(ACCESS, tbd_color(ACCESS, sub)), ("　", sub),
-                                               (PARKING, tbd_color(PARKING, sub))], gothic(5, mm(1.6)))
+        extra = [t for t in (ACCESS, PARKING) if t]
+        if extra:
+            parts = []
+            for t in extra:
+                parts += [(t, tbd_color(t, sub)), ("　", sub)]
+            h += mm(1.0)
+            h += text_center_parts(d, cx, yy + h, parts[:-1], gothic(5, mm(1.6)))
         return h
 
     blocks = [tel, hours_closed, address]
@@ -256,36 +258,35 @@ def build(variant):
     if with_chara:
         boy = Image.open(CHARA).convert("RGBA")
         boy = boy.resize((round(boy.width * chara_h / boy.height), chara_h), Image.LANCZOS)
-        bx = cx - mm(5.0) - boy.width // 2
+        bx = cx - (mm(5.0) if BUBBLE else 0) - boy.width // 2
         card.paste(boy, (bx, chara_top), boy)
-        # 吹き出しは頭の右に置き、尻尾を口元へ向ける
-        tip = (bx + boy.width * 0.80, chara_top + chara_h * 0.36)
-        bub_x = bx + round(boy.width * 0.90) + mm(1.2)
-        bw, _ = speech_bubble(draw, bub_x, chara_top - mm(0.6), BUBBLE, gothic(6, mm(1.45)), tip, RED, WHITE)
-        if bub_x + bw > CW - mm(3.5):
-            raise SystemExit("吹き出しがカードの端にかかります")
+        if BUBBLE:
+            # 吹き出しは頭の右に置き、尻尾を口元へ向ける
+            tip = (bx + boy.width * 0.80, chara_top + chara_h * 0.36)
+            bub_x = bx + round(boy.width * 0.90) + mm(1.2)
+            bw, _ = speech_bubble(draw, bub_x, chara_top - mm(0.6), BUBBLE, gothic(6, mm(1.45)), tip, RED, WHITE)
+            if bub_x + bw > CW - mm(3.5):
+                raise SystemExit("吹き出しがカードの端にかかります")
 
     col_gap = mm(7.0)
     lx = cx - col_gap // 2 - qr_size
     rx = cx + col_gap // 2
-    for x, url, icon, name, handle in ((lx, INSTA_URL, icon_instagram_color, "Instagram", "@youkiken_"),
-                                       (rx, HP_URL, icon_home, "ホームページ", "youkiken.com")):
+    f = gothic(6, mm(1.75))
+    for x, url, icon, label in ((lx, INSTA_URL, icon_instagram_color, "@youkiken_"),
+                                (rx, HP_URL, icon_home, "youkiken.com")):
         card.paste(make_qr(url, qr_size, QR_COLOR, icon), (x, qr_top))
         ly = qr_top + qr_size + mm(1.3)
         qcx = x + qr_size // 2
-        f = gothic(6, mm(1.7))
         if icon is icon_instagram_color:
-            b = draw.textbbox((0, 0), name, font=f)
+            b = draw.textbbox((0, 0), label, font=f)
             tw, th = b[2] - b[0], b[3] - b[1]
-            isz, igap = round(th * 1.25), mm(0.8)
+            isz, igap = round(th * 1.3), mm(0.7)
             x0 = qcx - (isz + igap + tw) // 2
             ig = icon_instagram_color(isz)
             card.paste(ig, (x0, ly + (th - isz) // 2), ig)
-            draw.text((x0 + isz + igap - b[0], ly - b[1]), name, font=f, fill=RED)
-            h = th
+            draw.text((x0 + isz + igap - b[0], ly - b[1]), label, font=f, fill=fg)
         else:
-            h = text_center(draw, qcx, ly, name, f, RED)
-        text_center(draw, qcx, ly + h + mm(0.7), handle, gothic(5, mm(1.6)), fg)
+            text_center(draw, qcx, ly, label, f, fg)
 
     out = HERE / f"back_v2_{variant}.png"
     card.save(out, dpi=(DPI, DPI))
@@ -294,7 +295,7 @@ def build(variant):
     padded.paste(card, (bleed, bleed))
     padded.save(HERE / f"back_v2_{variant}_bleed3mm.png", dpi=(DPI, DPI))
     print("saved", out.name, f"(行間 {step / DPMM:.1f}mm)")
-    pending = [t for t in (SUBTITLE, ACCESS, PARKING, *BUBBLE) if TBD in t]
+    pending = [t for t in (SUBTITLE, ACCESS, PARKING, *(BUBBLE or ())) if t and TBD in t]
     if pending:
         print("※ 仮置きが残っています(青字):", " / ".join(pending))
 
