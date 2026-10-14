@@ -1,7 +1,8 @@
 """ショップカード裏面(元の裏面の雰囲気を活かした版)。
 
 元の裏面(back_final_hq.png)の構成はそのまま:
-  店名(表面と同じ筆文字「陽気軒」) / 電話アイコン+番号 / 茶色の丸い見出し「営業時間」「定休日」 / 住所 / QR
+  店名(表面と同じ筆文字「陽気軒」) / 電話アイコン+番号 / 丸い見出し「営業時間」「定休日」 / 住所 / QR
+色は表面の筆文字に合わせて黒にそろえる。
 電話アイコンはスキャンから切り出して線を整え、文字は丸ゴシックで打ち直す。
 並べ方は「関連する情報は詰めて、まとまりどうしの間隔は同じ」にそろえる。
 お持ち帰りは汁物以外OK(2026-10 お店に確認済み)。
@@ -29,8 +30,8 @@ _SUFFIX = f"_{MASCOT}" if MASCOT else ""
 OUT = HERE / f"back_v3{_SUFFIX}.png"
 OUT_BLEED = HERE / f"back_v3{_SUFFIX}_bleed3mm.png"
 
-BROWN = (92, 63, 61)            # 元の裏面の茶色(実測)
-NOTE = (128, 104, 100)
+INK = (34, 30, 29)              # 表面の筆文字に合わせた黒
+NOTE = (105, 101, 100)
 ROUND = "/System/Library/Fonts/ヒラギノ丸ゴ ProN W4.ttc"
 
 TEL_ICON_BOX = (172, 563, 408, 751)   # 同じく電話アイコン
@@ -61,7 +62,7 @@ def tel_icon(height):
     lum = np.asarray(big).astype(float)
     alpha = np.clip((175 - lum) / 40, 0, 1) * 255
     rgb = np.empty(alpha.shape + (3,), np.uint8)
-    rgb[...] = BROWN
+    rgb[...] = INK
     im = Image.fromarray(np.dstack([rgb, alpha.astype(np.uint8)]))
     return im.resize((round(im.width * height / im.height), height), Image.LANCZOS)
 
@@ -73,8 +74,8 @@ def main():
     W_BIG = mm(0.11)   # 太字の縁取り幅
 
     # ---- まとまりを「描く関数」として用意し、高さを先に測る ----
-    # 店名は表面と同じ筆文字「陽気軒」(裏面の茶色で)
-    sg = kit.brush_text(BROWN)
+    # 店名は表面と同じ筆文字「陽気軒」
+    sg = kit.brush_text(INK)
     sg = sg.resize((round(sg.width * mm(8.0) / sg.height), mm(8.0)), Image.LANCZOS)
 
     def boy(height):
@@ -107,7 +108,7 @@ def main():
         h = max(th, ic.height)
         if draw:
             card.paste(ic, (x0, y + (h - ic.height) // 2), ic)
-            bold_text(d, (x0 + ic.width + gap - b[0], y + (h - th) // 2 - b[1]), "027-387-7082", num_f, BROWN, W_BIG)
+            bold_text(d, (x0 + ic.width + gap - b[0], y + (h - th) // 2 - b[1]), "027-387-7082", num_f, INK, W_BIG)
         return h
 
     pill_f = rfont(2.2)
@@ -117,7 +118,7 @@ def main():
         px, py = mm(2.6), mm(0.85)
         w, h = tw + 2 * px, th + 2 * py
         if draw:
-            d.rounded_rectangle((cx - w / 2, y, cx + w / 2, y + h), radius=h / 2, fill=BROWN)
+            d.rounded_rectangle((cx - w / 2, y, cx + w / 2, y + h), radius=h / 2, fill=INK)
             bold_text(d, (cx - tw / 2 - b[0], y + py - b[1]), text, pill_f, WHITE, mm(0.035))
         return h
 
@@ -128,19 +129,19 @@ def main():
         h = pill(y, "営業時間", draw) + mm(1.6)
         b, tw, th = measure(d, "AM11:00〜PM8:00", big_f, W_BIG)
         if draw:
-            bold_text(d, (cx - tw / 2 - b[0], y + h - b[1]), "AM11:00〜PM8:00", big_f, BROWN, W_BIG)
+            bold_text(d, (cx - tw / 2 - b[0], y + h - b[1]), "AM11:00〜PM8:00", big_f, INK, W_BIG)
         h += th + mm(1.2)
         nb, nw, nh = measure(d, "ラストオーダー PM7:30", note_f, mm(0.05))
         if draw:
             # 元のカードと同じく、時刻の右端にそろえる
-            bold_text(d, (cx + tw / 2 - nw - nb[0], y + h - nb[1]), "ラストオーダー PM7:30", note_f, BROWN, mm(0.05))
+            bold_text(d, (cx + tw / 2 - nw - nb[0], y + h - nb[1]), "ラストオーダー PM7:30", note_f, INK, mm(0.05))
         return h + nh
 
     def g_closed(y, draw=True):
         h = pill(y, "定休日", draw) + mm(1.6)
         b, tw, th = measure(d, "毎月15日・26日", big_f, W_BIG)
         if draw:
-            bold_text(d, (cx - tw / 2 - b[0], y + h - b[1]), "毎月15日・26日", big_f, BROWN, W_BIG)
+            bold_text(d, (cx - tw / 2 - b[0], y + h - b[1]), "毎月15日・26日", big_f, INK, W_BIG)
         h += th + mm(1.2)
         note = "※都合により臨時休業する場合があります"
         nb, nw, nh = measure(d, note, note_f)
@@ -151,7 +152,7 @@ def main():
     to_f = rfont(2.2)
 
     def g_takeout(y, draw=True):
-        """お持ち帰りの案内(汁物以外)。小さい茶色の札 + 補足を1行に。"""
+        """お持ち帰りの案内(汁物以外)。小さい黒い札 + 補足を1行に。"""
         tag = "お持ち帰りOK"
         rest = "（汁物以外）"
         tb, tw, th = measure(d, tag, to_f, mm(0.035))
@@ -168,9 +169,9 @@ def main():
         if draw:
             if by:
                 card.paste(by, (round(x0 - bw), y + h - by.height), by)
-            d.rounded_rectangle((x0, top, x0 + pw, top + ph), radius=ph / 2, fill=BROWN)
+            d.rounded_rectangle((x0, top, x0 + pw, top + ph), radius=ph / 2, fill=INK)
             bold_text(d, (x0 + px - tb[0], top + py - tb[1]), tag, to_f, WHITE, mm(0.035))
-            bold_text(d, (x0 + pw + gap - rb[0], top + (ph - rh) / 2 - rb[1]), rest, to_f, BROWN, mm(0.035))
+            bold_text(d, (x0 + pw + gap - rb[0], top + (ph - rh) / 2 - rb[1]), rest, to_f, INK, mm(0.035))
         return h
 
     addr_f = rfont(2.55)
@@ -179,11 +180,11 @@ def main():
     def g_address(y, draw=True):
         b, tw, th = measure(d, "〒370-2134", zip_f, mm(0.05))
         if draw:
-            bold_text(d, (cx - tw / 2 - b[0], y - b[1]), "〒370-2134", zip_f, BROWN, mm(0.05))
+            bold_text(d, (cx - tw / 2 - b[0], y - b[1]), "〒370-2134", zip_f, INK, mm(0.05))
         h = th + mm(1.0)
         b, tw, th = measure(d, "群馬県高崎市吉井町塩川37-4", addr_f, mm(0.04))
         if draw:
-            bold_text(d, (cx - tw / 2 - b[0], y + h - b[1]), "群馬県高崎市吉井町塩川37-4", addr_f, BROWN, mm(0.04))
+            bold_text(d, (cx - tw / 2 - b[0], y + h - b[1]), "群馬県高崎市吉井町塩川37-4", addr_f, INK, mm(0.04))
         return h + th
 
     q = mm(12.0)
@@ -197,7 +198,7 @@ def main():
         for i, (url, icon, label) in enumerate(((kit.INSTA_URL, kit.icon_instagram_color, "@youkiken_"),
                                                  (kit.HP_URL, kit.icon_home, "youkiken.com"))):
             x = cx - q_gap // 2 - q + i * (q + q_gap)
-            card.paste(kit.make_qr(url, q, BROWN, icon), (x, y))
+            card.paste(kit.make_qr(url, q, INK, icon), (x, y))
             lb, lw, lh = measure(d, label, lbl_f, mm(0.06))
             ly = y + q + mm(1.4)
             qcx = x + q // 2
@@ -206,9 +207,9 @@ def main():
                 x0 = qcx - (isz + igap + lw) // 2
                 ig = kit.icon_instagram_color(isz)
                 card.paste(ig, (x0, ly + (lh - isz) // 2), ig)
-                bold_text(d, (x0 + isz + igap - lb[0], ly - lb[1]), label, lbl_f, BROWN, mm(0.06))
+                bold_text(d, (x0 + isz + igap - lb[0], ly - lb[1]), label, lbl_f, INK, mm(0.06))
             else:
-                bold_text(d, (qcx - lw / 2 - lb[0], ly - lb[1]), label, lbl_f, BROWN, mm(0.06))
+                bold_text(d, (qcx - lw / 2 - lb[0], ly - lb[1]), label, lbl_f, INK, mm(0.06))
         return q + mm(1.4) + th
 
     groups = [g_sign, g_tel, g_hours, g_closed, g_takeout, g_address, g_qr]
