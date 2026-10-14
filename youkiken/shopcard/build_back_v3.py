@@ -1,15 +1,15 @@
 """ショップカード裏面(元の裏面の雰囲気を活かした版)。
 
 元の裏面(back_final_hq.png)の構成はそのまま:
-  茶色の「陽気軒」看板 / 電話アイコン+番号 / 茶色の丸い見出し「営業時間」「定休日」 / 住所 / QR
-看板と電話アイコンはスキャンから切り出して茶・白の2色に整え、文字は丸ゴシックで打ち直す。
+  店名(表面と同じ筆文字「陽気軒」) / 電話アイコン+番号 / 茶色の丸い見出し「営業時間」「定休日」 / 住所 / QR
+電話アイコンはスキャンから切り出して線を整え、文字は丸ゴシックで打ち直す。
 並べ方は「関連する情報は詰めて、まとまりどうしの間隔は同じ」にそろえる。
 お持ち帰りは汁物以外OK(2026-10 お店に確認済み)。
 QRは Instagram と ホームページ(youkiken.com)の2つ。
 
 まんぷくボーイは置き場所を選べる:
   python3 youkiken/shopcard/build_back_v3.py            … なし
-  python3 youkiken/shopcard/build_back_v3.py sign       … 看板の横 → back_v3_sign.png
+  python3 youkiken/shopcard/build_back_v3.py sign       … 店名の横 → back_v3_sign.png
   python3 youkiken/shopcard/build_back_v3.py takeout    … お持ち帰りの横 → back_v3_takeout.png
 要 qrcode[pil]。
 """
@@ -33,7 +33,6 @@ BROWN = (92, 63, 61)            # 元の裏面の茶色(実測)
 NOTE = (128, 104, 100)
 ROUND = "/System/Library/Fonts/ヒラギノ丸ゴ ProN W4.ttc"
 
-SIGN_BOX = (477, 123, 1262, 412)      # back_final_hq.png 上の看板
 TEL_ICON_BOX = (172, 563, 408, 751)   # 同じく電話アイコン
 
 MARGIN_X = 5.0
@@ -55,20 +54,6 @@ def measure(draw, text, f, weight=0):
     return b, b[2] - b[0], b[3] - b[1]
 
 
-def two_tone(img, dark, light, lo, hi):
-    """明るさで dark〜light の2色に塗り分ける(境目はなめらかに)。"""
-    lum = np.asarray(img.convert("L")).astype(float)
-    t = np.clip((lum - lo) / (hi - lo), 0, 1)[..., None]
-    out = np.array(dark) * (1 - t) + np.array(light) * t
-    return Image.fromarray(out.astype(np.uint8))
-
-
-def sign(width):
-    src = Image.open(SRC).convert("RGB").crop(SIGN_BOX)
-    im = two_tone(src, BROWN, WHITE, 110, 190)
-    return im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
-
-
 def tel_icon(height):
     """スキャンの電話アイコンを、ぼかしてから閾値を取って線をなめらかにする(背景透過)。"""
     src = Image.open(SRC).convert("L").crop(TEL_ICON_BOX)
@@ -88,7 +73,9 @@ def main():
     W_BIG = mm(0.11)   # 太字の縁取り幅
 
     # ---- まとまりを「描く関数」として用意し、高さを先に測る ----
-    sg = sign(mm(25.0))
+    # 店名は表面と同じ筆文字「陽気軒」(裏面の茶色で)
+    sg = kit.brush_text(BROWN)
+    sg = sg.resize((round(sg.width * mm(8.0) / sg.height), mm(8.0)), Image.LANCZOS)
 
     def boy(height):
         im = Image.open(kit.CHARA).convert("RGBA")
@@ -97,15 +84,15 @@ def main():
     def g_sign(y, draw=True):
         if MASCOT != "sign":
             if draw:
-                card.paste(sg, (cx - sg.width // 2, y))
+                card.paste(sg, (cx - sg.width // 2, y), sg)
             return sg.height
         # 看板の右にボーイを寝かせ、2つまとめて中央に置く
-        by = boy(round(sg.height * 1.08))
-        gap = mm(1.0)
+        by = boy(round(sg.height * 1.15))
+        gap = mm(1.8)
         x0 = cx - (sg.width + gap + by.width) // 2
         h = max(sg.height, by.height)
         if draw:
-            card.paste(sg, (x0, y + h - sg.height))
+            card.paste(sg, (x0, y + (h - sg.height) // 2), sg)
             card.paste(by, (x0 + sg.width + gap, y + h - by.height), by)
         return h
 
