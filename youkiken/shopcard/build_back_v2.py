@@ -37,6 +37,15 @@ MINCHO = "/System/Library/Fonts/ヒラギノ明朝 ProN.ttc"
 INSTA_URL = "https://www.instagram.com/youkiken_"
 HP_URL = "https://youkiken.com/"
 
+# ---- お店に確認中の文言(仮置き) ----
+# 「◯」を含む部分は青字で描き、残っていれば警告を出す。確定したらここを書き換える
+SUBTITLE = "昭和三十六年創業　名物ジャンボ餃子と自家製麺"
+ACCESS = "上信電鉄 吉井駅 徒歩10分"
+PARKING = "駐車場 ◯台"
+BUBBLE = ("ジャンボ餃子は", "お持ち帰りも", "できるよ！")
+TBD = "◯"
+TBD_COLOR = (0, 120, 255)
+
 # front_final_hq.png 上の筆文字「陽気軒」の範囲
 BRUSH_BOX = (560, 2535, 1545, 2835)
 
@@ -128,6 +137,41 @@ def text_center(draw, cx, y, text, font, fill):
     return b[3] - b[1]
 
 
+def text_center_parts(draw, cx, y, parts, font):
+    """色の違う文字列を1行に並べて中央揃えで描く。parts は [(文字列, 色), ...]"""
+    widths = [draw.textlength(t, font=font) for t, _ in parts]
+    b = draw.textbbox((0, 0), "".join(t for t, _ in parts), font=font)
+    x = cx - sum(widths) / 2
+    for (t, c), w in zip(parts, widths):
+        draw.text((x, y - b[1]), t, font=font, fill=c)
+        x += w
+    return b[3] - b[1]
+
+
+def tbd_color(text, normal):
+    return TBD_COLOR if TBD in text else normal
+
+
+def speech_bubble(draw, x, y, lines, font, tip, color, fill):
+    """左側に尻尾の付いた吹き出しを (x, y) を左上にして描き、幅と高さを返す。"""
+    lh = [draw.textbbox((0, 0), t, font=font) for t in lines]
+    tw = max(b[2] - b[0] for b in lh)
+    line_h = max(b[3] - b[1] for b in lh)
+    lead = round(line_h * 0.45)
+    pad_x, pad_y = mm(1.1), mm(0.9)
+    w = tw + 2 * pad_x
+    h = line_h * len(lines) + lead * (len(lines) - 1) + 2 * pad_y
+    ow = max(2, mm(0.22))
+    draw.rounded_rectangle((x, y, x + w, y + h), radius=mm(1.4), fill=fill, outline=color, width=ow)
+    y1, y2 = y + h * 0.48, y + h * 0.72
+    draw.polygon([(x + ow, y1), tip, (x + ow, y2)], fill=fill, outline=color)
+    draw.line([(x + ow / 2, y1 + ow), (x + ow / 2, y2 - ow)], fill=fill, width=ow + 2)
+    for i, (t, b) in enumerate(zip(lines, lh)):
+        ty = y + pad_y + i * (line_h + lead)
+        draw.text((x + w / 2 - (b[2] - b[0]) / 2 - b[0], ty - b[1]), t, font=font, fill=INK)
+    return w, h
+
+
 def pill(draw, cx, y, text, font, fill, text_fill):
     b = draw.textbbox((0, 0), text, font=font)
     tw, th = b[2] - b[0], b[3] - b[1]
@@ -158,7 +202,7 @@ def build(variant):
     card.paste(logo, (lx, top))
     card.paste(brush, (lx + logo_h + gap, top + (logo_h - bh) // 2), brush)
     y = top + logo_h + mm(1.9)
-    y += text_center(draw, cx, y, "昭和三十六年創業　ラーメン・中華食堂", ImageFont.truetype(MINCHO, mm(1.75)), sub)
+    y += text_center(draw, cx, y, SUBTITLE, ImageFont.truetype(MINCHO, mm(1.75)), tbd_color(SUBTITLE, sub))
 
     # ---- 下から: QR 2つ、その上にキャラ ----
     qr_size = mm(14.0)
@@ -192,6 +236,9 @@ def build(variant):
         h = text_center(d, cx, yy, "〒370-2134", gothic(5, mm(1.7)), sub)
         h += mm(1.0)
         h += text_center(d, cx, yy + h, "群馬県高崎市吉井町塩川37-4", gothic(6, mm(2.25)), fg)
+        h += mm(1.0)
+        h += text_center_parts(d, cx, yy + h, [(ACCESS, tbd_color(ACCESS, sub)), ("　", sub),
+                                               (PARKING, tbd_color(PARKING, sub))], gothic(5, mm(1.6)))
         return h
 
     blocks = [tel, hours_closed, address]
@@ -209,7 +256,14 @@ def build(variant):
     if with_chara:
         boy = Image.open(CHARA).convert("RGBA")
         boy = boy.resize((round(boy.width * chara_h / boy.height), chara_h), Image.LANCZOS)
-        card.paste(boy, (cx - boy.width // 2, chara_top), boy)
+        bx = cx - mm(5.0) - boy.width // 2
+        card.paste(boy, (bx, chara_top), boy)
+        # 吹き出しは頭の右に置き、尻尾を口元へ向ける
+        tip = (bx + boy.width * 0.80, chara_top + chara_h * 0.36)
+        bub_x = bx + round(boy.width * 0.90) + mm(1.2)
+        bw, _ = speech_bubble(draw, bub_x, chara_top - mm(0.6), BUBBLE, gothic(6, mm(1.45)), tip, RED, WHITE)
+        if bub_x + bw > CW - mm(3.5):
+            raise SystemExit("吹き出しがカードの端にかかります")
 
     col_gap = mm(7.0)
     lx = cx - col_gap // 2 - qr_size
@@ -240,6 +294,9 @@ def build(variant):
     padded.paste(card, (bleed, bleed))
     padded.save(HERE / f"back_v2_{variant}_bleed3mm.png", dpi=(DPI, DPI))
     print("saved", out.name, f"(行間 {step / DPMM:.1f}mm)")
+    pending = [t for t in (SUBTITLE, ACCESS, PARKING, *BUBBLE) if TBD in t]
+    if pending:
+        print("※ 仮置きが残っています(青字):", " / ".join(pending))
 
 
 if __name__ == "__main__":
