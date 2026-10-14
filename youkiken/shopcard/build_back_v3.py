@@ -7,8 +7,13 @@
 お持ち帰りは汁物以外OK(2026-10 お店に確認済み)。
 QRは Instagram と ホームページ(youkiken.com)の2つ。
 
-要 qrcode[pil]。 使い方: python3 youkiken/shopcard/build_back_v3.py
+まんぷくボーイは置き場所を選べる:
+  python3 youkiken/shopcard/build_back_v3.py            … なし
+  python3 youkiken/shopcard/build_back_v3.py sign       … 看板の横 → back_v3_sign.png
+  python3 youkiken/shopcard/build_back_v3.py takeout    … お持ち帰りの横 → back_v3_takeout.png
+要 qrcode[pil]。
 """
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -19,8 +24,10 @@ from build_back_v2 import CW, CH, DPI, WHITE, mm
 
 HERE = Path(__file__).resolve().parent
 SRC = HERE / "back_final_hq.png"
-OUT = HERE / "back_v3.png"
-OUT_BLEED = HERE / "back_v3_bleed3mm.png"
+MASCOT = sys.argv[1] if len(sys.argv) > 1 else None
+_SUFFIX = f"_{MASCOT}" if MASCOT else ""
+OUT = HERE / f"back_v3{_SUFFIX}.png"
+OUT_BLEED = HERE / f"back_v3{_SUFFIX}_bleed3mm.png"
 
 BROWN = (92, 63, 61)            # 元の裏面の茶色(実測)
 NOTE = (128, 104, 100)
@@ -83,10 +90,24 @@ def main():
     # ---- まとまりを「描く関数」として用意し、高さを先に測る ----
     sg = sign(mm(25.0))
 
+    def boy(height):
+        im = Image.open(kit.CHARA).convert("RGBA")
+        return im.resize((round(im.width * height / im.height), height), Image.LANCZOS)
+
     def g_sign(y, draw=True):
+        if MASCOT != "sign":
+            if draw:
+                card.paste(sg, (cx - sg.width // 2, y))
+            return sg.height
+        # 看板の右にボーイを寝かせ、2つまとめて中央に置く
+        by = boy(round(sg.height * 1.08))
+        gap = mm(1.0)
+        x0 = cx - (sg.width + gap + by.width) // 2
+        h = max(sg.height, by.height)
         if draw:
-            card.paste(sg, (cx - sg.width // 2, y))
-        return sg.height
+            card.paste(sg, (x0, y + h - sg.height))
+            card.paste(by, (x0 + sg.width + gap, y + h - by.height), by)
+        return h
 
     num_f = rfont(4.4)
     ic = tel_icon(mm(4.2))
@@ -151,12 +172,19 @@ def main():
         px, py = mm(1.8), mm(0.6)
         pw, ph = tw + 2 * px, th + 2 * py
         gap = mm(0.2)   # 全角カッコに余白があるので詰める
-        x0 = cx - (pw + gap + rw) / 2
+        by = boy(mm(5.6)) if MASCOT == "takeout" else None
+        bgap = mm(1.0)
+        bw = by.width + bgap if by else 0
+        x0 = cx - (bw + pw + gap + rw) / 2 + bw
+        h = max(ph, by.height) if by else ph
+        top = y + (h - ph) / 2
         if draw:
-            d.rounded_rectangle((x0, y, x0 + pw, y + ph), radius=ph / 2, fill=BROWN)
-            bold_text(d, (x0 + px - tb[0], y + py - tb[1]), tag, to_f, WHITE, mm(0.035))
-            bold_text(d, (x0 + pw + gap - rb[0], y + (ph - rh) / 2 - rb[1]), rest, to_f, BROWN, mm(0.035))
-        return ph
+            if by:
+                card.paste(by, (round(x0 - bw), y + h - by.height), by)
+            d.rounded_rectangle((x0, top, x0 + pw, top + ph), radius=ph / 2, fill=BROWN)
+            bold_text(d, (x0 + px - tb[0], top + py - tb[1]), tag, to_f, WHITE, mm(0.035))
+            bold_text(d, (x0 + pw + gap - rb[0], top + (ph - rh) / 2 - rb[1]), rest, to_f, BROWN, mm(0.035))
+        return h
 
     addr_f = rfont(2.55)
     zip_f = rfont(2.15)
