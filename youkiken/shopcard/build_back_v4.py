@@ -4,7 +4,7 @@ back_v2_chara からの変更:
   - 営業時間と定休日の2列をやめ、縦に並べて中心をそろえる
   - 明朝の2行をやめ、名物の一行だけをゴシックで(創業は表面にあるので省く)
   - まんぷくボーイを小さくして店名の横へ。下半分はQRだけにする
-  - 表面と同じ雷文の帯を上下に細く入れ、表裏の統一感を出す
+  - 雷文の帯は入れない(上下とも不要とのこと)。中身は端から5mm以上内側に置く
   - 帯はカード端から3mm内側(断裁ずれ対策)
 
 要 qrcode[pil]。 使い方: python3 youkiken/shopcard/build_back_v4.py
@@ -28,8 +28,13 @@ BAND_GAP_MM = 0.3
 CONTENT_PAD_MM = 3.0    # 帯から中身まで
 
 
+TOP_BAND = False        # 上の帯(なしに決定)
+BOTTOM_BAND = False     # 下の帯(なしに決定)
+
+
 def raimon_bands(card):
-    """上下に雷文の帯を1本ずつ。端から端まで、隙間は一定で敷き詰める。"""
+    """雷文の帯(下、TOP_BAND なら上も)。端から端まで、隙間は一定で敷き詰める。
+    上の帯を描かないときは、上の余白を帯があるときと同じ位置から始める。"""
     motif = front_kit.extract_motif(RED)
     th = mm(BAND_H_MM)
     tw0 = round(motif.width * th / motif.height)
@@ -43,9 +48,11 @@ def raimon_bands(card):
     yt, yb = mm(BAND_EDGE_MM), CH - mm(BAND_EDGE_MM) - th
     for i in range(n):
         x = x0 + round(i * (avail - tw) / (n - 1))
-        card.paste(top, (x, yt), top)
-        card.paste(bottom, (x, yb), bottom)
-    return yt + th, yb
+        if TOP_BAND:
+            card.paste(top, (x, yt), top)
+        if BOTTOM_BAND:
+            card.paste(bottom, (x, yb), bottom)
+    return (yt + th if TOP_BAND else mm(BAND_EDGE_MM + 2.0)), (yb if BOTTOM_BAND else CH - mm(BAND_EDGE_MM + 2.0))
 
 
 def main():
