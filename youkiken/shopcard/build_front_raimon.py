@@ -7,6 +7,8 @@
 
 使い方: python3 youkiken/shopcard/build_front_raimon.py [枠の色 #RRGGBB] [出力名の接尾辞]
   例: python3 youkiken/shopcard/build_front_raimon.py "#1A1A1A" black  → front_raimon_black.png
+3つ目の引数でカード端から枠までの距離(mm)を変えられる(既定 1.3mm)。
+  例: python3 youkiken/shopcard/build_front_raimon.py "#AC1D20" red_safe 3.0
 """
 import sys
 from pathlib import Path
@@ -108,7 +110,10 @@ def hex_to_rgb(h):
 
 
 def main():
+    global EDGE_MM
     color = hex_to_rgb(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_FRAME_HEX)
+    if len(sys.argv) > 3:
+        EDGE_MM = float(sys.argv[3])
     suffix = f"_{sys.argv[2]}" if len(sys.argv) > 2 else ""
     out = HERE / f"front_raimon{suffix}.png"
     out_bleed = HERE / f"front_raimon{suffix}_bleed3mm.png"
