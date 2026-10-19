@@ -202,45 +202,49 @@ def build(variant):
     card.paste(logo, (lx, top))
     card.paste(brush, (lx + logo_h + gap, top + (logo_h - bh) // 2), brush)
     y = top + logo_h + mm(1.9)
-    y += text_center(draw, cx, y, SUBTITLE, ImageFont.truetype(MINCHO, mm(1.75)), tbd_color(SUBTITLE, sub))
+    # 名刺で読める 6pt 以上にすると1行に入らないので、創業と名物で2行に分ける
+    for i, line in enumerate(SUBTITLE.split("　")):
+        y += (mm(0.7) if i else 0)
+        y += text_center(draw, cx, y, line, ImageFont.truetype(MINCHO, mm(2.15)), tbd_color(line, sub))
 
     # ---- 下から: QR 2つ、その上にキャラ ----
     qr_size = mm(14.0)
     qr_top = bottom - mm(3.2) - qr_size
-    chara_h = mm(13.5) if with_chara else 0
+    chara_h = mm(12.0) if with_chara else 0
     chara_top = qr_top - mm(1.2) - chara_h
 
     # ---- 中: 店舗情報 ----
     info_top = y + mm(4.0)
 
     def tel(d, yy):
-        h = text_center(d, cx, yy, "TEL", gothic(6, mm(1.7)), RED)
+        h = text_center(d, cx, yy, "TEL", gothic(6, mm(2.1)), RED)
         h += mm(0.9)
         h += text_center(d, cx, yy + h, "027-387-7082", gothic(7, mm(4.3)), fg)
         return h
 
-    col_off = mm(12.0)
+    col_off = mm(10.5)
 
     def hours_closed(d, yy):
-        hl = pill(d, cx - col_off, yy, "営業時間", gothic(6, mm(1.65)), RED, WHITE)
-        pill(d, cx + col_off, yy, "定休日", gothic(6, mm(1.65)), RED, WHITE)
+        hl = pill(d, cx - col_off, yy, "営業時間", gothic(6, mm(2.2)), RED, WHITE)
+        pill(d, cx + col_off, yy, "定休日", gothic(6, mm(2.2)), RED, WHITE)
         h = hl + mm(1.2)
-        a = text_center(d, cx - col_off, yy + h, "11:00 – 20:00", gothic(7, mm(2.45)), fg)
-        text_center(d, cx + col_off, yy + h, "毎月15日・26日", gothic(7, mm(2.45)), fg)
+        # 閉店時刻は日によって違うので書かない(店主の案: 11時から品切れまで)
+        a = text_center(d, cx - col_off, yy + h, "11:00〜", gothic(7, mm(2.9)), fg)
+        text_center(d, cx + col_off, yy + h, "毎月15日・26日", gothic(7, mm(2.9)), fg)
         h += a + mm(0.9)
-        return h + text_center(d, cx - col_off, yy + h, "ラストオーダー 19:30", gothic(5, mm(1.5)), sub)
+        return h + text_center(d, cx - col_off, yy + h, "品切れ次第終了", gothic(6, mm(2.15)), sub)
 
     def address(d, yy):
-        h = text_center(d, cx, yy, "〒370-2134", gothic(5, mm(1.7)), sub)
+        h = text_center(d, cx, yy, "〒370-2134", gothic(5, mm(2.15)), sub)
         h += mm(1.0)
-        h += text_center(d, cx, yy + h, "群馬県高崎市吉井町塩川37-4", gothic(6, mm(2.25)), fg)
+        h += text_center(d, cx, yy + h, "群馬県高崎市吉井町塩川37-4", gothic(6, mm(2.6)), fg)
         extra = [t for t in (ACCESS, PARKING) if t]
         if extra:
             parts = []
             for t in extra:
                 parts += [(t, tbd_color(t, sub)), ("　", sub)]
             h += mm(1.0)
-            h += text_center_parts(d, cx, yy + h, parts[:-1], gothic(5, mm(1.6)))
+            h += text_center_parts(d, cx, yy + h, parts[:-1], gothic(5, mm(2.1)))
         return h
 
     blocks = [tel, hours_closed, address]
@@ -264,14 +268,14 @@ def build(variant):
             # 吹き出しは頭の右に置き、尻尾を口元へ向ける
             tip = (bx + boy.width * 0.80, chara_top + chara_h * 0.36)
             bub_x = bx + round(boy.width * 0.90) + mm(1.2)
-            bw, _ = speech_bubble(draw, bub_x, chara_top - mm(0.6), BUBBLE, gothic(6, mm(1.45)), tip, RED, WHITE)
+            bw, _ = speech_bubble(draw, bub_x, chara_top - mm(0.6), BUBBLE, gothic(6, mm(2.1)), tip, RED, WHITE)
             if bub_x + bw > CW - mm(3.5):
                 raise SystemExit("吹き出しがカードの端にかかります")
 
     col_gap = mm(7.0)
     lx = cx - col_gap // 2 - qr_size
     rx = cx + col_gap // 2
-    f = gothic(6, mm(1.75))
+    f = gothic(6, mm(2.1))
     for x, url, icon, label in ((lx, INSTA_URL, icon_instagram_color, "@youkiken_"),
                                 (rx, HP_URL, icon_home, "youkiken.com")):
         card.paste(make_qr(url, qr_size, QR_COLOR, icon), (x, qr_top))
