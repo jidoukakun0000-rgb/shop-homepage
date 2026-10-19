@@ -27,7 +27,8 @@ jobs:
       - name: Build site directory (homepage files only)
         run: |
           mkdir -p dist
-          cp youkiken/index.html youkiken/menu.json youkiken/robots.txt youkiken/sitemap.xml youkiken/_headers dist/
+          cp youkiken/index.html youkiken/menu.json youkiken/robots.txt youkiken/sitemap.xml youkiken/_headers \
+             youkiken/favicon.ico youkiken/icon-192.png youkiken/apple-touch-icon.png dist/
           cp -R youkiken/photos dist/photos
           find dist -type f | sort
       # Pages プロジェクトが無ければ作る（2026-10 にアカウントから消えていて
