@@ -4,14 +4,17 @@
 写真の台形歪みを透視変換で正方形にし、照明ムラを除いて臙脂・黄金・白の3色に分ける。
 要 opencv-python-headless。 使い方: python3 youkiken/print/reference/trace_logo.py
 """
-import sys, os
+import sys, os, tempfile
 import numpy as np, cv2
 from PIL import Image, ImageOps
 
 S = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(S, 'logo-yohkiken-photo.jpg')
 OUT = os.path.join(S, 'logo-yohkiken-traced.png')
-PREVIEW = os.path.join(S, 'logo-yohkiken-traced-preview.png')
+# 途中経過と比較画像はリポジトリを汚さないよう一時フォルダへ
+DEBUG = os.path.join(tempfile.gettempdir(), 'trace_logo_debug')
+os.makedirs(DEBUG, exist_ok=True)
+PREVIEW = os.path.join(DEBUG, 'logo-yohkiken-traced-preview.png')
 
 pil = ImageOps.exif_transpose(Image.open(SRC)).convert('RGB')
 rgb = np.array(pil)
@@ -34,7 +37,7 @@ def classify(warp, tag):
     # use luminance-only gain so hue is preserved
     Ill = illum.mean(-1, keepdims=True); gain = ref.mean() / np.maximum(Ill, 1)
     flat = np.clip(f * gain, 0, 255).astype(np.uint8)
-    cv2.imwrite(os.path.join(S, f'step3_flat_{tag}.png'), flat)
+    cv2.imwrite(os.path.join(DEBUG, f'step3_flat_{tag}.png'), flat)
 
     lab = cv2.cvtColor(flat, cv2.COLOR_BGR2LAB).astype(np.float32)
     chroma = np.hypot(lab[..., 1] - 128, lab[..., 2] - 128)
@@ -66,7 +69,7 @@ def classify(warp, tag):
                     vals = cls[y0:y1, x0:x1][ring]
                     vals = vals[vals != k] if (vals != k).any() else vals
                     cls[y0:y1, x0:x1][comp] = np.bincount(vals, minlength=3).argmax()
-    cv2.imwrite(os.path.join(S, f'step4_cls_{tag}.png'), pal_rgb[cls][..., ::-1])
+    cv2.imwrite(os.path.join(DEBUG, f'step4_cls_{tag}.png'), pal_rgb[cls][..., ::-1])
 
     return cls
 
@@ -100,7 +103,7 @@ dbg = bgr.copy()
 cv2.polylines(dbg, [pts.astype(np.int32)], True, (255, 0, 0), 8)
 for p in pts:
     cv2.circle(dbg, tuple(int(v) for v in p), 30, (0, 255, 0), 6)
-cv2.imwrite(os.path.join(S, 'step1_corners.png'), cv2.resize(dbg, (W // 4, H // 4)))
+cv2.imwrite(os.path.join(DEBUG, 'step1_corners.png'), cv2.resize(dbg, (W // 4, H // 4)))
 
 N = 2400
 dst = np.array([[0, 0], [N - 1, 0], [N - 1, N - 1], [0, N - 1]], np.float32)
@@ -108,7 +111,7 @@ M = cv2.getPerspectiveTransform(pts, dst)
 
 pal_rgb = np.array([[172, 29, 32], [240, 187, 41], [253, 251, 247]], np.uint8)
 warp = cv2.warpPerspective(bgr, M, (N, N), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
-cv2.imwrite(os.path.join(S, 'step2_warp_pass1.png'), warp)
+cv2.imwrite(os.path.join(DEBUG, 'step2_warp_pass1.png'), warp)
 cls1 = classify(warp, 'pass1')
 
 # ---- 1b. refine homography with the inner frame bars ----
@@ -154,10 +157,10 @@ for i, n in enumerate(names):
 dbg2 = bgr.copy()
 cv2.polylines(dbg2, [pts.astype(np.int32)], True, (255, 0, 0), 6)
 cv2.polylines(dbg2, [pts_ref.astype(np.int32)], True, (0, 200, 0), 6)
-cv2.imwrite(os.path.join(S, 'step1b_corners_refined.png'), cv2.resize(dbg2, (W // 4, H // 4)))
+cv2.imwrite(os.path.join(DEBUG, 'step1b_corners_refined.png'), cv2.resize(dbg2, (W // 4, H // 4)))
 
 warp = cv2.warpPerspective(bgr, M2, (N, N), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
-cv2.imwrite(os.path.join(S, 'step2_warp.png'), warp)
+cv2.imwrite(os.path.join(DEBUG, 'step2_warp.png'), warp)
 cls = classify(warp, 'final')
 
 # ---- glare removal inside the face ----
@@ -188,7 +191,7 @@ for j in range(1, n):
             continue  # eye / mouth stroke
         print('  glare island removed: area', stats[j, cv2.CC_STAT_AREA], 'bbox', stats[j, :4].tolist())
         cls[comp] = R_
-cv2.imwrite(os.path.join(S, 'step5_cls_clean.png'), pal_rgb[cls][..., ::-1])
+cv2.imwrite(os.path.join(DEBUG, 'step5_cls_clean.png'), pal_rgb[cls][..., ::-1])
 
 # ---- aspect correction of the central art ----
 # Camera-calibrated check (iPhone EXIF focal length) shows the physical plate is
@@ -245,8 +248,8 @@ dst_k = [0, 2090, N - tops[2], N - tops[1], N - tops[0], N]
 print('bottom band remap src', [round(float(v), 1) for v in src_k], '-> dst', [round(float(v), 1) for v in dst_k])
 src_rows = np.clip(np.round(np.interp(np.arange(N), dst_k, src_k)).astype(int), 0, N - 1)
 cls = cls[src_rows]
-cv2.imwrite(os.path.join(S, 'step7_cls_final.png'), pal_rgb[cls][..., ::-1])
-cv2.imwrite(os.path.join(S, 'step6_cls_aspect.png'), pal_rgb[cls][..., ::-1])
+cv2.imwrite(os.path.join(DEBUG, 'step7_cls_final.png'), pal_rgb[cls][..., ::-1])
+cv2.imwrite(os.path.join(DEBUG, 'step6_cls_aspect.png'), pal_rgb[cls][..., ::-1])
 gold = (cls == G_)
 pts_c = []
 for ang in np.radians(np.r_[125:270:1.0, -90:-62:1.0]):
