@@ -11,6 +11,7 @@
   edge=3.0   カード端から枠までの距離(mm、既定 1.3。断裁ずれに備えるなら 3.0)
   pad=2.4    枠から中身までの距離(mm、既定 1.4)
   lockup=1.0 下の店名(ロゴ+陽気軒)の大きさ(既定 0.8)
+  tag=1.4    ロゴ横のタグラインだけを何倍にするか(既定 1.0。1.4 で約6.5pt。アクセアの推奨は6pt以上)
   notag      ロゴ横の小さいタグライン「笑顔こぼれる幸せメニュー」を消す(本文と重複するため)
   例: python3 youkiken/shopcard/build_front_raimon.py "#AC1D20" final edge=3.0 pad=2.4 notag
 """
@@ -119,7 +120,10 @@ def main():
     color = hex_to_rgb(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_FRAME_HEX)
     opts = sys.argv[3:]
     no_tagline = "notag" in opts
+    tag_scale = 1.0
     for o in opts:
+        if o.startswith("tag="):
+            tag_scale = float(o[4:])
         if o.startswith("edge="):
             EDGE_MM = float(o[5:])
         elif o.startswith("pad="):
@@ -151,9 +155,28 @@ def main():
     r0, r1, c0, c1 = ink_bbox(body, 200)
     art = Image.fromarray(body[r0:r1 + 1, c0:c1 + 1])
 
-    lk = f[LOCKUP_TOP_PX:]
-    r0, r1, c0, c1 = ink_bbox(lk, 250)
-    lockup = Image.fromarray(lk[r0 - 3:r1 + 4, c0 - 3:c1 + 4])
+    if tag_scale != 1.0 and not no_tagline:
+        # タグラインだけ切り出して拡大し、筆文字「陽気軒」の上に中央そろえで置き直す
+        f = f.copy()
+        x0, y0, x1, y1 = TAGLINE_BOX
+        tg = f[y0:y1, x0:x1]
+        tr0, tr1, tc0, tc1 = ink_bbox(tg, 200)
+        tag = Image.fromarray(tg[tr0:tr1 + 1, tc0:tc1 + 1].copy())
+        f[y0:y1, x0:x1] = 255
+        lk = f[LOCKUP_TOP_PX:]
+        r0, r1, c0, c1 = ink_bbox(lk, 250)
+        base = Image.fromarray(lk[r0 - 3:r1 + 4, c0 - 3:c1 + 4])
+        bx0 = OLD_LOGO_BOX[2] - (c0 - 3)          # 筆文字の始まり(ロゴの右)
+        bw = base.width - bx0
+        tag = tag.resize((round(tag.width * tag_scale), round(tag.height * tag_scale)), Image.LANCZOS)
+        gap = round(tag.height * 0.35)
+        lockup = Image.new("RGB", (max(base.width, bx0 + (bw + tag.width) // 2), tag.height + gap + base.height), "white")
+        lockup.paste(tag, (bx0 + (bw - tag.width) // 2, 0))
+        lockup.paste(base, (0, tag.height + gap))
+    else:
+        lk = f[LOCKUP_TOP_PX:]
+        r0, r1, c0, c1 = ink_bbox(lk, 250)
+        lockup = Image.fromarray(lk[r0 - 3:r1 + 4, c0 - 3:c1 + 4])
 
     frame, inset = build_frame(extract_motif(color))
     inner_w, inner_h = CW - 2 * inset, CH - 2 * inset
