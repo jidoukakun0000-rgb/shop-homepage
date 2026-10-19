@@ -7,8 +7,12 @@
 
 使い方: python3 youkiken/shopcard/build_front_raimon.py [枠の色 #RRGGBB] [出力名の接尾辞]
   例: python3 youkiken/shopcard/build_front_raimon.py "#1A1A1A" black  → front_raimon_black.png
-3つ目の引数でカード端から枠までの距離(mm)を変えられる(既定 1.3mm)。
-  例: python3 youkiken/shopcard/build_front_raimon.py "#AC1D20" red_safe 3.0
+3つ目以降は key=値 で指定できる:
+  edge=3.0   カード端から枠までの距離(mm、既定 1.3。断裁ずれに備えるなら 3.0)
+  pad=2.4    枠から中身までの距離(mm、既定 1.4)
+  lockup=1.0 下の店名(ロゴ+陽気軒)の大きさ(既定 0.8)
+  notag      ロゴ横の小さいタグライン「笑顔こぼれる幸せメニュー」を消す(本文と重複するため)
+  例: python3 youkiken/shopcard/build_front_raimon.py "#AC1D20" final edge=3.0 pad=2.4 notag
 """
 import sys
 from pathlib import Path
@@ -34,6 +38,7 @@ LOCKUP_SCALE = 0.8
 LOCKUP_TOP_PX = 2430           # front_final_hq.png でロックアップが始まる高さ
 OLD_LOGO_BOX = (180, 2490, 525, 2815)  # front_final_hq.png の旧ロゴ領域 (x0, y0, x1, y1)
 BODY_LOCKUP_GAP_PX = 170
+TAGLINE_BOX = (560, 2445, 1520, 2535)  # front_final_hq.png のロゴ横タグライン
 BLEED_MM = 3
 
 
@@ -110,10 +115,19 @@ def hex_to_rgb(h):
 
 
 def main():
-    global EDGE_MM
+    global EDGE_MM, INNER_PAD_MM, LOCKUP_SCALE
     color = hex_to_rgb(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_FRAME_HEX)
-    if len(sys.argv) > 3:
-        EDGE_MM = float(sys.argv[3])
+    opts = sys.argv[3:]
+    no_tagline = "notag" in opts
+    for o in opts:
+        if o.startswith("edge="):
+            EDGE_MM = float(o[5:])
+        elif o.startswith("pad="):
+            INNER_PAD_MM = float(o[4:])
+        elif o.startswith("lockup="):
+            LOCKUP_SCALE = float(o[7:])
+        elif o.replace(".", "", 1).isdigit():
+            EDGE_MM = float(o)
     suffix = f"_{sys.argv[2]}" if len(sys.argv) > 2 else ""
     out = HERE / f"front_raimon{suffix}.png"
     out_bleed = HERE / f"front_raimon{suffix}_bleed3mm.png"
@@ -127,6 +141,10 @@ def main():
         logo = Image.open(LOGO).convert("RGB").resize((size, size), Image.LANCZOS)
         front.paste(logo, ((x0 + x1) // 2 - size // 2, (y0 + y1) // 2 - size // 2))
     f = np.asarray(front)
+    if no_tagline:
+        f = f.copy()
+        x0, y0, x1, y1 = TAGLINE_BOX
+        f[y0:y1, x0:x1] = 255
 
     body = f.copy()
     body[LOCKUP_TOP_PX:] = 255
