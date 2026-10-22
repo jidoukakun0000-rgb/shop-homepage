@@ -21,7 +21,7 @@ HERE = Path(__file__).resolve().parent
 OUT = HERE / "back_v4.png"
 OUT_BLEED = HERE / "back_v4_bleed3mm.png"
 
-SUB = (95, 80, 76)
+# 小さい文字に灰色を使うと、印刷で4色に分かれたり網点になったりしてぼけるので、文字は墨(K100%)だけにする
 BAND_EDGE_MM = 3.0      # カード端から帯まで
 BAND_H_MM = 1.8         # 帯(雷文)の高さ。表面の 2.2mm より控えめに
 BAND_GAP_MM = 0.3
@@ -105,7 +105,7 @@ def main():
         return h + text_center(dd, cx, y + h, "毎月15日・26日", gothic(7, mm(2.9)), INK)
 
     def g_address(y, dd):
-        h = text_center(dd, cx, y, "〒370-2134", gothic(5, mm(2.15)), SUB) + mm(0.9)
+        h = text_center(dd, cx, y, "〒370-2134", gothic(5, mm(2.15)), INK) + mm(0.9)
         return h + text_center(dd, cx, y + h, "群馬県高崎市吉井町塩川37-4", gothic(6, mm(2.6)), INK)
 
     q = mm(13.5)

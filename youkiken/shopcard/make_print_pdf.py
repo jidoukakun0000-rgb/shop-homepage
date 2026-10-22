@@ -5,6 +5,7 @@
   - shopcard_final_preview.pdf 画面確認用。仕上がり 55×91mm、RGB
 CMYK への変換は macOS の Generic CMYK プロファイルで行う。色味のない部分(白〜灰〜黒)は
 K(黒インク)だけで刷るようにし、黒い文字とQRは K100% にする(4色の版ずれでにじまないように)。
+赤からは C を抜き、M・Y・K の3版にする。
 
 要 img2pdf。 使い方: python3 youkiken/shopcard/make_print_pdf.py
 """
@@ -29,6 +30,9 @@ def to_cmyk(path, xf):
     c[neutral] = 0
     c[..., 3][neutral] = np.clip(255 - a.mean(axis=2), 0, 255)[neutral].astype(np.uint8)
     c[..., 3][neutral & (mx < 70)] = 255
+    # 赤(文字・札・枠・ロゴ)から C を抜いて M・Y・K の3版にする(版が多いと小さい文字がにじむ)
+    reddish = (a[..., 0] - a[..., 1] > 60) & (a[..., 0] - a[..., 2] > 60)
+    c[..., 0][reddish] = 0
     return Image.fromarray(c, "CMYK")
 
 
