@@ -12,6 +12,7 @@
   pad=2.4    枠から中身までの距離(mm、既定 1.4)
   lockup=1.0 下の店名(ロゴ+陽気軒)の大きさ(既定 0.8)
   tag=1.4    ロゴ横のタグラインだけを何倍にするか(既定 1.0。1.4 で約6.5pt。アクセアの推奨は6pt以上)
+  tagtype    タグラインをスキャンではなくヒラギノ明朝W6で打ち直す(印刷でぼけないように)
   notag      ロゴ横の小さいタグライン「笑顔こぼれる幸せメニュー」を消す(本文と重複するため)
   例: python3 youkiken/shopcard/build_front_raimon.py "#AC1D20" final edge=3.0 pad=2.4 notag
 """
@@ -19,7 +20,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 HERE = Path(__file__).resolve().parent
 YOUKIKEN = HERE.parent
@@ -111,6 +112,24 @@ def ink_bbox(arr, thresh):
     return rows[0], rows[-1], cols[0], cols[-1]
 
 
+TAGLINE = "笑顔こぼれる幸せメニュー"
+# 明朝は横線が細く、6pt だとアクセア推奨の線幅 0.1mm を下回るのでゴシックにする
+TAG_FONT = ("/System/Library/Fonts/ヒラギノ角ゴシック W6.ttc", 0)
+
+
+def typeset_tagline(ink_height):
+    """タグラインを、文字の黒い部分の高さが ink_height px になる大きさで描いて返す(白地)。
+    灰色のにじみが出ないよう、白と黒の2値にする(800dpi なのでギザギザは見えない)。"""
+    probe = ImageFont.truetype(TAG_FONT[0], 200, index=TAG_FONT[1])
+    b = probe.getbbox(TAGLINE)
+    size = round(200 * ink_height / (b[3] - b[1]))
+    f = ImageFont.truetype(TAG_FONT[0], size, index=TAG_FONT[1])
+    b = f.getbbox(TAGLINE)
+    im = Image.new("RGB", (b[2] - b[0] + 4, b[3] - b[1] + 4), "white")
+    ImageDraw.Draw(im).text((2 - b[0], 2 - b[1]), TAGLINE, font=f, fill=(0, 0, 0))
+    return im.convert("L").point(lambda v: 0 if v < 128 else 255).convert("RGB")
+
+
 def hex_to_rgb(h):
     return tuple(int(h.lstrip("#")[i:i + 2], 16) for i in (0, 2, 4))
 
@@ -121,6 +140,8 @@ def main():
     opts = sys.argv[3:]
     no_tagline = "notag" in opts
     tag_scale = 1.0
+    tag_type = "tagtype" in opts
+    tag_box = None
     for o in opts:
         if o.startswith("tag="):
             tag_scale = float(o[4:])
@@ -168,7 +189,15 @@ def main():
         base = Image.fromarray(lk[r0 - 3:r1 + 4, c0 - 3:c1 + 4])
         bx0 = OLD_LOGO_BOX[2] - (c0 - 3)          # 筆文字の始まり(ロゴの右)
         bw = base.width - bx0
-        tag = tag.resize((round(tag.width * tag_scale), round(tag.height * tag_scale)), Image.LANCZOS)
+        th_target = round(tag.height * tag_scale)
+        if tag_type:
+            # スキャンの文字は輪郭がにじんで印刷でぼけるので打ち直す。ここでは場所だけ空けておき、
+            # カードに貼ったあと最終の大きさで直接描く(縮小すると輪郭に灰色が出るため)
+            tag = typeset_tagline(th_target)
+            tag_box = (bx0 + (bw - tag.width) // 2, 0, tag.width, tag.height)
+            tag = Image.new("RGB", tag.size, "white")
+        else:
+            tag = tag.resize((round(tag.width * tag_scale), th_target), Image.LANCZOS)
         gap = round(tag.height * 0.35)
         lockup = Image.new("RGB", (max(base.width, bx0 + (bw + tag.width) // 2), tag.height + gap + base.height), "white")
         lockup.paste(tag, (bx0 + (bw - tag.width) // 2, 0))
@@ -189,7 +218,13 @@ def main():
 
     card = Image.new("RGB", (CW, CH), (255, 255, 255))
     card.paste(art.resize((aw, ah), Image.LANCZOS), ((CW - aw) // 2, ay))
-    card.paste(lockup.resize((lw, lh), Image.LANCZOS), ((CW - lw) // 2, ay + ah + BODY_LOCKUP_GAP_PX))
+    lx, ly = (CW - lw) // 2, ay + ah + BODY_LOCKUP_GAP_PX
+    card.paste(lockup.resize((lw, lh), Image.LANCZOS), (lx, ly))
+    if tag_box:
+        k = sc * LOCKUP_SCALE
+        tx, ty, tw, th = tag_box
+        sharp = typeset_tagline(round((th - 4) * k))
+        card.paste(sharp, (round(lx + (tx + tw / 2) * k - sharp.width / 2), round(ly + (ty + th / 2) * k - sharp.height / 2)))
     card.paste(frame, (0, 0), frame)
     card.save(out, dpi=(DPI, DPI))
 
